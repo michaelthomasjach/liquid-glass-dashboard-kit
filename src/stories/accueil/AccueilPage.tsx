@@ -217,14 +217,14 @@ export function AccueilPage({ kitVersion, componentCount }: AccueilPageProps) {
       <header className="lgk-home__hero">
         <span className="lgk-home__eyebrow">Thème « Liquid glass » · kit v{kitVersion}</span>
         <h1 className="lgk-home__hero-title">
-          Les composants de la liseuse, <span className="lgk-home__accent">habillés pour l'administration</span>.
+          Les composants de la liseuse, <span className="lgk-home__accent">dans du verre dépoli</span>.
         </h1>
         <p className="lgk-home__hero-lead">
           <strong>liquid-glass-dashboard-kit</strong> est une couche de thème posée sur{" "}
           <code>@michaelthomasjach/liseuse-dashboard-kit</code>. Elle ne réécrit aucun composant : elle
           redéfinit les variables <code>--lq-*</code> qu'ils lisent tous, et leur donne le langage d'un
-          tableau de bord d'administration dense et plat — neutres ardoise, un seul accent, angles de
-          2 à 3 px. Chaque page de ce Storybook rend le composant du kit à travers <code>LiquidGlassTheme</code> :
+          tableau de bord « Liquid glass » — surfaces de verre translucides et floutées, liseré de lumière,
+          grands rayons, accent citron vert. Chaque page de ce Storybook rend le composant du kit à travers <code>LiquidGlassTheme</code> :
           c'est ce que verra une application qui l'utilise.
         </p>
         <div className="lgk-home__actions">
@@ -238,7 +238,7 @@ export function AccueilPage({ kitVersion, componentCount }: AccueilPageProps) {
           La vitrine — le tableau de bord, les tableaux, les formulaires, les écrans d'application et une
           planche par famille de composants — est publiée à côté de ce Storybook, et se lance en local avec{" "}
           <code>npm run dev</code>. La bascule <strong>Surface</strong> de la barre d'outils fait passer
-          toute cette page, et toutes les autres, en sombre.
+          toute cette page, et toutes les autres, du verre fumé (sombre) au verre laiteux (clair).
         </p>
         <div className="lgk-home__stage-frame">
           <HeroDashboard />
