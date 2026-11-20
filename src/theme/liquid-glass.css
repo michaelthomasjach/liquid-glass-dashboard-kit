@@ -340,23 +340,373 @@
   --lq-color-panel: var(--lgk-color-solid);
 }
 
-/* ---- la barre latérale ---- */
+/* ---- le reflet liquide ---- */
 
-/* Une colonne de verre comme les cartes, à peine plus dense, sans filet dur à droite. */
+/* Ce qui fait « liquid glass » plutôt que simple verre dépoli : un liseré de lumière qui n'a pas la
+   même force partout. Vif au coin haut gauche, où la lumière frappe, il s'éteint au milieu des bords
+   et revient plus faible au coin opposé, comme sur une goutte. C'est un dégradé posé sur un pseudo-
+   élément, découpé en anneau d'un pixel par un masque : il suit le rayon de la surface sans rien
+   changer à sa boîte. Il ne sert qu'aux surfaces qui portent la marque du thème : l'îlot de
+   navigation, la barre haute et la recherche. */
+.lgk.lq-root {
+  --lgk-rim: linear-gradient(
+    150deg,
+    rgba(255, 255, 255, 0.55) 0%,
+    rgba(255, 255, 255, 0.12) 22%,
+    rgba(255, 255, 255, 0) 45%,
+    rgba(255, 255, 255, 0) 62%,
+    rgba(255, 255, 255, 0.1) 82%,
+    rgba(255, 255, 255, 0.32) 100%
+  );
+  /* La nappe de lumière du haut : un voile clair qui s'efface vers le bas, sous le contenu. */
+  --lgk-sheen: linear-gradient(180deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.025) 38%, rgba(255, 255, 255, 0) 70%);
+}
+
+.lgk.lq-root[data-lq-palette][data-lq-surface="light"] {
+  --lgk-rim: linear-gradient(
+    150deg,
+    rgba(255, 255, 255, 1) 0%,
+    rgba(255, 255, 255, 0.5) 25%,
+    rgba(255, 255, 255, 0.15) 50%,
+    rgba(255, 255, 255, 0.45) 80%,
+    rgba(255, 255, 255, 0.9) 100%
+  );
+  --lgk-sheen: linear-gradient(180deg, rgba(255, 255, 255, 0.55) 0%, rgba(255, 255, 255, 0.15) 40%, rgba(255, 255, 255, 0) 75%);
+}
+
+/* ---- la barre latérale : un îlot de verre posé sur le fond ---- */
+
+/* Les couleurs, valables partout (tiroir mobile compris) : un verre fumé plus dense que les cartes,
+   parce que l'îlot passe par-dessus le contenu quand il s'ouvre au survol. */
 .lgk.lq-root[data-lq-surface="dark"] [data-lq-region="sidebar"] {
-  --lq-color-panel: rgba(255, 255, 255, 0.05);
+  --lq-color-panel: rgba(16, 20, 32, 0.42);
   --lq-color-border-subtle: rgba(255, 255, 255, 0.08);
   --lq-sidebar-head-bg: transparent;
-  --lq-sidebar-head-border: rgba(255, 255, 255, 0.08);
+  --lq-sidebar-head-border: rgba(255, 255, 255, 0.07);
   --lq-sidebar-sub-bg: rgba(255, 255, 255, 0.04);
+  --lgk-nav-hover: rgba(255, 255, 255, 0.07);
+  --lgk-nav-active: rgba(255, 255, 255, 0.12);
+  --lgk-nav-active-ring: inset 0 1px 0 rgba(255, 255, 255, 0.16), inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+  --lgk-island-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.14), 0 30px 80px rgba(0, 0, 0, 0.5), 0 8px 24px rgba(0, 0, 0, 0.3);
 }
 
 .lgk.lq-root[data-lq-surface="light"] [data-lq-region="sidebar"] {
-  --lq-color-panel: rgba(255, 255, 255, 0.36);
+  --lq-color-panel: rgba(255, 255, 255, 0.4);
   --lq-color-border-subtle: rgba(255, 255, 255, 0.6);
   --lq-sidebar-head-bg: transparent;
-  --lq-sidebar-head-border: rgba(255, 255, 255, 0.6);
+  --lq-sidebar-head-border: rgba(255, 255, 255, 0.55);
   --lq-sidebar-sub-bg: rgba(255, 255, 255, 0.3);
+  --lgk-nav-hover: rgba(255, 255, 255, 0.45);
+  --lgk-nav-active: rgba(255, 255, 255, 0.75);
+  --lgk-nav-active-ring: inset 0 1px 0 rgba(255, 255, 255, 1), 0 4px 14px rgba(30, 64, 175, 0.1);
+  --lgk-island-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.9), 0 30px 80px rgba(30, 64, 175, 0.18), 0 8px 24px rgba(30, 64, 175, 0.08);
+}
+
+/* La forme de l'îlot, en variante `rail` sur grand écran (le tiroir mobile reste celui du kit).
+ *
+ * Le kit réduit le rail en le décalant vers la gauche (`transform`) : la colonne des vignettes, à
+ * droite de chaque entrée, est la seule qui reste à l'écran. Un îlot aux quatre coins arrondis ne
+ * peut pas sortir à moitié de l'écran ; ici, c'est sa **largeur** qui s'anime, de la colonne des
+ * vignettes à la largeur ouverte, et les vignettes passent à gauche des libellés (`order`), comme
+ * dans un menu d'application. Le reste — ouverture au survol, au focus clavier, épingle — est celui
+ * du kit, par les mêmes états. */
+@media (min-width: 901px) {
+  .lgk.lq-root .lq-sidebar-layout--rail:not(.lq-sidebar-layout--contained) {
+    --lq-sidebar-rail-width: 72px;
+    --lq-sidebar-open-width: 272px;
+    --lq-sidebar-head-height: 76px;
+    --lgk-island-gap: 12px;
+    --lgk-island-radius: 28px;
+  }
+
+  .lgk.lq-root .lq-sidebar-layout--rail:not(.lq-sidebar-layout--contained) > .lq-sidebar-layout__sidebar {
+    inset: var(--lgk-island-gap) auto var(--lgk-island-gap) var(--lgk-island-gap);
+    width: var(--lq-rail-width);
+    transform: none;
+    background-color: var(--lq-color-panel);
+    background-image: var(--lgk-sheen);
+    border: 0;
+    border-radius: var(--lgk-island-radius);
+    box-shadow: var(--lgk-island-shadow);
+    /* Plus de flou que les cartes : l'îlot passe sur du contenu (texte, graphiques) quand il s'ouvre. */
+    -webkit-backdrop-filter: blur(36px) saturate(180%);
+    backdrop-filter: blur(36px) saturate(180%);
+    transition: width var(--lq-rail-ease);
+  }
+
+  .lgk.lq-root .lq-sidebar-layout--rail:not(.lq-sidebar-layout--contained) > .lq-sidebar-layout__sidebar:hover,
+  .lgk.lq-root .lq-sidebar-layout--rail:not(.lq-sidebar-layout--contained) > .lq-sidebar-layout__sidebar:has(:focus-visible),
+  .lgk.lq-root .lq-sidebar-layout--rail.lq-sidebar-layout--pinned:not(.lq-sidebar-layout--contained) > .lq-sidebar-layout__sidebar {
+    width: var(--lq-rail-open-width);
+    transform: none;
+  }
+
+  /* Le liseré liquide, par-dessus le verre, sans capter le pointeur. */
+  .lgk.lq-root .lq-sidebar-layout--rail:not(.lq-sidebar-layout--contained) > .lq-sidebar-layout__sidebar::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    padding: 1px;
+    border-radius: inherit;
+    background: var(--lgk-rim);
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
+    pointer-events: none;
+  }
+
+  /* Le contenu se range à droite de l'îlot et de ses marges. */
+  .lgk.lq-root .lq-sidebar-layout--rail:not(.lq-sidebar-layout--contained) > .lq-sidebar-layout__main {
+    margin-left: calc(var(--lq-rail-width) + 2 * var(--lgk-island-gap));
+  }
+
+  .lgk.lq-root .lq-sidebar-layout--rail.lq-sidebar-layout--pinned:not(.lq-sidebar-layout--contained) > .lq-sidebar-layout__main {
+    margin-left: calc(var(--lq-rail-open-width) + 2 * var(--lgk-island-gap));
+  }
+
+  /* L'en-tête : la marque reste visible, réduite à ce qui tient dans la colonne (son icône), le
+     reste se découvre quand l'îlot s'élargit. `position: static` : le bouton d'épingle se place par
+     rapport à l'îlot, pour déborder sur son bord droit sans être rogné par l'en-tête. */
+  .lgk.lq-root .lq-sidebar-layout--rail:not(.lq-sidebar-layout--contained) > .lq-sidebar-layout__sidebar .lq-sidebar-layout__head {
+    position: static;
+    padding: 0 16px;
+    overflow: hidden;
+    border-bottom: 1px solid var(--lq-sidebar-head-border);
+  }
+
+  .lgk.lq-root .lq-sidebar-layout--rail:not(.lq-sidebar-layout--contained) > .lq-sidebar-layout__sidebar .lq-sidebar-layout__head > .lq-sidebar-layout__logo {
+    flex: none;
+    width: calc(var(--lq-rail-open-width) - 32px);
+    white-space: nowrap;
+    opacity: 1;
+  }
+
+  .lgk.lq-root .lq-sidebar-layout--rail:not(.lq-sidebar-layout--contained) > .lq-sidebar-layout__sidebar .lq-sidebar-layout__head > .lq-sidebar-layout__rail-logo {
+    top: 0;
+    right: auto;
+    left: 0;
+    height: var(--lq-rail-head-height);
+  }
+
+  /* L'épingle devient la pastille de verre accrochée au bord de l'îlot : « » » pour l'ouvrir,
+     « « » une fois épinglé. Toujours visible, réduit ou non : c'est elle qui dit que le menu s'ouvre. */
+  .lgk.lq-root .lq-sidebar-layout--rail:not(.lq-sidebar-layout--contained) > .lq-sidebar-layout__sidebar .lq-sidebar-layout__head > .lq-sidebar-layout__pin {
+    position: absolute;
+    top: calc(var(--lq-rail-head-height) / 2 - 14px);
+    right: -14px;
+    z-index: 2;
+    width: 28px;
+    height: 28px;
+    color: var(--lq-color-text);
+    background-color: var(--lgk-color-float);
+    border-radius: 10px;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), inset 0 0 0 1px rgba(255, 255, 255, 0.14), 0 6px 16px rgba(0, 0, 0, 0.35);
+    -webkit-backdrop-filter: blur(16px) saturate(160%);
+    backdrop-filter: blur(16px) saturate(160%);
+    opacity: 1;
+    transition: transform var(--lq-transition-fast), background-color var(--lq-transition-fast);
+  }
+
+  .lgk.lq-root .lq-sidebar-layout--rail:not(.lq-sidebar-layout--contained) > .lq-sidebar-layout__sidebar .lq-sidebar-layout__head > .lq-sidebar-layout__pin:hover {
+    transform: scale(1.08);
+  }
+
+  .lgk.lq-root .lq-sidebar-layout--rail:not(.lq-sidebar-layout--contained) > .lq-sidebar-layout__sidebar .lq-sidebar-layout__pin-mark,
+  .lgk.lq-root .lq-sidebar-layout--rail:not(.lq-sidebar-layout--contained) > .lq-sidebar-layout__sidebar .lq-sidebar-layout__pin[aria-pressed] .lq-sidebar-layout__pin-mark {
+    width: 14px;
+    height: 14px;
+    background-color: currentColor;
+    border: 0;
+    border-radius: 0;
+    -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 17 5-5-5-5M13 17l5-5-5-5'/%3E%3C/svg%3E") center / contain no-repeat;
+    mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 17 5-5-5-5M13 17l5-5-5-5'/%3E%3C/svg%3E") center / contain no-repeat;
+    animation: none;
+    transform: none;
+    opacity: 1;
+    transition: transform var(--lq-transition-base);
+  }
+
+  .lgk.lq-root .lq-sidebar-layout--rail:not(.lq-sidebar-layout--contained) > .lq-sidebar-layout__sidebar .lq-sidebar-layout__pin[aria-pressed="true"] .lq-sidebar-layout__pin-mark {
+    transform: rotate(180deg);
+  }
+
+  /* Les entrées : des pastilles de verre dans l'îlot, vignette à gauche, libellé à droite. Réduit,
+     l'îlot ne montre que la vignette, centrée dans sa colonne (8 px de marge + 8 px de retrait de
+     part et d'autre d'une vignette de 40 px = 72 px). */
+  .lgk.lq-root .lq-sidebar-layout--rail:not(.lq-sidebar-layout--contained) > .lq-sidebar-layout__sidebar .lq-sidebar-layout__nav {
+    gap: 2px;
+    padding: 14px 0;
+  }
+
+  .lgk.lq-root .lq-sidebar-layout--rail:not(.lq-sidebar-layout--contained) > .lq-sidebar-layout__sidebar .lq-sidebar-layout__nav-item {
+    flex: none;
+    box-sizing: border-box;
+    gap: 12px;
+    /* Les en-têtes de groupe sont des boutons dans un bloc : sans largeur explicite, ils se
+       rétrécissent à leur contenu et le chevron colle au libellé. */
+    width: calc(100% - 16px);
+    min-height: 46px;
+    margin: 0 8px;
+    padding: 0 8px;
+    border-radius: 16px;
+    transition: color var(--lq-transition-fast), background-color var(--lq-transition-fast), box-shadow var(--lq-transition-fast);
+  }
+
+  .lgk.lq-root .lq-sidebar-layout--rail:not(.lq-sidebar-layout--contained) > .lq-sidebar-layout__sidebar .lq-sidebar-layout__nav-item:hover {
+    background-color: var(--lgk-nav-hover);
+  }
+
+  .lgk.lq-root .lq-sidebar-layout--rail:not(.lq-sidebar-layout--contained) > .lq-sidebar-layout__sidebar .lq-sidebar-layout__nav-item--active {
+    color: var(--lgk-color-text-strong);
+    background-color: var(--lgk-nav-active);
+    box-shadow: var(--lgk-nav-active-ring);
+  }
+
+  .lgk.lq-root .lq-sidebar-layout--rail:not(.lq-sidebar-layout--contained) > .lq-sidebar-layout__sidebar .lq-sidebar-layout__thumb {
+    order: -1;
+    margin-right: 0;
+    transform: none;
+  }
+
+  /* Le chevron d'un groupe, au bout de la ligne : vers la droite fermé, vers le bas ouvert. */
+  .lgk.lq-root .lq-sidebar-layout--rail:not(.lq-sidebar-layout--contained) > .lq-sidebar-layout__sidebar .lq-sidebar-layout__group-chevron {
+    padding: 0 6px 0 0;
+    transform: rotate(-90deg);
+  }
+
+  .lgk.lq-root .lq-sidebar-layout--rail:not(.lq-sidebar-layout--contained) > .lq-sidebar-layout__sidebar .lq-sidebar-layout__group--open .lq-sidebar-layout__group-chevron {
+    transform: none;
+  }
+
+  /* Un sous-menu ouvert : une poche de verre un ton plus clair, aux coins arrondis, sous son groupe. */
+  .lgk.lq-root .lq-sidebar-layout--rail:not(.lq-sidebar-layout--contained) > .lq-sidebar-layout__sidebar .lq-sidebar-layout__group-items {
+    gap: 2px;
+    margin: 2px 8px 6px;
+    padding: 4px 0;
+    border-radius: 18px;
+  }
+
+  .lgk.lq-root .lq-sidebar-layout--rail:not(.lq-sidebar-layout--contained) > .lq-sidebar-layout__sidebar .lq-sidebar-layout__nav-item--nested {
+    width: 100%;
+    min-height: 40px;
+    margin: 0;
+    padding: 0 13px;
+  }
+
+  .lgk.lq-root .lq-sidebar-layout--rail:not(.lq-sidebar-layout--contained) > .lq-sidebar-layout__sidebar .lq-sidebar-layout__nav-item--nested .lq-sidebar-layout__thumb {
+    margin-right: 0;
+    border-radius: 10px;
+    background-color: var(--lgk-nav-hover);
+  }
+
+  .lgk.lq-root .lq-sidebar-layout--rail:not(.lq-sidebar-layout--contained) > .lq-sidebar-layout__sidebar .lq-sidebar-layout__footer {
+    padding: var(--lq-space-3) 8px;
+  }
+
+  /* La barre haute flotte elle aussi : même verre, même liseré, posée à 12 px des bords. */
+  .lgk.lq-root .lq-sidebar-layout--rail.lq-sidebar-layout--sticky-header:not(.lq-sidebar-layout--contained) > .lq-sidebar-layout__main > .lq-sidebar-layout__header {
+    top: var(--lgk-island-gap);
+    margin: var(--lgk-island-gap) var(--lgk-island-gap) 0 0;
+    background-image: var(--lgk-sheen);
+    border-bottom: 0;
+    border-radius: 22px;
+    --lq-sticky-header-shadow: var(--lq-shadow-panel);
+  }
+
+  .lgk.lq-root .lq-sidebar-layout--rail.lq-sidebar-layout--sticky-header:not(.lq-sidebar-layout--contained) > .lq-sidebar-layout__main > .lq-sidebar-layout__header::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    padding: 1px;
+    border-radius: inherit;
+    background: var(--lgk-rim);
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
+    pointer-events: none;
+  }
+}
+
+@media (min-width: 901px) and (prefers-reduced-motion: reduce) {
+  .lgk.lq-root .lq-sidebar-layout--rail:not(.lq-sidebar-layout--contained) > .lq-sidebar-layout__sidebar {
+    transition: none;
+  }
+}
+
+/* ---- la recherche plein écran (`SearchOverlay`) ---- */
+
+/* Le kit pose un voile de la couleur de panneau à 95 % : avec un panneau de verre à 7 %, la page se
+   lisait au travers, et les résultats se confondaient avec elle. Le voile devient un verre épais :
+   teinté, très flou (48 px), un peu assombri — la page se devine en taches de couleur, plus rien ne
+   s'y lit. */
+.lgk.lq-root[data-lq-palette][data-lq-surface="dark"] {
+  --lgk-veil: rgba(8, 11, 20, 0.5);
+  --lgk-veil-backdrop: blur(48px) saturate(170%) brightness(0.75);
+  --lgk-result-bg: rgba(255, 255, 255, 0.06);
+  --lgk-result-hover: rgba(255, 255, 255, 0.11);
+}
+
+.lgk.lq-root[data-lq-palette][data-lq-surface="light"] {
+  --lgk-veil: rgba(236, 242, 252, 0.5);
+  --lgk-veil-backdrop: blur(48px) saturate(160%) brightness(1.06);
+  --lgk-result-bg: rgba(255, 255, 255, 0.45);
+  --lgk-result-hover: rgba(255, 255, 255, 0.75);
+}
+
+.lgk .lq-search-overlay {
+  background-color: var(--lgk-veil);
+  background-image: var(--lgk-sheen);
+  -webkit-backdrop-filter: var(--lgk-veil-backdrop);
+  backdrop-filter: var(--lgk-veil-backdrop);
+}
+
+/* La saisie dans une large pastille de verre liquide : c'est elle qu'on regarde. */
+.lgk .lq-search-overlay__input {
+  box-sizing: border-box;
+  position: relative;
+  padding: 10px 28px;
+  background-color: var(--lgk-result-bg);
+  border-radius: 32px;
+  box-shadow: var(--lq-shadow-panel);
+}
+
+.lgk .lq-search-overlay__hint,
+.lgk .lq-search-overlay__empty {
+  padding-left: 28px;
+}
+
+/* Chaque résultat, une pastille de verre qui s'éclaire au survol. */
+.lgk .lq-search-overlay__result {
+  align-items: center;
+  padding: 10px 14px;
+  background-color: var(--lgk-result-bg);
+  border-radius: 20px;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12), inset 0 0 0 1px rgba(255, 255, 255, 0.05);
+  transition: background-color var(--lq-transition-fast), transform var(--lq-transition-fast);
+}
+
+.lgk .lq-search-overlay__result:not(.lq-search-overlay__result--static):hover {
+  background-color: var(--lgk-result-hover);
+  transform: translateY(-1px);
+}
+
+.lgk .lq-search-overlay__results {
+  gap: var(--lq-space-3) var(--lq-space-4);
+}
+
+.lgk .lq-search-overlay__close {
+  background-color: var(--lgk-result-bg);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.14);
+}
+
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .lgk.lq-root[data-lq-palette][data-lq-surface="dark"] {
+    --lgk-veil: rgba(10, 14, 24, 0.96);
+  }
+  .lgk.lq-root[data-lq-palette][data-lq-surface="light"] {
+    --lgk-veil: rgba(244, 247, 253, 0.96);
+  }
 }
 
 /* ---- les gabarits de page laissent voir le fond ---- */

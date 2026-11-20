@@ -14,14 +14,14 @@ la dépendance suit toutes les versions 0.x du kit (`>=0.314.0 <1.0.0`).
 
 ## Aperçu
 
-![Vue d'ensemble — surface sombre](docs/images/vue-ensemble-sombre.png)
+![Vue d'ensemble — surface sombre, menu ouvert au survol](docs/images/vue-ensemble-sombre.png)
 
 | | |
 |---|---|
 | ![Vue d'ensemble — surface claire](docs/images/vue-ensemble-claire.png) | ![Tableaux — surface sombre](docs/images/tableaux-sombre.png) |
 | **Surface claire** — verre laiteux sur un ciel bleu et lilas | **Tableaux** — le `DataTable` du kit, sur verre fumé |
-| ![Formulaires — surface claire](docs/images/formulaires-clair.png) | |
-| **Formulaires** — champs et contrôles du kit | |
+| ![Formulaires — surface claire](docs/images/formulaires-clair.png) | ![Recherche — surface sombre](docs/images/recherche-sombre.png) |
+| **Formulaires** — champs et contrôles du kit | **Recherche** — un verre épais et très flou : la page ne se lit plus au travers |
 
 ## Installation
 

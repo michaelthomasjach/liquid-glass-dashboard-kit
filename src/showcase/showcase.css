@@ -22,6 +22,44 @@ body {
   color: var(--lq-color-text);
 }
 
+/* La marque de la barre latérale : une icône d'application (une vague de lumière dans un carré de
+   verre) puis le nom et une seconde ligne. Réduit, l'îlot ne montre que l'icône, qui tombe pile
+   dans la colonne des vignettes. */
+.lgk-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+
+.lgk-brand__mark {
+  flex: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  background:
+    radial-gradient(120% 90% at 20% 15%, rgba(255, 255, 255, 0.55), transparent 45%),
+    conic-gradient(from 210deg at 60% 65%, #c8f04a, #fbbf24, #fb7185, #a78bfa, #60a5fa, #c8f04a);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5), inset 0 -6px 12px rgba(0, 0, 0, 0.18), 0 6px 16px rgba(0, 0, 0, 0.3);
+}
+
+.lgk-brand__text {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+}
+
+.lgk-brand .lgk-logo {
+  font-size: 1.0625rem;
+  letter-spacing: -0.02em;
+}
+
+.lgk-brand__sub {
+  font-size: 0.75rem;
+  color: var(--lq-color-text-muted);
+}
+
 /* La barre haute, aux mesures du gabarit : marque dans une colonne de 182 px, icônes d'action de
    24 px séparées de 12, filets verticaux de part et d'autre, invite de recherche en 15 px. */
 .lgk-topbar {

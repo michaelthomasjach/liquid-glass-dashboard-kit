@@ -29,6 +29,16 @@ fond bleu (fleur, « Refer & Earn »).
   barre de tête collante en verre, liens, verre plus dense pour ce qui flotte (`--lgk-color-float`),
   encre pleine pour l'infobulle (elle écrit son texte en `--lq-color-panel`), repli opaque sans
   `backdrop-filter` ou avec `prefers-reduced-transparency`.
+- v0.2.0 (2026-11-20, demande de Michael sur une capture Dribbble de menu en verre) : la barre
+  latérale `rail` devient un **îlot flottant** (12 px des bords, rayon 28 px, flou 36 px), dont la
+  **largeur** s'anime (le kit, lui, décale la barre par `transform`, ce qui couperait un îlot arrondi) ;
+  vignettes passées à gauche des libellés par `order` ; l'épingle devient la pastille « » / « »
+  accrochée au bord. La barre haute flotte aussi. `SearchOverlay` : voile de verre épais
+  (`--lgk-veil`, flou 48 px) parce que le voile du kit (panneau à 95 %) laissait lire la page à
+  travers. Le « liseré liquide » (`--lgk-rim`, anneau de dégradé masqué) et la nappe `--lgk-sheen`
+  sont réservés à ces surfaces-marques. Ce sont des règles d'anatomie sur des classes `.lq-…` du kit,
+  écrites ici parce qu'elles ne changent que la forme (aucun comportement) : si le kit change la
+  structure de `SidebarLayout` ou de `SearchOverlay`, revérifier ces deux sections.
 - Dépendance au kit en `>=0.314.0 <1.0.0` (et non `^`, qui sur 0.x verrouille la mineure) : un
   `npm update` reprend chaque nouvelle version du kit.
 

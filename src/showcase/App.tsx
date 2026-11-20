@@ -229,7 +229,15 @@ function Shell({ surface, onSurface }: { surface: Surface; onSurface: (next: Sur
       pinned={pinned}
       onPinnedChange={setPinned}
       stickyHeader
-      logo={<span className="lgk-logo">liquid glass</span>}
+      logo={
+        <span className="lgk-brand">
+          <span className="lgk-brand__mark" aria-hidden="true" />
+          <span className="lgk-brand__text">
+            <span className="lgk-logo">liquid glass</span>
+            <span className="lgk-brand__sub">Espace de démonstration</span>
+          </span>
+        </span>
+      }
       navItems={navItems}
       header={<TopBar showBrand={!pinned} surface={surface} onSurface={onSurface} onSearch={() => setSearchOpen(true)} />}
     >
