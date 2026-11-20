@@ -39,6 +39,16 @@ fond bleu (fleur, « Refer & Earn »).
   sont réservés à ces surfaces-marques. Ce sont des règles d'anatomie sur des classes `.lq-…` du kit,
   écrites ici parce qu'elles ne changent que la forme (aucun comportement) : si le kit change la
   structure de `SidebarLayout` ou de `SearchOverlay`, revérifier ces deux sections.
+- v0.3.0 (2026-11-20, « encore plus liquid glass ») : tout le kit passe au verre, pas seulement les
+  surfaces. Section « v0.3 » en fin de `liquid-glass.css` : matière par surface (`--lgk-glass-*`
+  bombé, `--lgk-well*` creusé, `--lgk-thumb*` goutte claire, `--lgk-gloss` reflet du verre teinté,
+  `--lgk-surface-sheen` nappe des surfaces) ; boutons en pilule de verre, pleins en verre teinté qui
+  rayonne ; champs en puits (erreur/succès gardent la couleur du kit) ; contrôle segmenté et bouton
+  enfoncé d'un `ButtonGroup` en goutte claire (pas en accent : le texte du groupe y serait illisible) ;
+  interrupteur/case/radio/curseur bombés ; puces givrées ; traînée de lumière sur la ligne survolée ;
+  infobulle en verre fumé ; voile flou des modales ; colonne d'outils et boutons des graphiques en
+  verre. Ombres de verre et flou des surfaces renforcés (30 px, 190 %). Base en `:where()` pour que
+  les états du kit gardent la main. Fond du tracé des graphiques laissé opaque (lisibilité).
 - Dépendance au kit en `>=0.314.0 <1.0.0` (et non `^`, qui sur 0.x verrouille la mineure) : un
   `npm update` reprend chaque nouvelle version du kit.
 

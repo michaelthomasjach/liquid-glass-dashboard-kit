@@ -1,6 +1,6 @@
 {
   "name": "@michaelthomasjach/liquid-glass-dashboard-kit",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Les composants de @michaelthomasjach/liseuse-dashboard-kit, habillés d'un thème « Liquid glass » : surfaces de verre dépoli translucides sur un fond coloré. Surfaces sombre et claire.",
   "type": "module",
   "license": "UNLICENSED",

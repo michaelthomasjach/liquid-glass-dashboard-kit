@@ -92,8 +92,9 @@
   --lq-field-label-size: 0.8125rem;
   --lq-field-label-weight: 500;
 
-  /* Le flou des surfaces : fort et saturé, c'est lui qui fait le verre. */
-  --lq-surface-backdrop: blur(24px) saturate(165%);
+  /* Le flou des surfaces : fort et très saturé, c'est lui qui fait le verre (v0.3 : 24 → 30 px,
+     165 → 190 %, les couleurs du fond remontent au travers comme dans une goutte). */
+  --lq-surface-backdrop: blur(30px) saturate(190%);
 
   --lq-sidebar-z-index: 1950;
   --lq-sticky-header-z-index: 1900;
@@ -225,10 +226,12 @@
   --lq-button-group-selected-border: rgba(255, 255, 255, 0.26);
   --lq-dot-map-marker: #c8f04a;
 
-  /* Le verre : un reflet d'un pixel en haut, un liseré intérieur, et une ombre douce qui le décolle. */
-  --lq-shadow-panel: inset 0 1px 0 rgba(255, 255, 255, 0.16), inset 0 0 0 1px rgba(255, 255, 255, 0.03),
-    0 12px 32px rgba(0, 0, 0, 0.32);
-  --lq-shadow-modal: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 28px 70px rgba(0, 0, 0, 0.55);
+  /* Le verre : un liseré de lumière qui vient d'en haut à gauche (vif sur ces deux bords, faible sur
+     les deux autres), une lueur intérieure, et une ombre large et douce qui le décolle du fond. */
+  --lq-shadow-panel: inset 1px 1px 0 rgba(255, 255, 255, 0.17), inset -1px -1px 0 rgba(255, 255, 255, 0.045),
+    inset 0 0 28px rgba(255, 255, 255, 0.03), 0 22px 48px -16px rgba(0, 0, 0, 0.5), 0 2px 10px rgba(0, 0, 0, 0.16);
+  --lq-shadow-modal: inset 1px 1px 0 rgba(255, 255, 255, 0.24), inset -1px -1px 0 rgba(255, 255, 255, 0.06),
+    inset 0 0 36px rgba(255, 255, 255, 0.04), 0 44px 100px -24px rgba(0, 0, 0, 0.7), 0 10px 28px rgba(0, 0, 0, 0.3);
 }
 
 /* ---- surface claire : verre laiteux sur un ciel bleu, lilas et lagon ---- */
@@ -318,9 +321,10 @@
   --lq-button-group-selected-border: rgba(255, 255, 255, 0.95);
   --lq-dot-map-marker: #4f46e5;
 
-  --lq-shadow-panel: inset 0 1px 0 rgba(255, 255, 255, 0.85), inset 0 0 0 1px rgba(255, 255, 255, 0.25),
-    0 12px 32px rgba(30, 64, 175, 0.12);
-  --lq-shadow-modal: inset 0 1px 0 rgba(255, 255, 255, 0.9), 0 28px 70px rgba(30, 64, 175, 0.22);
+  --lq-shadow-panel: inset 1px 1px 0 rgba(255, 255, 255, 0.95), inset -1px -1px 0 rgba(255, 255, 255, 0.45),
+    inset 0 0 28px rgba(255, 255, 255, 0.22), 0 22px 48px -18px rgba(30, 64, 175, 0.26), 0 2px 10px rgba(30, 64, 175, 0.06);
+  --lq-shadow-modal: inset 1px 1px 0 rgba(255, 255, 255, 1), inset -1px -1px 0 rgba(255, 255, 255, 0.5),
+    inset 0 0 36px rgba(255, 255, 255, 0.3), 0 44px 100px -26px rgba(30, 64, 175, 0.34), 0 10px 28px rgba(30, 64, 175, 0.1);
 }
 
 /* ---- ce qui flotte : un verre plus dense ---- */
@@ -765,5 +769,427 @@
   .lgk.lq-root[data-lq-palette][data-lq-surface="light"] {
     --lq-color-panel: rgba(250, 252, 255, 0.96);
     --lgk-color-float: rgba(255, 255, 255, 0.98);
+  }
+}
+
+/* ==================================================================================================
+ * v0.3 — tout le kit en verre liquide
+ *
+ * Jusqu'ici, seules les surfaces étaient de verre ; les contrôles posés dessus (boutons, champs,
+ * cases, curseurs, onglets) gardaient l'apparence plate du kit. Ici, chaque famille reçoit la même
+ * matière : un remplissage translucide, un reflet en haut, une ombre qui le décolle ou le creuse.
+ *
+ * Deux gestes, partout :
+ *   - ce qui dépasse (bouton, pouce d'un curseur, segment choisi) est **bombé** : reflet en haut,
+ *     ombre portée dessous ;
+ *   - ce qui reçoit (champ, piste, case vide) est **creusé** : un puits plus sombre, ombre intérieure
+ *     en haut.
+ * Ce qui est choisi ou principal prend la couleur de l'accent, en verre teinté qui brille : un
+ * dégradé de reflet par-dessus et un halo de sa propre couleur.
+ *
+ * Les règles de base sont écrites en `:where()` : elles ne pèsent que le poids de `.lgk`, si bien
+ * que les états et les compositions du kit (bouton d'un groupe enfoncé, champ en erreur…) gardent
+ * la main. Seuls les états que le thème redessine sont écrits avec plus de poids.
+ * ================================================================================================== */
+
+/* ---- la matière, par surface ---- */
+
+.lgk.lq-root[data-lq-palette][data-lq-surface="dark"] {
+  /* Bombé : remplissage, liseré, reflet et ombre d'un contrôle de verre. */
+  --lgk-glass-fill: rgba(255, 255, 255, 0.075);
+  --lgk-glass-fill-hover: rgba(255, 255, 255, 0.13);
+  --lgk-glass-edge: rgba(255, 255, 255, 0.14);
+  --lgk-glass-raise: inset 0 1px 0 rgba(255, 255, 255, 0.2), inset 0 -1px 0 rgba(255, 255, 255, 0.03), 0 6px 18px -8px rgba(0, 0, 0, 0.55);
+  /* Creusé : le puits d'un champ, d'une piste, d'une case. */
+  --lgk-well: rgba(0, 0, 0, 0.22);
+  --lgk-well-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.35), inset 0 -1px 0 rgba(255, 255, 255, 0.05);
+  /* Le segment choisi d'un contrôle segmenté, l'onglet actif : une goutte de verre clair. */
+  --lgk-thumb: rgba(255, 255, 255, 0.17);
+  --lgk-thumb-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.32), 0 4px 14px -4px rgba(0, 0, 0, 0.6);
+  /* Le reflet d'un verre teinté (bouton principal, case cochée, interrupteur ouvert). */
+  --lgk-gloss: linear-gradient(180deg, rgba(255, 255, 255, 0.34) 0%, rgba(255, 255, 255, 0.08) 46%, rgba(255, 255, 255, 0) 54%, rgba(255, 255, 255, 0.07) 100%);
+  /* La nappe de lumière des surfaces : une tache claire au coin haut gauche, un voile qui descend. */
+  --lgk-surface-sheen: radial-gradient(130% 90% at 0% 0%, rgba(255, 255, 255, 0.09), rgba(255, 255, 255, 0) 46%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.045), rgba(255, 255, 255, 0) 38%);
+  --lgk-row-sheen: linear-gradient(90deg, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.06) 50%, rgba(255, 255, 255, 0));
+  --lgk-tooltip-bg: rgba(18, 24, 38, 0.8);
+  --lgk-scrim: rgba(4, 7, 14, 0.3);
+  --lgk-rail-bg: rgba(12, 16, 26, 0.5);
+}
+
+.lgk.lq-root[data-lq-palette][data-lq-surface="light"] {
+  --lgk-glass-fill: rgba(255, 255, 255, 0.5);
+  --lgk-glass-fill-hover: rgba(255, 255, 255, 0.75);
+  --lgk-glass-edge: rgba(255, 255, 255, 0.85);
+  --lgk-glass-raise: inset 0 1px 0 rgba(255, 255, 255, 1), inset 0 -1px 0 rgba(15, 23, 42, 0.04), 0 6px 18px -8px rgba(30, 64, 175, 0.3);
+  --lgk-well: rgba(15, 23, 42, 0.05);
+  --lgk-well-shadow: inset 0 1px 3px rgba(15, 23, 42, 0.12), inset 0 -1px 0 rgba(255, 255, 255, 0.8);
+  --lgk-thumb: rgba(255, 255, 255, 0.92);
+  --lgk-thumb-shadow: inset 0 1px 0 rgba(255, 255, 255, 1), 0 4px 14px -4px rgba(30, 64, 175, 0.35);
+  --lgk-gloss: linear-gradient(180deg, rgba(255, 255, 255, 0.42) 0%, rgba(255, 255, 255, 0.1) 46%, rgba(255, 255, 255, 0) 54%, rgba(255, 255, 255, 0.08) 100%);
+  --lgk-surface-sheen: radial-gradient(130% 90% at 0% 0%, rgba(255, 255, 255, 0.55), rgba(255, 255, 255, 0) 48%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.25), rgba(255, 255, 255, 0) 40%);
+  --lgk-row-sheen: linear-gradient(90deg, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.55) 50%, rgba(255, 255, 255, 0));
+  --lgk-tooltip-bg: rgba(255, 255, 255, 0.82);
+  --lgk-scrim: rgba(214, 226, 246, 0.28);
+  --lgk-rail-bg: rgba(255, 255, 255, 0.5);
+}
+
+/* ---- les surfaces : la nappe de lumière ---- */
+
+/* Cartes, panneaux, modales, menus : la tache de lumière du coin haut gauche, par-dessus leur verre.
+   Les tuiles teintées du kit (`tone.css`) ne posent qu'une couleur de fond : elles la gardent et
+   gagnent le même reflet. Les variantes nues (`--bare`, `--highlight`) restent sans rien. */
+.lgk :where(.lq-panel:not(.lq-panel--bare), .lq-card:not(.lq-card--bare, .lq-card--highlight), .lq-modal, .lq-popover, .lq-context-menu) {
+  background-image: var(--lgk-surface-sheen);
+}
+
+/* Le menu contextuel avait une ombre écrite en dur : il prend celle des autres surfaces flottantes. */
+.lgk .lq-context-menu {
+  border-color: var(--lgk-glass-edge);
+  border-radius: var(--lq-radius-md);
+  box-shadow: var(--lq-shadow-modal);
+}
+
+.lgk :where(.lq-popover, .lq-modal) {
+  border-color: var(--lgk-glass-edge);
+}
+
+/* ---- les modales : un voile épais ---- */
+
+/* Comme la recherche : la page derrière une modale se floute au lieu de s'assombrir seulement, et la
+   modale ne se confond plus avec ce qu'elle recouvre. */
+.lgk .lq-modal__overlay {
+  background-color: var(--lgk-scrim);
+  -webkit-backdrop-filter: blur(18px) saturate(150%);
+  backdrop-filter: blur(18px) saturate(150%);
+}
+
+/* ---- les boutons : des pastilles de verre ---- */
+
+/* Le bouton ordinaire (ni ton, ni choisi, ni fantôme, ni lien, ni bordé) : du verre bombé, en
+   pilule. Les boutons d'un groupe gardent les coins que le groupe leur donne (règles plus lourdes). */
+.lgk :where(.lq-button:not(.lq-button--toned, .lq-button--selected, .lq-button--ghost, .lq-button--link, .lq-button--outline)),
+.lgk :where(.lq-icon-button) {
+  background-color: var(--lgk-glass-fill);
+  border-color: var(--lgk-glass-edge);
+  box-shadow: var(--lgk-glass-raise);
+  -webkit-backdrop-filter: blur(14px) saturate(170%);
+  backdrop-filter: blur(14px) saturate(170%);
+}
+
+.lgk :where(.lq-button) {
+  border-radius: var(--lq-radius-pill);
+  transition: background-color var(--lq-transition-fast), color var(--lq-transition-fast), border-color var(--lq-transition-fast),
+    box-shadow var(--lq-transition-fast), filter var(--lq-transition-fast), transform 120ms ease;
+}
+
+/* Le kit éteint un bouton survolé (opacité 0,85) ; le verre, lui, s'éclaire. */
+.lgk .lq-button:hover:not(:disabled),
+.lgk .lq-icon-button:hover:not(:disabled) {
+  opacity: 1;
+}
+
+.lgk :where(.lq-button:not(.lq-button--toned, .lq-button--selected, .lq-button--ghost, .lq-button--link, .lq-button--outline)):hover:not(:disabled),
+.lgk :where(.lq-icon-button):hover:not(:disabled) {
+  background-color: var(--lgk-glass-fill-hover);
+}
+
+/* Plein (ton ou choisi) : du verre teinté de la couleur du bouton, qui brille et rayonne. */
+.lgk :where(.lq-button--toned:not(.lq-button--outline, .lq-button--ghost, .lq-button--link)) {
+  background-color: color-mix(in srgb, var(--lq-button-fill) 84%, transparent);
+  background-image: var(--lgk-gloss);
+  border-color: color-mix(in srgb, var(--lq-button-fill) 60%, rgba(255, 255, 255, 0.5));
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.45), 0 8px 24px -8px color-mix(in srgb, var(--lq-button-fill) 75%, transparent);
+}
+
+.lgk .lq-button.lq-button--selected,
+.lgk .lq-modal__close-button {
+  background-color: color-mix(in srgb, var(--lq-color-fill) 88%, transparent);
+  background-image: var(--lgk-gloss);
+  border-color: color-mix(in srgb, var(--lq-color-fill) 60%, rgba(255, 255, 255, 0.5));
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.45), 0 8px 24px -8px color-mix(in srgb, var(--lq-color-fill) 75%, transparent);
+}
+
+.lgk :where(.lq-button--toned:not(.lq-button--outline, .lq-button--ghost, .lq-button--link)):hover:not(:disabled),
+.lgk .lq-button.lq-button--selected:hover:not(:disabled) {
+  filter: brightness(1.08) saturate(1.05);
+}
+
+/* Dans un groupe de boutons accolés, l'élément enfoncé n'est pas une action mais un choix : il prend
+   la goutte de verre clair du contrôle segmenté, au texte de la page, plutôt que le verre de
+   l'accent (la règle « choisi » ci-dessus, plus lourde que celle du groupe, l'aurait peint en
+   citron sous un texte blanc illisible). */
+.lgk .lq-button-group > [aria-pressed="true"],
+.lgk .lq-button-group > .lq-button-group__item--pressed,
+.lgk .lq-button-group > .lq-button.lq-button--selected {
+  color: var(--lgk-color-text-strong);
+  background-color: var(--lgk-thumb);
+  background-image: none;
+  border-color: var(--lgk-glass-edge);
+  box-shadow: var(--lgk-thumb-shadow);
+  filter: none;
+}
+/* Bordé : la bordure du ton sur du verre, plutôt que sur rien. */
+.lgk :where(.lq-button--outline) {
+  background-color: var(--lgk-glass-fill);
+  -webkit-backdrop-filter: blur(14px) saturate(170%);
+  backdrop-filter: blur(14px) saturate(170%);
+}
+
+/* ---- les champs : des puits de verre ---- */
+
+/* Champ, liste déroulante, date, zone de texte : tous passent par `.lq-field__control`. Un puits
+   plus sombre que la carte qui le porte, creusé par une ombre intérieure. */
+.lgk :where(.lq-field__control) {
+  background-color: var(--lgk-well);
+  box-shadow: var(--lgk-well-shadow);
+  transition: border-color var(--lq-transition-fast), box-shadow var(--lq-transition-fast), background-color var(--lq-transition-fast);
+}
+
+/* Le liseré de verre, sauf en erreur ou en succès : ces états gardent la couleur du kit. */
+.lgk :where(.lq-field__control:not(.lq-field__control--error, .lq-field__control--success)) {
+  border-color: var(--lgk-glass-edge);
+}
+
+/* Au focus, le puits s'allume : liseré de l'accent et halo diffus de sa couleur (hors erreur et
+   succès, qui gardent les leurs, et hors libellé intégré, que le kit veut sans halo). */
+.lgk .lq-field__control:not(.lq-field__control--error, .lq-field__control--success, .lq-field__control--inset):focus-within {
+  border-color: color-mix(in srgb, var(--lq-color-accent) 70%, transparent);
+  box-shadow: var(--lgk-well-shadow), 0 0 0 3px color-mix(in srgb, var(--lq-color-focus-ring) 40%, transparent),
+    0 0 24px -4px color-mix(in srgb, var(--lq-color-accent) 55%, transparent);
+}
+
+/* ---- le contrôle segmenté : une piste et une goutte ---- */
+
+/* La piste est creusée, les options y sont posées sans fond, et l'option choisie est une goutte de
+   verre clair bombée qui dépasse — le geste des sélecteurs d'iOS. */
+.lgk .lq-segmented__options {
+  gap: 2px;
+  padding: 3px;
+  background-color: var(--lgk-well);
+  border: 1px solid var(--lgk-glass-edge);
+  border-radius: var(--lq-radius-pill);
+  box-shadow: var(--lgk-well-shadow);
+}
+
+.lgk .lq-segmented__option {
+  color: var(--lq-color-text-muted);
+  background-color: transparent;
+  border-right: 0;
+  border-radius: var(--lq-radius-pill);
+  transition: background-color var(--lq-transition-fast), color var(--lq-transition-fast), box-shadow var(--lq-transition-fast);
+}
+
+.lgk .lq-segmented__option:hover:not(.lq-segmented__option--active) {
+  color: var(--lq-color-text);
+  background-color: var(--lgk-glass-fill);
+}
+
+.lgk .lq-segmented__option--active {
+  color: var(--lgk-color-text-strong);
+  background-color: var(--lgk-thumb);
+  box-shadow: var(--lgk-thumb-shadow);
+}
+
+/* Libellé au-dessus, hauteur d'un champ : la piste fait la hauteur, les options s'y logent. */
+.lgk .lq-segmented--top .lq-segmented__option {
+  min-height: calc(var(--lq-control-height) - 8px);
+}
+
+/* ---- les onglets ---- */
+
+.lgk .lq-tabs__indicator {
+  border-radius: var(--lq-radius-pill);
+  box-shadow: 0 0 12px color-mix(in srgb, var(--lq-color-accent) 70%, transparent);
+}
+
+.lgk .lq-tabs--vertical .lq-tabs__tab--active {
+  background-color: var(--lgk-thumb);
+  box-shadow: var(--lgk-thumb-shadow);
+}
+
+/* ---- interrupteurs, cases, boutons radio, curseurs ---- */
+
+/* L'interrupteur : une piste creusée, un bouton blanc bombé ; ouvert, la piste devient du verre de
+   l'accent qui brille. Le bouton reste blanc dans les deux états (le kit le passait à l'encre
+   sombre, illisible sur le verre). */
+.lgk .lq-toggle {
+  background-color: var(--lgk-well);
+  border-color: var(--lgk-glass-edge);
+  box-shadow: var(--lgk-well-shadow);
+}
+
+.lgk .lq-toggle.lq-toggle--on {
+  background-color: var(--lq-color-fill);
+  background-image: var(--lgk-gloss);
+  border-color: color-mix(in srgb, var(--lq-color-fill) 60%, rgba(255, 255, 255, 0.5));
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4), 0 0 16px -3px color-mix(in srgb, var(--lq-color-fill) 80%, transparent);
+}
+
+.lgk .lq-toggle .lq-toggle__knob,
+.lgk .lq-toggle.lq-toggle--on .lq-toggle__knob {
+  background: linear-gradient(180deg, #ffffff 0%, #e7ebf3 100%);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.35), inset 0 -1px 1px rgba(15, 23, 42, 0.1);
+}
+
+/* La case : un petit puits ; cochée, une goutte de l'accent. */
+.lgk .lq-checkbox__box {
+  background-color: var(--lgk-well);
+  border-color: var(--lgk-glass-edge);
+  box-shadow: var(--lgk-well-shadow);
+}
+
+.lgk .lq-checkbox__box.lq-checkbox__box--checked {
+  background-color: var(--lq-color-fill);
+  background-image: var(--lgk-gloss);
+  border-color: color-mix(in srgb, var(--lq-color-fill) 60%, rgba(255, 255, 255, 0.5));
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.45), 0 0 14px -3px color-mix(in srgb, var(--lq-color-fill) 80%, transparent);
+}
+
+.lgk .lq-radio__circle {
+  background-color: var(--lgk-well);
+  box-shadow: var(--lgk-well-shadow);
+}
+
+.lgk .lq-radio__input:checked:not(:focus-visible) ~ .lq-radio__circle {
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.25), 0 0 14px -3px color-mix(in srgb, var(--lq-color-fill) 80%, transparent);
+}
+
+/* Le curseur : une piste creusée, un remplissage qui luit, un pouce de verre blanc bombé. */
+.lgk.lq-root {
+  --lq-slider-thumb-shadow: 0 2px 8px rgba(0, 0, 0, 0.35), inset 0 -1px 2px rgba(15, 23, 42, 0.12);
+}
+
+.lgk .lq-slider__track {
+  box-shadow: var(--lgk-well-shadow);
+}
+
+.lgk .lq-slider__fill {
+  background-image: var(--lgk-gloss);
+  box-shadow: 0 0 12px -2px color-mix(in srgb, var(--lq-slider-color) 75%, transparent);
+}
+
+/* ---- puces, étiquettes, pastilles : du verre givré ---- */
+
+.lgk :where(.lq-badge, .lq-tag, .lq-chip) {
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.16);
+  -webkit-backdrop-filter: blur(10px) saturate(170%);
+  backdrop-filter: blur(10px) saturate(170%);
+}
+
+.lgk :where(.lq-badge) {
+  border-color: color-mix(in srgb, currentColor 24%, transparent);
+}
+
+.lgk :where(.lq-chip, .lq-tag) {
+  background-color: var(--lgk-glass-fill);
+  border-color: var(--lgk-glass-edge);
+}
+
+.lgk .lq-chip.lq-chip--on {
+  background-color: color-mix(in srgb, var(--lq-color-accent) 22%, var(--lgk-glass-fill));
+  border-color: color-mix(in srgb, var(--lq-color-accent) 55%, transparent);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 0 14px -4px color-mix(in srgb, var(--lq-color-accent) 70%, transparent);
+}
+
+/* ---- tableaux ---- */
+
+/* La ligne survolée reçoit une traînée de lumière qui la traverse, par-dessus son fond. */
+.lgk .lq-data-table tbody tr:hover > td {
+  background-image: var(--lgk-row-sheen);
+}
+
+.lgk .lq-data-table th {
+  border-bottom-color: var(--lgk-glass-edge);
+}
+
+/* ---- listes et menus ---- */
+
+/* L'option survolée d'une liste déroulante ou d'un menu : une pastille de verre, pas un aplat. */
+.lgk :where(.lq-select__option, .lq-dropdown-panel__option, .lq-context-menu__item):hover:not(:disabled) {
+  background-color: var(--lgk-glass-fill-hover);
+}
+
+.lgk .lq-dropdown-panel__option.lq-dropdown-panel__option--selected {
+  background-image: var(--lgk-gloss);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.35);
+}
+
+/* ---- l'infobulle : une goutte de verre fumé ---- */
+
+/* Le kit inverse l'encre (fond couleur du texte) pour le contraste maximal ; sur le verre, la bulle
+   devient une petite surface de verre dense, au texte de la page, floutée sur ce qu'elle survole. */
+.lgk .lq-tooltip {
+  color: var(--lq-color-text);
+  background: var(--lgk-tooltip-bg);
+  border: 1px solid var(--lgk-glass-edge);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.18), 0 10px 28px -6px rgba(0, 0, 0, 0.45);
+  -webkit-backdrop-filter: blur(18px) saturate(180%);
+  backdrop-filter: blur(18px) saturate(180%);
+}
+
+/* ---- les graphiques ---- */
+
+/* La colonne d'outils : du verre fumé au lieu de l'aplat de fond du kit, assez dense pour qu'aucun
+   tracé ne se lise au travers. */
+.lgk .lq-chart__tools-rail {
+  background-color: var(--lgk-rail-bg);
+  border-color: var(--lgk-glass-edge);
+  -webkit-backdrop-filter: blur(22px) saturate(170%);
+  backdrop-filter: blur(22px) saturate(170%);
+}
+
+/* Les boutons des graphiques (outils, barre d'en-tête, remise à zéro) : de petites pastilles de
+   verre. L'outil actif : une goutte de l'accent. Le bouton de l'assistant garde son liseré dégradé. */
+.lgk :where(.lq-chart__icon-button:not(.lq-chart__icon-button--active, .lq-chart__ai-button), .lq-chart__reset-button) {
+  background-color: var(--lgk-glass-fill);
+  border-color: var(--lgk-glass-edge);
+  border-radius: 10px;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.14);
+}
+
+.lgk :where(.lq-chart__icon-button:not(.lq-chart__icon-button--active, .lq-chart__ai-button), .lq-chart__reset-button):hover {
+  color: var(--lq-color-text);
+  background-color: var(--lgk-glass-fill-hover);
+}
+
+.lgk .lq-chart__icon-button.lq-chart__icon-button--active {
+  background-image: var(--lgk-gloss);
+  border-radius: 10px;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.45), 0 0 14px -3px color-mix(in srgb, var(--lq-color-accent) 80%, transparent);
+}
+
+/* ---- replis : sans flou, ou transparence réduite ---- */
+
+/* Le verre devient presque opaque là où il porte du texte sur ce qu'il recouvre : infobulle,
+   colonne d'outils, voile des modales. */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .lgk.lq-root[data-lq-palette][data-lq-surface="dark"] {
+    --lgk-tooltip-bg: rgba(18, 24, 38, 0.97);
+    --lgk-rail-bg: rgba(12, 16, 26, 0.96);
+    --lgk-scrim: rgba(4, 7, 14, 0.6);
+  }
+  .lgk.lq-root[data-lq-palette][data-lq-surface="light"] {
+    --lgk-tooltip-bg: rgba(255, 255, 255, 0.98);
+    --lgk-rail-bg: rgba(245, 248, 253, 0.96);
+    --lgk-scrim: rgba(30, 41, 59, 0.35);
+  }
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  .lgk.lq-root[data-lq-palette][data-lq-surface="dark"] {
+    --lgk-tooltip-bg: rgba(18, 24, 38, 0.98);
+    --lgk-rail-bg: rgba(12, 16, 26, 0.98);
+    --lgk-scrim: rgba(4, 7, 14, 0.6);
+    --lgk-glass-fill: rgba(40, 48, 64, 0.96);
+    --lgk-glass-fill-hover: rgba(52, 60, 78, 0.98);
+  }
+  .lgk.lq-root[data-lq-palette][data-lq-surface="light"] {
+    --lgk-tooltip-bg: rgba(255, 255, 255, 0.99);
+    --lgk-rail-bg: rgba(248, 250, 253, 0.98);
+    --lgk-scrim: rgba(30, 41, 59, 0.35);
+    --lgk-glass-fill: rgba(255, 255, 255, 0.96);
+    --lgk-glass-fill-hover: rgba(255, 255, 255, 1);
   }
 }
