@@ -1,0 +1,83 @@
+name: Déployer le Storybook et la vitrine sur GitHub Pages
+
+# Même principe que minimal-dashboard-kit : un seul site, reconstruit à chaque push sur master.
+# Le Storybook est à la racine, la vitrine sous /vitrine/.
+#
+# Le Storybook affiche les stories du kit, lues dans son dépôt cloné à jour (voir plus bas) : il doit
+# donc aussi être reconstruit quand le kit change. D'où la reconstruction quotidienne, et
+# `repository_dispatch` (type `kit-updated`) pour la déclencher aussitôt après une publication du kit.
+#
+# Les jobs tournent sur le runner auto-hébergé du VPS (conteneur `mr-runner-liquid-glass`, étiquette
+# `vps`), pas sur les runners hébergés de GitHub. Ce dépôt étant public, aucun déclencheur
+# `pull_request` ici, et le dépôt exige une approbation pour tout workflow venu d'un contributeur
+# extérieur : du code d'une fork ne doit jamais tourner sur le VPS.
+
+on:
+  push:
+    branches: [master]
+  schedule:
+    - cron: "17 4 * * *"
+  repository_dispatch:
+    types: [kit-updated]
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+  packages: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: [self-hosted, vps]
+    env:
+      # Le .npmrc commité lit ce nom-là pour s'authentifier sur GitHub Packages, où vit le kit.
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      # Le Storybook de la couche lit le kit en source, dans le dossier voisin `../Dashboard liseuse`
+      # (voir .storybook/main.ts) : on le recrée ici à partir du dépôt public du kit. Le runner garde
+      # son espace de travail d'une exécution à l'autre, d'où le ménage préalable.
+      - name: Kit en source, à côté
+        run: |
+          rm -rf "../Dashboard liseuse"
+          git clone --depth 1 https://github.com/michaelthomasjach/liseuse-dashboard-kit.git "../Dashboard liseuse"
+
+      - name: Dépendances du kit
+        working-directory: ../Dashboard liseuse
+        run: npm ci --ignore-scripts
+
+      - name: Dépendances de la couche
+        run: npm ci
+
+      - run: npm run build-storybook
+
+      - name: Vitrine, sous /vitrine/
+        run: |
+          npm run build
+          mv dist storybook-static/vitrine
+
+      - uses: actions/configure-pages@v5
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: storybook-static
+
+  deploy:
+    needs: build
+    runs-on: [self-hosted, vps]
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

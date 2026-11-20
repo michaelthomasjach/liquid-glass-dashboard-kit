@@ -57,9 +57,18 @@ de 40 px, Inter partout en casse de phrase (pas de Montserrat ni de capitales es
   l'API GitHub avec `GITHUB_TOKEN` (`gh` n'est pas installé).
 - Paquet : `@michaelthomasjach/liquid-glass-dashboard-kit` sur GitHub Packages, v0.1.0 le 2026-11-20.
   `npm run build:lib` puis `npm publish --ignore-scripts` (depuis PowerShell, où `GITHUB_TOKEN` est exporté).
-- Pas de workflow GitHub Pages : les runners hébergés de GitHub étaient bloqués sur ce compte
-  (facturation) à la création. Celui de minimal (`.github/workflows/deploy-pages.yml`) peut être
-  repris tel quel le jour où ils remarchent.
+- Dépôt public depuis le 2026-11-20 (créé privé : la création publique avait été refusée par un
+  contrôle de sécurité). Le **paquet**, lui, garde la visibilité de sa première publication (privée) :
+  elle ne se change que dans l'interface de GitHub (réglages du paquet), aucune API ne le permet.
+- Storybook et vitrine en ligne : https://michaelthomasjach.github.io/liquid-glass-dashboard-kit/
+  (vitrine sous `/vitrine/`), par `.github/workflows/deploy-pages.yml`, à chaque push sur master,
+  chaque nuit et sur `repository_dispatch` `kit-updated`.
+- Ce workflow tourne sur le **runner auto-hébergé du VPS** (Michael l'a demandé : pas de runners
+  hébergés de GitHub). Conteneur `mr-runner-liquid-glass` (image `mr-gh-runner`, volumes
+  `mr-runner-liquid-glass-state` / `-work`, étiquette `vps`), lancé à la main par `docker run`, **sans**
+  le socket Docker (inutile pour construire un site statique). Dépôt public, donc : aucun déclencheur
+  `pull_request`, et approbation exigée pour tout workflow d'un contributeur extérieur
+  (`fork-pr-contributor-approval` = `all_external_contributors`).
 - Vérifié à la création : vitrine construite et rendue dans Edge headless, surfaces sombre et claire
   (Vue d'ensemble, Tableaux, Formulaires) ; captures dans `docs/images/`.
 

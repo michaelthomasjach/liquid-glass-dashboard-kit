@@ -9,6 +9,9 @@ aucun composant n'est réécrit ici. Le paquet ré-exporte tout le kit et ajoute
 modification du kit (correctif, nouveau composant, nouvelle prop) arrive donc ici sans rien toucher :
 la dépendance suit toutes les versions 0.x du kit (`>=0.314.0 <1.0.0`).
 
+**En ligne :** [Storybook](https://michaelthomasjach.github.io/liquid-glass-dashboard-kit/) ·
+[vitrine](https://michaelthomasjach.github.io/liquid-glass-dashboard-kit/vitrine/)
+
 ## Aperçu
 
 ![Vue d'ensemble — surface sombre](docs/images/vue-ensemble-sombre.png)
