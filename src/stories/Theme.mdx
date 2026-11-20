@@ -1,0 +1,21 @@
+import { Meta } from "@storybook/addon-docs/blocks";
+import { TOKEN_GROUPS, TokenTable } from "./_docs/TokenTable";
+
+<Meta title="Foundations/Variables du thème" />
+
+# Les variables du thème
+
+Chaque valeur ci-dessous est **lue dans le navigateur** sur une racine du thème (`getComputedStyle`), pas recopiée : la table montre ce que `src/theme/liquid-glass.css` pose réellement.
+
+Le thème « Liquid glass » : surfaces translucides floutées (`--lq-surface-backdrop`), liseré clair et reflet en haut de chaque surface (ombres intérieures), grands rayons (12 / 16 / 24 px), Inter partout en casse de phrase, sur un fond de halos colorés (`--lgk-backdrop`). Sombre : verre fumé, accent citron vert `#c8f04a`. Clair : verre laiteux sur un ciel bleu et lilas, accent indigo `#4f46e5`.
+
+{TOKEN_GROUPS.map((g) => (
+  <section key={g.title} style={{ marginBottom: 40 }}>
+    <h2>{g.title}</h2>
+    <p>{g.note}</p>
+    <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
+      <TokenTable tokens={g.tokens} surface="light" />
+      <TokenTable tokens={g.tokens} surface="dark" />
+    </div>
+  </section>
+))}

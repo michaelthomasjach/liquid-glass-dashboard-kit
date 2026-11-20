@@ -1,0 +1,419 @@
+/* Le thème « Liquid glass » : des surfaces de verre dépoli posées sur un fond coloré.
+ *
+ * ## Ce que ce fichier est
+ *
+ * Des redéfinitions des variables `--lq-*` que le kit lit partout (aucun composant du kit n'écrit de
+ * couleur, de rayon ni d'espacement en dur), plus une poignée de règles de racine, signalées comme
+ * telles plus bas. Redéfinir les variables sur la racine du thème rhabille les ~200 composants d'un
+ * coup, sans toucher une ligne du kit.
+ *
+ * ## Pourquoi ces sélecteurs-là
+ *
+ * Le kit pose ses couleurs sur `.lq-root[data-lq-palette="…"][data-lq-surface="…"]` (0,3,0) et son
+ * échelle sur `.lq-root` (0,1,0). Pour gagner quel que soit l'ordre des imports, il faut être
+ * strictement plus spécifique, pas seulement plus loin dans la cascade :
+ *
+ *   `.lgk.lq-root[data-lq-palette][data-lq-surface="dark"]`  → (0,4,0) contre (0,3,0)
+ *   `.lgk.lq-root`                                           → (0,2,0) contre (0,1,0)
+ *
+ * ## L'intention esthétique
+ *
+ * Le « liquid glass » des tableaux de bord crypto et des cartes de verre : des panneaux translucides
+ * qui floutent et saturent ce qu'il y a derrière (`--lq-surface-backdrop`, kit ≥ 0.314), un liseré
+ * clair d'un pixel et un reflet en haut de chaque surface (ombre intérieure), de grands rayons, une
+ * typographie unique (Inter) en casse de phrase, et un fond fait de halos de couleur — vert, violet,
+ * bleu en sombre ; ciel, lilas et lagon en clair — pour que le verre ait quelque chose à réfracter.
+ * Accent citron vert en sombre (lisible sur verre fumé), indigo en clair.
+ */
+
+/* ---- l'échelle, commune aux deux surfaces ---- */
+
+.lgk.lq-root {
+  --lq-font-inter: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --lq-font-family: var(--lq-font-inter);
+
+  /* Le verre est arrondi : 12 px sur les petits contrôles, 16 px sur les champs et les menus, 24 px
+     sur les cartes et les modales. */
+  --lq-radius-sm: 12px;
+  --lq-radius-md: 16px;
+  --lq-radius-lg: 24px;
+  --lq-radius-pill: 999px;
+  --lq-tooltip-radius: 10px;
+
+  --lq-space-1: 4px;
+  --lq-space-2: 8px;
+  --lq-space-3: 12px;
+  --lq-space-4: 16px;
+  --lq-space-5: 24px;
+  --lq-space-6: 32px;
+
+  --lq-text-h1: 2.75rem;
+  --lq-text-h2: 2rem;
+  --lq-text-h3: 1.625rem;
+  --lq-text-h4: 1.3125rem;
+  --lq-text-h5: 1.0625rem;
+  --lq-text-h6: 0.875rem;
+
+  --lq-text-xs: 0.6875rem;
+  --lq-text-sm: 0.8125rem;
+  --lq-text-md: 0.875rem;
+  --lq-text-lg: 1rem;
+  --lq-text-xl: 1.125rem;
+
+  --lq-line-height-body: 1.5;
+  --lq-line-height-heading: 1.2;
+
+  --lq-font-weight-heading: 600;
+  --lq-font-weight-heavy: 700;
+  --lq-font-weight-bold: 600;
+  --lq-font-weight-semibold: 600;
+  --lq-font-weight-medium: 500;
+
+  /* Une seule voix : les petits titres restent en Inter, en casse de phrase, à peine plus petits. */
+  --lq-label-font: var(--lq-font-inter);
+  --lq-label-size: 0.75rem;
+  --lq-label-weight: 500;
+  --lq-label-tracking: 0.01em;
+  --lq-caption-font: var(--lq-font-inter);
+  --lq-caption-size: 0.9375rem;
+  --lq-caption-weight: 600;
+  --lq-caption-tracking: 0;
+  --lq-caption-transform: none;
+
+  /* Contrôles de 40 px, en pilule de verre. */
+  --lq-control-border-width: 1px;
+  --lq-control-height: 40px;
+  --lq-control-padding-x: 14px;
+  --lq-control-font-size: 0.875rem;
+  --lq-button-padding-y: 9px;
+  --lq-button-padding-x: 18px;
+  --lq-button-font-size: 0.875rem;
+  --lq-field-gap: 6px;
+  --lq-field-label-size: 0.8125rem;
+  --lq-field-label-weight: 500;
+
+  /* Le flou des surfaces : fort et saturé, c'est lui qui fait le verre. */
+  --lq-surface-backdrop: blur(24px) saturate(165%);
+
+  --lq-sidebar-z-index: 1950;
+  --lq-sticky-header-z-index: 1900;
+
+  --lq-row-font-size: 0.8125rem;
+  --lq-table-cell-padding-y: 14px;
+  --lq-table-cell-padding-x: 16px;
+  --lq-table-condensed-padding-y: 9px;
+  --lq-table-head-padding-y: 12px;
+  --lq-table-head-padding-x: 16px;
+  --lq-table-head-color: var(--lq-color-text-muted);
+
+  --lq-tile-padding: 24px;
+  --lq-tile-title-size: 1.625rem;
+  --lq-tile-title-weight: 600;
+
+  --lq-radio-size: 18px;
+  --lq-radio-checked-border-width: 6px;
+  --lq-radio-dot-size: 0px;
+  --lq-slider-track-radius: 999px;
+  --lq-chat-bubble-radius: 18px;
+  --lq-chat-bubble-padding: 8px 14px;
+  --lq-gallery-radius: 18px;
+  --lq-gallery-gap: 12px;
+  --lq-calendar-event-radius: 8px;
+  --lq-mail-folder-radius: 999px;
+  --lq-quickview-z-index: 2000;
+  --lq-card-maximized-z-index: 2000;
+  --lq-alloc-bar-border: none;
+
+  --lq-transition-fast: 140ms cubic-bezier(0.2, 0.8, 0.2, 1);
+  --lq-transition-base: 240ms cubic-bezier(0.2, 0.8, 0.2, 1);
+
+  /* Règle de racine : le fond que le verre floute. Une image (prop `backdrop`) ou les halos de la
+     surface, fixés à la fenêtre pour que le verre bouge sur eux au défilement. */
+  background-color: var(--lq-color-bg);
+  background-image: var(--lgk-backdrop);
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+}
+
+/* ---- surface sombre : verre fumé sur halos vert, violet et bleu ---- */
+
+.lgk.lq-root[data-lq-palette][data-lq-surface="dark"] {
+  --lgk-backdrop:
+    radial-gradient(55% 45% at 12% 8%, rgba(34, 197, 94, 0.32), transparent 62%),
+    radial-gradient(45% 40% at 88% 14%, rgba(139, 92, 246, 0.34), transparent 64%),
+    radial-gradient(55% 50% at 70% 96%, rgba(14, 165, 233, 0.26), transparent 62%),
+    radial-gradient(40% 35% at 25% 85%, rgba(190, 242, 100, 0.12), transparent 60%),
+    linear-gradient(160deg, #0c1322 0%, #070a12 55%, #0a0f1a 100%);
+
+  --lq-color-bg: #090d16;
+  --lq-color-panel: rgba(255, 255, 255, 0.07);
+  --lgk-color-float: rgba(22, 28, 40, 0.72);
+  --lgk-color-solid: #0b1016;
+
+  --lq-color-text: #f3f6fb;
+  --lq-color-text-muted: rgba(226, 232, 244, 0.62);
+  --lgk-color-text-strong: #ffffff;
+  --lq-control-color: var(--lq-color-text);
+
+  --lq-color-border: rgba(255, 255, 255, 0.16);
+  --lq-color-border-subtle: rgba(255, 255, 255, 0.09);
+  --lq-color-panel-border: rgba(255, 255, 255, 0.14);
+
+  --lq-color-accent: #c8f04a;
+  --lq-color-accent-contrast: #0b1016;
+  --lq-color-fill: #c8f04a;
+  --lq-color-fill-track: rgba(255, 255, 255, 0.12);
+
+  --lq-color-focus-ring: rgba(200, 240, 74, 0.45);
+  --lq-color-hover: rgba(255, 255, 255, 0.08);
+  --lq-color-overlay: rgba(4, 7, 14, 0.45);
+
+  --lq-table-stripe-bg: rgba(255, 255, 255, 0.03);
+  --lq-table-hover-bg: rgba(255, 255, 255, 0.07);
+
+  --lq-color-danger: #fb7185;
+  --lq-color-warning: #fbbf24;
+  --lq-color-warning-contrast: #0b1016;
+  --lq-color-info: #60a5fa;
+  --lq-color-up: #4ade80;
+  --lq-color-down: #fb7185;
+
+  --lq-color-amber: #fbbf24;
+  --lq-color-sky: #60a5fa;
+  --lq-color-green: #4ade80;
+  --lq-color-rose: #fb7185;
+  --lq-color-violet: #a78bfa;
+
+  --lq-tone-accent: rgba(200, 240, 74, 0.82);
+  --lq-tone-success: rgba(34, 197, 94, 0.55);
+  --lq-tone-info: rgba(59, 130, 246, 0.55);
+  --lq-tone-danger: rgba(244, 63, 94, 0.55);
+  --lq-tone-warning: rgba(251, 191, 36, 0.7);
+  --lq-tone-dark: rgba(255, 255, 255, 0.12);
+  /* Encre des tuiles pleines : blanche sur le verre teinté, sombre seulement sur le citron et l'ambre. */
+  --lq-tone-text: #ffffff;
+  --lq-tone-accent-text: #0b1016;
+  --lq-tone-warning-text: #0b1016;
+
+  --lq-radio-border-color: rgba(255, 255, 255, 0.3);
+  --lq-slider-track-bg: rgba(255, 255, 255, 0.14);
+  --lq-slider-thumb-bg: #ffffff;
+  --lq-slider-thumb-border: 0 none;
+  --lq-slider-mark-color: rgba(226, 232, 244, 0.62);
+  --lq-slider-tick-color: rgba(255, 255, 255, 0.16);
+  --lq-tree-folder-color: #c8f04a;
+  --lq-timeline-line: rgba(255, 255, 255, 0.14);
+  --lq-timeline-dot-color: rgba(226, 232, 244, 0.62);
+  --lq-timeline-marker-border: 2px solid rgba(255, 255, 255, 0.2);
+  --lq-chat-bubble-mine-bg: rgba(200, 240, 74, 0.2);
+  --lq-chat-bubble-mine-color: #ffffff;
+  --lq-chat-bubble-mine-border: rgba(200, 240, 74, 0.25);
+  --lq-chat-bubble-theirs-bg: rgba(255, 255, 255, 0.08);
+  --lq-chat-bubble-theirs-color: #ffffff;
+  --lq-chat-bubble-theirs-border: rgba(255, 255, 255, 0.1);
+  --lq-notes-paper: rgba(255, 255, 255, 0.06);
+  --lq-mail-reader-bg: rgba(255, 255, 255, 0.04);
+  --lq-mail-folder-active-bg: rgba(255, 255, 255, 0.1);
+  --lq-mail-folder-active-color: #c8f04a;
+  --lq-calendar-line: rgba(255, 255, 255, 0.08);
+  --lq-calendar-today-bg: rgba(200, 240, 74, 0.08);
+  --lq-calendar-today-marker: #c8f04a;
+  --lq-calendar-today-marker-text: #0b1016;
+  --lq-button-group-selected-bg: rgba(255, 255, 255, 0.16);
+  --lq-button-group-selected-color: #ffffff;
+  --lq-button-group-selected-border: rgba(255, 255, 255, 0.26);
+  --lq-dot-map-marker: #c8f04a;
+
+  /* Le verre : un reflet d'un pixel en haut, un liseré intérieur, et une ombre douce qui le décolle. */
+  --lq-shadow-panel: inset 0 1px 0 rgba(255, 255, 255, 0.16), inset 0 0 0 1px rgba(255, 255, 255, 0.03),
+    0 12px 32px rgba(0, 0, 0, 0.32);
+  --lq-shadow-modal: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 28px 70px rgba(0, 0, 0, 0.55);
+}
+
+/* ---- surface claire : verre laiteux sur un ciel bleu, lilas et lagon ---- */
+
+.lgk.lq-root[data-lq-palette][data-lq-surface="light"] {
+  --lgk-backdrop:
+    radial-gradient(55% 50% at 10% 10%, rgba(96, 165, 250, 0.55), transparent 62%),
+    radial-gradient(50% 45% at 90% 12%, rgba(167, 139, 250, 0.45), transparent 64%),
+    radial-gradient(60% 55% at 75% 95%, rgba(45, 212, 191, 0.32), transparent 62%),
+    radial-gradient(45% 40% at 20% 90%, rgba(59, 130, 246, 0.3), transparent 60%),
+    linear-gradient(160deg, #e6f0fd 0%, #eef2ff 50%, #e0f2fe 100%);
+
+  --lq-color-bg: #e9f1fc;
+  --lq-color-panel: rgba(255, 255, 255, 0.42);
+  --lgk-color-float: rgba(255, 255, 255, 0.78);
+  --lgk-color-solid: #ffffff;
+
+  --lq-color-text: #0f172a;
+  --lq-color-text-muted: rgba(15, 23, 42, 0.6);
+  --lgk-color-text-strong: #020617;
+  --lq-control-color: var(--lq-color-text);
+
+  --lq-color-border: rgba(15, 23, 42, 0.12);
+  --lq-color-border-subtle: rgba(255, 255, 255, 0.55);
+  --lq-color-panel-border: rgba(255, 255, 255, 0.7);
+
+  --lq-color-accent: #4f46e5;
+  --lq-color-accent-contrast: #ffffff;
+  --lq-color-fill: #4f46e5;
+  --lq-color-fill-track: rgba(15, 23, 42, 0.1);
+
+  --lq-color-focus-ring: rgba(79, 70, 229, 0.35);
+  --lq-color-hover: rgba(255, 255, 255, 0.45);
+  --lq-color-overlay: rgba(30, 41, 59, 0.28);
+
+  --lq-table-stripe-bg: rgba(255, 255, 255, 0.28);
+  --lq-table-hover-bg: rgba(255, 255, 255, 0.55);
+
+  --lq-color-danger: #e11d48;
+  --lq-color-warning: #b45309;
+  --lq-color-warning-contrast: #0f172a;
+  --lq-color-info: #2563eb;
+  --lq-color-up: #059669;
+  --lq-color-down: #e11d48;
+
+  --lq-color-amber: #f59e0b;
+  --lq-color-sky: #0ea5e9;
+  --lq-color-green: #10b981;
+  --lq-color-rose: #f43f5e;
+  --lq-color-violet: #7c3aed;
+
+  --lq-tone-accent: rgba(79, 70, 229, 0.85);
+  --lq-tone-success: rgba(16, 185, 129, 0.8);
+  --lq-tone-info: rgba(37, 99, 235, 0.8);
+  --lq-tone-danger: rgba(225, 29, 72, 0.8);
+  --lq-tone-warning: rgba(251, 191, 36, 0.85);
+  --lq-tone-dark: rgba(15, 23, 42, 0.55);
+  --lq-tone-text: #ffffff;
+  --lq-tone-warning-text: #0f172a;
+
+  --lq-radio-border-color: rgba(15, 23, 42, 0.25);
+  --lq-slider-track-bg: rgba(15, 23, 42, 0.1);
+  --lq-slider-thumb-bg: #ffffff;
+  --lq-slider-thumb-border: 0 none;
+  --lq-slider-mark-color: rgba(15, 23, 42, 0.55);
+  --lq-slider-tick-color: rgba(15, 23, 42, 0.12);
+  --lq-tree-folder-color: #4f46e5;
+  --lq-timeline-line: rgba(255, 255, 255, 0.7);
+  --lq-timeline-dot-color: rgba(15, 23, 42, 0.4);
+  --lq-timeline-marker-border: 2px solid rgba(255, 255, 255, 0.85);
+  --lq-chat-bubble-mine-bg: rgba(79, 70, 229, 0.14);
+  --lq-chat-bubble-mine-color: #0f172a;
+  --lq-chat-bubble-mine-border: rgba(79, 70, 229, 0.2);
+  --lq-chat-bubble-theirs-bg: rgba(255, 255, 255, 0.6);
+  --lq-chat-bubble-theirs-color: #0f172a;
+  --lq-chat-bubble-theirs-border: rgba(255, 255, 255, 0.8);
+  --lq-notes-paper: rgba(255, 251, 235, 0.65);
+  --lq-mail-reader-bg: rgba(255, 255, 255, 0.3);
+  --lq-mail-folder-active-bg: rgba(255, 255, 255, 0.6);
+  --lq-mail-folder-active-color: #4f46e5;
+  --lq-calendar-line: rgba(15, 23, 42, 0.08);
+  --lq-calendar-today-bg: rgba(255, 255, 255, 0.5);
+  --lq-calendar-today-marker: #4f46e5;
+  --lq-calendar-today-marker-text: #ffffff;
+  --lq-button-group-selected-bg: rgba(255, 255, 255, 0.8);
+  --lq-button-group-selected-color: #0f172a;
+  --lq-button-group-selected-border: rgba(255, 255, 255, 0.95);
+  --lq-dot-map-marker: #4f46e5;
+
+  --lq-shadow-panel: inset 0 1px 0 rgba(255, 255, 255, 0.85), inset 0 0 0 1px rgba(255, 255, 255, 0.25),
+    0 12px 32px rgba(30, 64, 175, 0.12);
+  --lq-shadow-modal: inset 0 1px 0 rgba(255, 255, 255, 0.9), 0 28px 70px rgba(30, 64, 175, 0.22);
+}
+
+/* ---- ce qui flotte : un verre plus dense ---- */
+
+/* Menus, listes déroulantes, modales et menus contextuels passent au-dessus du contenu, souvent sur du
+   texte : à la translucidité d'une carte, ils deviendraient illisibles. Même verre, plus opaque. Seule
+   la variable change. */
+.lgk .lq-popover,
+.lgk .lq-modal,
+.lgk .lq-context-menu {
+  --lq-color-panel: var(--lgk-color-float);
+}
+
+/* L'infobulle écrit son texte dans la couleur de panneau, sur un fond couleur de texte : translucide,
+   ce texte disparaîtrait. Elle reprend une encre pleine. */
+.lgk .lq-tooltip {
+  --lq-color-panel: var(--lgk-color-solid);
+}
+
+/* ---- la barre latérale ---- */
+
+/* Une colonne de verre comme les cartes, à peine plus dense, sans filet dur à droite. */
+.lgk.lq-root[data-lq-surface="dark"] [data-lq-region="sidebar"] {
+  --lq-color-panel: rgba(255, 255, 255, 0.05);
+  --lq-color-border-subtle: rgba(255, 255, 255, 0.08);
+  --lq-sidebar-head-bg: transparent;
+  --lq-sidebar-head-border: rgba(255, 255, 255, 0.08);
+  --lq-sidebar-sub-bg: rgba(255, 255, 255, 0.04);
+}
+
+.lgk.lq-root[data-lq-surface="light"] [data-lq-region="sidebar"] {
+  --lq-color-panel: rgba(255, 255, 255, 0.36);
+  --lq-color-border-subtle: rgba(255, 255, 255, 0.6);
+  --lq-sidebar-head-bg: transparent;
+  --lq-sidebar-head-border: rgba(255, 255, 255, 0.6);
+  --lq-sidebar-sub-bg: rgba(255, 255, 255, 0.3);
+}
+
+/* ---- les gabarits de page laissent voir le fond ---- */
+
+/* Règle de racine : `SidebarLayout` et `HeaderLayout` peignent la couleur de fond du kit sur toute la
+   page, ce qui cacherait les halos que le verre doit flouter. Ils deviennent transparents ; la racine
+   du thème porte le fond. */
+.lgk.lq-root .lq-sidebar-layout,
+.lgk.lq-root .lq-header-layout {
+  background-color: transparent;
+}
+
+/* La barre de tête collante : le même verre que les cartes, au lieu du voile du kit. */
+.lgk.lq-root .lq-sidebar-layout--sticky-header > .lq-sidebar-layout__main > .lq-sidebar-layout__header {
+  background-color: var(--lq-color-panel);
+  -webkit-backdrop-filter: var(--lq-surface-backdrop);
+  backdrop-filter: var(--lq-surface-backdrop);
+  --lq-sticky-header-shadow: inset 0 -1px 0 var(--lq-color-border-subtle);
+}
+
+/* ---- les liens ---- */
+
+/* En `:where()`, cette règle ne pèse rien : un lien qu'un composant habille garde sa couleur. */
+:where(.lgk.lq-root) a {
+  color: var(--lgk-color-link, var(--lq-color-accent));
+  text-decoration: none;
+  transition: color var(--lq-transition-fast, 140ms);
+}
+
+:where(.lgk.lq-root) a:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+:where(.lgk.lq-root) a:focus-visible {
+  outline: 2px solid var(--lq-color-focus-ring);
+  outline-offset: 2px;
+}
+
+/* Sans flou disponible (navigateur ancien) ou quand l'utilisateur réduit la transparence, le verre
+   devient opaque plutôt que de laisser le texte sur un fond illisible. */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .lgk.lq-root[data-lq-palette][data-lq-surface="dark"] {
+    --lq-color-panel: rgba(24, 30, 44, 0.94);
+  }
+  .lgk.lq-root[data-lq-palette][data-lq-surface="light"] {
+    --lq-color-panel: rgba(250, 252, 255, 0.94);
+  }
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  .lgk.lq-root[data-lq-palette][data-lq-surface="dark"] {
+    --lq-color-panel: rgba(24, 30, 44, 0.96);
+    --lgk-color-float: rgba(24, 30, 44, 0.98);
+  }
+  .lgk.lq-root[data-lq-palette][data-lq-surface="light"] {
+    --lq-color-panel: rgba(250, 252, 255, 0.96);
+    --lgk-color-float: rgba(255, 255, 255, 0.98);
+  }
+}
