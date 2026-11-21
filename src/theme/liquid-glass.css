@@ -338,6 +338,16 @@
   --lq-color-panel: var(--lgk-color-float);
 }
 
+/* Les cartes des visites guidées (celle du site, celle de l'espace graphique) se posent sur la page,
+   souvent sur un graphique : verre dense et très flouté, sinon le texte se mêle aux courbes derrière. */
+.lgk .lq-gtour__card,
+.lgk .lq-tour__card {
+  --lq-color-panel: var(--lgk-color-float);
+  border-radius: 20px;
+  -webkit-backdrop-filter: blur(36px) saturate(180%);
+  backdrop-filter: blur(36px) saturate(180%);
+}
+
 /* L'infobulle écrit son texte dans la couleur de panneau, sur un fond couleur de texte : translucide,
    ce texte disparaîtrait. Elle reprend une encre pleine. */
 .lgk .lq-tooltip {
