@@ -119,6 +119,7 @@ export function Overview() {
       <div className="lgk-dash__row lgk-dash__row--head">
         <div className="lgk-dash__stack">
           <LiveTile
+            tone="dark"
             height={423}
             controls={<Ring />}
             faces={[
@@ -160,7 +161,7 @@ export function Overview() {
         </div>
 
         <div className="lgk-dash__quad">
-          <LiveTile height={281} controls={<Ring />} faces={[{ image: NEWS_ART, scrim: true, tag: "ACTUALITÉ", tagVariant: "soft", title: "Bien plus à voir d'un coup d'œil.", subtitle: "En savoir plus sur le projet" }]} />
+          <LiveTile tone="dark" height={281} controls={<Ring />} faces={[{ image: NEWS_ART, scrim: true, tag: "ACTUALITÉ", tagVariant: "soft", title: "Bien plus à voir d'un coup d'œil.", subtitle: "En savoir plus sur le projet" }]} />
           <LiveTile
             height={281}
             tone="info"

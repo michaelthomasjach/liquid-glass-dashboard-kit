@@ -1,29 +1,29 @@
 # liquid-glass-dashboard-kit
 
 Les composants de [`@michaelthomasjach/liseuse-dashboard-kit`](https://github.com/michaelthomasjach/liseuse-dashboard-kit),
-habillés d'un thème **Liquid glass** : surfaces de verre dépoli translucides, liseré de lumière,
-grands rayons, sur un fond de halos colorés. Surfaces sombre et claire.
+habillés du thème **Liquid** (v1) : sobre et moderne. Fond presque noir (blanc cassé en clair), surfaces
+aux grands rayons, boutons et onglets en pilule, une seule police (Geist), un menu du haut en îlots
+arrondis, un menu flottant à gauche et un cadre arrondi qui décolle le contenu des bords de la fenêtre.
+Pensé pour rendre un tableau de bord dense agréable à lire, sans rien retirer de l'information.
 
 C'est une **couche de thème**, comme [`minimal-dashboard-kit`](https://github.com/michaelthomasjach/minimal-dashboard-kit) :
 aucun composant n'est réécrit ici. Le paquet ré-exporte tout le kit et ajoute `LiquidGlassTheme`. Une
 modification du kit (correctif, nouveau composant, nouvelle prop) arrive donc ici sans rien toucher :
-la dépendance suit toutes les versions 0.x du kit (`>=0.314.0 <1.0.0`).
+la dépendance suit toutes les versions 0.x du kit (`>=0.316.0 <1.0.0`).
 
 **En ligne :** [Storybook](https://michaelthomasjach.github.io/liquid-glass-dashboard-kit/) ·
 [vitrine](https://michaelthomasjach.github.io/liquid-glass-dashboard-kit/vitrine/)
 
 ## Aperçu
 
-![Vue d'ensemble — surface sombre, menu ouvert au survol](docs/images/vue-ensemble-sombre.png)
+![Accueil de la vitrine — surface sombre](docs/images/accueil-sombre.png)
 
 | | |
 |---|---|
-| ![Vue d'ensemble — surface claire](docs/images/vue-ensemble-claire.png) | ![Tableaux — surface sombre](docs/images/tableaux-sombre.png) |
-| **Surface claire** — verre laiteux sur un ciel bleu et lilas | **Tableaux** — le `DataTable` du kit, sur verre fumé |
-| ![Formulaires — surface claire](docs/images/formulaires-clair.png) | ![Recherche — surface sombre](docs/images/recherche-sombre.png) |
-| **Formulaires** — champs et contrôles du kit | **Recherche** — un verre épais et très flou : la page ne se lit plus au travers |
-| ![Boutons — surface sombre](docs/images/boutons-sombre.png) | ![Modale — surface sombre](docs/images/modale-sombre.png) |
-| **Boutons** — pastilles de verre, verre teinté qui brille pour les actions principales | **Modale** — verre épais sur un voile très flou |
+| ![Tableau de bord — surface sombre](docs/images/tableau-de-bord-sombre.png) | ![Tableaux — surface claire](docs/images/tableaux-clair.png) |
+| **Tableau de bord** — tuiles, graphiques et tableaux du kit | **Tableaux** — menu flottant à gauche, l'écran ouvert marqué d'un point |
+| ![Sections désynchronisées](docs/images/sections-sombre.png) | ![Téléphone](docs/images/telephone-sombre.png) |
+| **`TriptychScroll`** — trois sections qui se relaient au défilement | **Téléphone** — îlots en haut, pastilles du menu flottant en bas |
 
 ## Installation
 
@@ -40,15 +40,18 @@ npm install @michaelthomasjach/liquid-glass-dashboard-kit
 ```
 
 ```tsx
-import { LiquidGlassTheme, Card, Button } from "@michaelthomasjach/liquid-glass-dashboard-kit";
+import { LiquidGlassTheme, HeaderLayout, FloatingNav, Card, Button } from "@michaelthomasjach/liquid-glass-dashboard-kit";
 import "@michaelthomasjach/liquid-glass-dashboard-kit/style.css";
 
 export function App() {
   return (
-    <LiquidGlassTheme surface="dark" style={{ minHeight: "100vh" }}>
-      <Card title="Portefeuille">
-        <Button tone="primary">Échanger</Button>
-      </Card>
+    <LiquidGlassTheme surface="dark">
+      <HeaderLayout logo={<strong>Acme</strong>} navItems={[{ id: "a", label: "Vue d'ensemble", active: true }, { id: "b", label: "Marchés" }]}>
+        <FloatingNav items={[{ id: "1", label: "Indices", active: true }, { id: "2", label: "Devises" }]} />
+        <Card title="Portefeuille">
+          <Button tone="primary">Échanger</Button>
+        </Card>
+      </HeaderLayout>
     </LiquidGlassTheme>
   );
 }
@@ -58,35 +61,38 @@ export function App() {
 
 | Prop | Rôle |
 |---|---|
-| `surface` | `"dark"` (défaut, verre fumé) ou `"light"` (verre laiteux) |
-| `backdrop` | ce que le verre floute : une valeur `background-image` (`"url(/montagnes.jpg)"`, un dégradé) ; par défaut, les halos de la surface |
+| `surface` | `"dark"` (défaut, presque noir) ou `"light"` (blanc cassé) |
+| `frame` | le cadre arrondi autour de la page (défaut `true`) ; `false` pour un thème posé sur une partie de page |
 | `onSurfaceChange` | appelé quand un composant du kit bascule la surface |
 | `className`, `style` | posés sur la racine (la classe suit dans les portails) |
 
-Donnez à la racine la hauteur de la page (`minHeight: "100vh"`) : c'est elle qui porte le fond.
+La coquille prévue pour ce thème est `HeaderLayout` (menu du haut en îlots : marque, sections en
+pilule, actions) avec `FloatingNav` (menu flottant de gauche, rangée de pastilles en bas sur
+téléphone). `SidebarLayout` reste habillé pour les applications qui gardent un menu latéral.
 
 ## Comment ça marche
 
-Les ~200 composants du kit lisent leurs couleurs, rayons, espacements et ombres dans des variables
-CSS `--lq-*` posées sur `.lq-root`. [`src/theme/liquid-glass.css`](src/theme/liquid-glass.css) les
-redéfinit sous un sélecteur strictement plus spécifique que ceux du kit, donc gagnant quel que soit
-l'ordre des imports :
+La v1 (2026-11-21) repart de zéro : l'ancien thème « verre » empilait plus de 1 500 lignes de règles
+sur l'anatomie des composants. Celui-ci passe presque entièrement par les variables CSS `--lq-*` que
+les ~200 composants du kit lisent déjà (y compris ses variables optionnelles), en trois feuilles :
+
+| Feuille | Contenu |
+|---|---|
+| [`src/theme/tokens.css`](src/theme/tokens.css) | les variables : couleurs des deux surfaces, rayons, typographie, contrôles, tableaux, graphiques |
+| [`src/theme/shell.css`](src/theme/shell.css) | le cadre arrondi, les îlots du menu du haut, le menu flottant, ce qui flotte (menus, recherche, modales) |
+| [`src/theme/details.css`](src/theme/details.css) | ce que les variables ne disent pas : pilules des boutons et onglets, matière des champs |
+
+Les variables sont redéfinies sous un sélecteur strictement plus spécifique que ceux du kit, donc
+gagnant quel que soit l'ordre des imports :
 
 ```
 .lgk.lq-root[data-lq-palette][data-lq-surface="dark"]   (0,4,0)  >  .lq-root[data-lq-palette="color"][data-lq-surface="dark"]   (0,3,0)
 .lgk.lq-root                                            (0,2,0)  >  .lq-root                                                   (0,1,0)
 ```
 
-Le verre lui-même vient de la variable `--lq-surface-backdrop` du kit (v0.314.0), lue en
-`backdrop-filter` par `Panel`, `Card`, `Modal`, `Popover`, `ContextMenu` et la barre latérale de
-`SidebarLayout`. Le thème y pose `blur(24px) saturate(165%)` avec une couleur de panneau
-translucide, et un reflet d'un pixel en ombre intérieure. Ce qui flotte (menus, modales) prend un
-verre plus dense pour rester lisible. Sans flou disponible, ou avec « réduire la transparence »,
-les surfaces deviennent presque opaques.
-
-Limite connue : une surface floutée devient le bloc conteneur de ses descendants en
-`position: fixed` (les modales, menus et infobulles du kit passent par des portails et ne sont pas
-concernés).
+Le cadre est un anneau fixé à la fenêtre (une ombre portée immense autour d'un rectangle arrondi
+transparent) : le contenu défile dessous, les coins restent ronds, et le défilement reste celui de
+la fenêtre.
 
 ## Développement
 

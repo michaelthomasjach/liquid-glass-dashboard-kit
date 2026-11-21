@@ -1,64 +1,33 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { HashRouter, Navigate, Route, Routes, useLocation, useNavigate } from "react-router-dom";
 import {
   Avatar,
   BellIcon,
-  GridIcon,
-  LinkIcon,
+  FloatingNav,
+  HeaderLayout,
   LayersIcon,
   MoonIcon,
   NotificationMenu,
   type NotificationMenuItem,
-  ProgressBar,
   SearchIcon,
   SearchOverlay,
-  SidebarLayout,
   SunIcon,
-  type SidebarNavItem,
 } from "@michaelthomasjach/liseuse-dashboard-kit";
 import { LiquidGlassTheme } from "../theme";
-import { GROUP_ICONS, SCREENS, screenGroups, type Screen } from "./screens";
+import { GROUP_ICONS, SCREENS, SECTIONS, sectionOf, type Screen } from "./screens";
 import { searchComponents, searchScreens } from "./searchIndex";
 import "./showcase.css";
 
 type Surface = "light" | "dark";
 
-/**
- * La barre de chargement du gabarit : un trait de 2 px de l'accent, collé au filet inférieur de la
- * barre haute, qui court de gauche à droite à chaque changement d'écran puis s'efface. La vitrine
- * n'attend rien du réseau — la barre dit seulement « l'écran a changé », comme chez Pages.
- */
-function RouteProgress() {
-  const { pathname } = useLocation();
-  const [value, setValue] = useState<number | null>(null);
-  const first = useRef(true);
-
-  useEffect(() => {
-    if (first.current) {
-      first.current = false;
-      return;
-    }
-    const steps: [number | null, number][] = [[12, 0], [64, 60], [88, 280], [100, 520], [null, 900]];
-    const timers = steps.map(([v, delay]) => window.setTimeout(() => setValue(v), delay));
-    return () => timers.forEach(window.clearTimeout);
-  }, [pathname]);
-
-  if (value === null) return null;
-  return (
-    <div className="lgk-route-progress" aria-hidden="true">
-      <ProgressBar value={value} thickness={2} />
-    </div>
-  );
-}
-
 const NOTIFICATIONS: NotificationMenuItem[] = [
   { id: "n1", title: "Camille Leroy", meta: "a partagé un document", text: "Le rapport trimestriel des ventes est prêt à relire.", time: "il y a 5 min", unread: true },
   { id: "n2", title: "Facturation", meta: "3 factures en retard", text: "Groupe Vallée, Studio Bélier et Cabinet Roux dépassent 30 jours.", time: "il y a 1 h", unread: true, tone: "danger" },
-  { id: "n3", title: "Déploiement", meta: "terminé", text: "La version 0.184 est en production.", time: "hier", tone: "success" },
+  { id: "n3", title: "Déploiement", meta: "terminé", text: "La version 1.0 est en production.", time: "hier", tone: "success" },
   { id: "n4", title: "Hugo Mercier", meta: "vous a mentionné", text: "« On regarde le tableau de bord ensemble demain ? »", time: "hier" },
 ];
 
-/** La cloche de la barre haute et sa liste : l'état lu / non lu est tenu ici, comme le veut le kit. */
+/** La cloche et sa liste : l'état lu / non lu est tenu ici, comme le veut le kit. */
 function Notifications() {
   const [items, setItems] = useState(NOTIFICATIONS);
   return (
@@ -73,65 +42,43 @@ function Notifications() {
   );
 }
 
-/**
- * La barre haute, dans l'anatomie de celle du gabarit Pages : la marque, trois icônes d'action (la
- * première avec sa pastille), un séparateur, le champ de recherche réduit à une invite, puis à
- * droite la bascule de surface et l'avatar.
- *
- * La marque n'y paraît que tant que la barre latérale est réduite : épinglée, c'est la barre
- * latérale qui la porte, et la montrer deux fois côte à côte se lirait comme une erreur.
- */
-function TopBar({
-  showBrand,
-  surface,
-  onSurface,
-  onSearch,
-}: {
-  showBrand: boolean;
-  surface: Surface;
-  onSurface: (next: Surface) => void;
-  onSearch: () => void;
-}) {
+/** La marque : une pastille et le nom, dans l'îlot de gauche de la barre. */
+function Brand() {
   return (
-    <div className="lgk-topbar">
-      <RouteProgress />
-      {showBrand && <span className="lgk-logo lgk-topbar__brand">liquid glass</span>}
-      <div className="lgk-topbar__icons">
-        <Notifications />
-        <button type="button" className="lgk-topbar__icon" aria-label="Liens">
-          <LinkIcon size={18} />
-        </button>
-        <button type="button" className="lgk-topbar__icon" aria-label="Applications">
-          <GridIcon size={18} />
-        </button>
-      </div>
-      <button type="button" className="lgk-topbar__search" onClick={onSearch}>
-        <SearchIcon size={16} />
-        Tapez n'importe où pour chercher
+    <a className="lgk-brand" href="#/" aria-label="Liquid — accueil">
+      <span className="lgk-brand__mark" aria-hidden="true" />
+      <span className="lgk-logo">liquid</span>
+    </a>
+  );
+}
+
+/** L'îlot de droite : recherche, notifications, surface, avatar. */
+function Actions({ surface, onSurface, onSearch }: { surface: Surface; onSurface: (next: Surface) => void; onSearch: () => void }) {
+  return (
+    <>
+      <button type="button" className="lgk-action" onClick={onSearch} aria-label="Rechercher (ou tapez n'importe où)">
+        <SearchIcon size={17} />
       </button>
-      <div className="lgk-topbar__end">
-        <button
-          type="button"
-          className="lgk-topbar__icon"
-          onClick={() => onSurface(surface === "dark" ? "light" : "dark")}
-          aria-label="Basculer la surface sombre"
-          aria-pressed={surface === "dark"}
-        >
-          {surface === "dark" ? <SunIcon size={18} /> : <MoonIcon size={18} />}
-        </button>
-        <span className="lgk-topbar__avatar">
-          <Avatar name="Camille Leroy" size={32} />
-          <span className="lgk-topbar__status" aria-hidden="true" />
-        </span>
-      </div>
-    </div>
+      <Notifications />
+      <button
+        type="button"
+        className="lgk-action"
+        onClick={() => onSurface(surface === "dark" ? "light" : "dark")}
+        aria-label={surface === "dark" ? "Passer en clair" : "Passer en sombre"}
+      >
+        {surface === "dark" ? <SunIcon size={17} /> : <MoonIcon size={17} />}
+      </button>
+      <span className="lgk-avatar">
+        <Avatar name="Camille Leroy" size={32} />
+      </span>
+    </>
   );
 }
 
 /**
- * La recherche de la barre haute : les écrans par leur nom ou leur groupe, et les composants par
- * leur nom d'export — un composant mène à l'écran qui le montre. Entrée ouvre le premier résultat.
- * Elle s'ouvre au clic sur l'invite, ou en tapant une lettre n'importe où dans la page.
+ * La recherche : les écrans par leur nom ou leur groupe, et les composants par leur nom d'export — un
+ * composant mène à l'écran qui le montre. Entrée ouvre le premier résultat. Elle s'ouvre par la loupe,
+ * ou en tapant une lettre n'importe où dans la page.
  */
 function Search({ open, onOpen, onClose }: { open: boolean; onOpen: () => void; onClose: () => void }) {
   const navigate = useNavigate();
@@ -162,7 +109,7 @@ function Search({ open, onOpen, onClose }: { open: boolean; onOpen: () => void; 
         const first = screens[0] ?? components[0]?.screen;
         if (first) go(first);
       }}
-      brand={<span className="lgk-logo">liquid glass</span>}
+      brand={<span className="lgk-logo">liquid</span>}
       placeholder="Rechercher…"
       hint="Entrée ouvre le premier résultat · Échap ferme"
       emptyText="Aucun écran ni composant ne porte ce nom."
@@ -196,67 +143,61 @@ function Search({ open, onOpen, onClose }: { open: boolean; onOpen: () => void; 
 }
 
 /**
- * La coquille : barre latérale en rail, barre haute, et la zone où les écrans se rendent.
+ * La coquille du thème : le menu du haut en îlots (marque, sections en pilule, actions), et le menu
+ * flottant de gauche, qui liste les écrans de la section ouverte.
  *
- * Elle ne connaît aucun écran par son nom — elle lit le registre (`screens/index.tsx`) et en tire
- * les deux choses qui doivent rester d'accord : les entrées du menu et les routes.
+ * Elle ne connaît aucun écran par son nom — elle lit le registre (`screens/index.tsx`), d'où sortent
+ * à la fois les entrées des deux menus et les routes.
  */
 function Shell({ surface, onSurface }: { surface: Surface; onSurface: (next: Surface) => void }) {
   const navigate = useNavigate();
   const { pathname } = useLocation();
   const current = pathname.replace(/^\//, "");
-  const [pinned, setPinned] = useState(false);
+  const screen = SCREENS.find((s) => s.path === current) ?? SCREENS[0];
+  const section = sectionOf(screen);
+  const siblings = SCREENS.filter((s) => sectionOf(s).id === section.id);
   const [searchOpen, setSearchOpen] = useState(false);
 
-  const toItem = (screen: Screen): SidebarNavItem => ({
-    id: screen.id,
-    label: screen.label,
-    details: screen.details,
-    active: screen.path === current,
-    onClick: () => navigate(`/${screen.path}`),
-  });
-
-  // Un groupe d'un seul écran est une entrée simple : pas de sous-menu à déplier pour une page.
-  const navItems: SidebarNavItem[] = screenGroups().map(({ group, screens }) =>
-    screens.length === 1
-      ? { ...toItem(screens[0]), icon: GROUP_ICONS[group] }
-      : { id: group, label: group, icon: GROUP_ICONS[group], children: screens.map(toItem) },
-  );
+  // Un nouvel écran s'ouvre en haut de page.
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
 
   return (
-    <SidebarLayout
-      variant="rail"
-      pinned={pinned}
-      onPinnedChange={setPinned}
-      stickyHeader
-      logo={
-        <span className="lgk-brand">
-          <span className="lgk-brand__mark" aria-hidden="true" />
-          <span className="lgk-brand__text">
-            <span className="lgk-logo">liquid glass</span>
-            <span className="lgk-brand__sub">Espace de démonstration</span>
-          </span>
-        </span>
-      }
-      navItems={navItems}
-      header={<TopBar showBrand={!pinned} surface={surface} onSurface={onSurface} onSearch={() => setSearchOpen(true)} />}
+    <HeaderLayout
+      logo={<Brand />}
+      navItems={SECTIONS.map((s) => ({
+        id: s.id,
+        label: s.label,
+        active: s.id === section.id,
+        onClick: () => navigate(`/${SCREENS.find((x) => sectionOf(x).id === s.id)!.path}`),
+      }))}
+      actions={<Actions surface={surface} onSurface={onSurface} onSearch={() => setSearchOpen(true)} />}
     >
-      <Search open={searchOpen} onOpen={() => setSearchOpen(true)} onClose={() => setSearchOpen(false)} />
-      <Routes>
-        {SCREENS.map((screen) => (
-          <Route key={screen.id} path={`/${screen.path}`} element={screen.render()} />
-        ))}
-        <Route path="*" element={<Navigate to="/" replace />} />
-      </Routes>
-    </SidebarLayout>
+      {siblings.length > 1 && (
+        <FloatingNav
+          title={section.label}
+          ariaLabel={`Écrans : ${section.label}`}
+          items={siblings.map((s) => ({ id: s.id, label: s.label, active: s.id === screen.id, onClick: () => navigate(`/${s.path}`) }))}
+        />
+      )}
+      <div className={siblings.length > 1 ? "lgk-main lgk-main--indexed" : "lgk-main"}>
+        <Search open={searchOpen} onOpen={() => setSearchOpen(true)} onClose={() => setSearchOpen(false)} />
+        <Routes>
+          {SCREENS.map((s) => (
+            <Route key={s.id} path={`/${s.path}`} element={s.render()} />
+          ))}
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
+      </div>
+    </HeaderLayout>
   );
 }
 
 /**
  * `HashRouter` et non `BrowserRouter` : la vitrine est un site statique, et un rafraîchissement sur
  * `/tableaux` renvoie un 404 chez tout hébergeur qui ne sait pas réécrire vers `index.html` —
- * GitHub Pages le premier. Le dièse évite ce piège sans configuration. C'est une ligne à changer le
- * jour où elle est servie par quelque chose qui sait réécrire.
+ * GitHub Pages le premier. Le dièse évite ce piège sans configuration.
  */
 export function App() {
   const [surface, setSurface] = useState<Surface>("dark");

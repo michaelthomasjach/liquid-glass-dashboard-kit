@@ -215,16 +215,17 @@ export function AccueilPage({ kitVersion, componentCount }: AccueilPageProps) {
   return (
     <div className="lgk-home">
       <header className="lgk-home__hero">
-        <span className="lgk-home__eyebrow">Thème « Liquid glass » · kit v{kitVersion}</span>
+        <span className="lgk-home__eyebrow">Thème « Liquid » v1 · kit v{kitVersion}</span>
         <h1 className="lgk-home__hero-title">
-          Les composants de la liseuse, <span className="lgk-home__accent">dans du verre dépoli</span>.
+          Les composants de la liseuse, <span className="lgk-home__accent">sobres et modernes</span>.
         </h1>
         <p className="lgk-home__hero-lead">
           <strong>liquid-glass-dashboard-kit</strong> est une couche de thème posée sur{" "}
           <code>@michaelthomasjach/liseuse-dashboard-kit</code>. Elle ne réécrit aucun composant : elle
           redéfinit les variables <code>--lq-*</code> qu'ils lisent tous, et leur donne le langage d'un
-          tableau de bord « Liquid glass » — surfaces de verre translucides et floutées, liseré de lumière,
-          grands rayons, accent corail, cartes en gouttes d'eau teintées par le fond et auréolées de sa couleur. Chaque page de ce Storybook rend le composant du kit à travers <code>LiquidGlassTheme</code> :
+          tableau de bord moderne et sobre — fond presque noir, surfaces aux grands rayons, boutons en
+          pilule, une seule police (Geist), menu du haut en îlots arrondis, menu flottant à gauche et un cadre
+          arrondi qui décolle le contenu des bords de la fenêtre. Chaque page de ce Storybook rend le composant du kit à travers <code>LiquidGlassTheme</code> :
           c'est ce que verra une application qui l'utilise.
         </p>
         <div className="lgk-home__actions">
@@ -238,7 +239,7 @@ export function AccueilPage({ kitVersion, componentCount }: AccueilPageProps) {
           La vitrine — le tableau de bord, les tableaux, les formulaires, les écrans d'application et une
           planche par famille de composants — est publiée à côté de ce Storybook, et se lance en local avec{" "}
           <code>npm run dev</code>. La bascule <strong>Surface</strong> de la barre d'outils fait passer
-          toute cette page, et toutes les autres, du verre fumé (sombre) au verre laiteux (clair).
+          toute cette page, et toutes les autres, du presque-noir (sombre) au blanc cassé (clair).
         </p>
         <div className="lgk-home__stage-frame">
           <HeroDashboard />
@@ -266,12 +267,12 @@ export function AccueilPage({ kitVersion, componentCount }: AccueilPageProps) {
       <section className="lgk-home__section">
         <SectionHead
           eyebrow="Le propos"
-          title="Du verre sur de la couleur."
+          title="Sobre, arrondi, lisible."
           lead={
             <>
-              Le langage <em>liquid glass</em> des tableaux de bord récents : des surfaces translucides qui
-              floutent et saturent ce qu'il y a derrière, un liseré de lumière en haut de chaque carte, de
-              grands rayons, et un fond de halos colorés pour que le verre ait quelque chose à réfracter.
+              Le langage des interfaces récentes : un fond presque noir, des surfaces à peine levées aux grands
+              rayons, des boutons en pilule pleins d'encre, des titres serrés. La couleur est réservée aux
+              données — hausses, baisses, séries — pour que l'information garde toute sa place.
               Tout passe par les variables du kit : ses composants restent les mêmes, au pixel de logique près.
             </>
           }
@@ -283,11 +284,11 @@ export function AccueilPage({ kitVersion, componentCount }: AccueilPageProps) {
           </article>
           <article className="lgk-home__pillar">
             <h3>Un seul accent</h3>
-            <p>Corail vif sur verre fumé, corail profond sur verre clair : un primaire pour l'action et l'état sélectionné ; les couleurs de série restent aux graphiques.</p>
+            <p>L'encre elle-même : blanc sur fond sombre, noir sur fond clair. La pilule pleine marque l'action et l'état choisi ; les couleurs de série restent aux graphiques.</p>
           </article>
           <article className="lgk-home__pillar">
             <h3>Fait pour l'écran</h3>
-            <p>Le kit est à zéro rayon, son allure de papier. Ici, de grands rayons, un flou d'arrière-plan et un reflet d'un pixel qui détachent chaque surface.</p>
+            <p>Le kit est à zéro rayon, son allure de papier. Ici, 22 px sur les cartes, des pilules partout où l'on clique, et un cadre arrondi autour de toute la page.</p>
           </article>
         </div>
       </section>
@@ -308,7 +309,7 @@ export function AccueilPage({ kitVersion, componentCount }: AccueilPageProps) {
           {(["light", "dark"] as const).map((surface) => (
             <div key={surface} className="lgk-home__surface">
               <div className="lgk-home__surface-frame">
-              <LiquidGlassTheme surface={surface}>
+              <LiquidGlassTheme surface={surface} frame={false}>
                 <div className="lgk-home__surface-body">
                   <StatCard label="Panier moyen" value={euro(2580)} delta={3.8} caption="vs. mois précédent" sparklineData={REVENUE_TREND} />
                   <div className="lgk-home__row">
@@ -389,8 +390,8 @@ export function AccueilPage({ kitVersion, componentCount }: AccueilPageProps) {
               interval={3200}
               faces={[
                 { tag: "Vitrine", eyebrow: "npm run dev", title: "Trois écrans de référence", subtitle: "Vue d'ensemble, Tableaux, Formulaires" },
-                { tag: "Thème", eyebrow: `${TOKEN_COUNT} variables`, title: "Clair et sombre", subtitle: "Une seule feuille, liquid-glass.css", background: "var(--lq-color-info)" },
-                { tag: "Kit", eyebrow: `v${kitVersion}`, title: "La logique reste dans le kit", subtitle: "Ici, on ne décide que de l'apparence", background: "var(--lgk-color-text-strong)" },
+                { tag: "Thème", eyebrow: `${TOKEN_COUNT} variables`, title: "Clair et sombre", subtitle: "Trois feuilles : variables, coquille, détails", background: "var(--lq-color-info)" },
+                { tag: "Kit", eyebrow: `v${kitVersion}`, title: "La logique reste dans le kit", subtitle: "Ici, on ne décide que de l'apparence", background: "var(--lq-color-text)" },
               ]}
             />
           </Specimen>
@@ -477,8 +478,8 @@ export function AccueilPage({ kitVersion, componentCount }: AccueilPageProps) {
           lead={
             <>
               Un seul paquet : il ré-exporte tous les composants du kit et ajoute <code>LiquidGlassTheme</code>,
-              qui charge la feuille du kit, celle du thème et la police Inter (embarquée — rien n'est
-              demandé à Google Fonts) et pose la classe <code>lgk</code> et le fond que le verre floute.
+              qui charge la feuille du kit, celles du thème et la police Geist (embarquée — rien n'est
+              demandé à un tiers), pose la classe <code>lgk</code> et le cadre arrondi autour de la page.
             </>
           }
         />

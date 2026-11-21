@@ -5,9 +5,9 @@ import { TOKEN_GROUPS, TokenTable } from "./_docs/TokenTable";
 
 # Les variables du thème
 
-Chaque valeur ci-dessous est **lue dans le navigateur** sur une racine du thème (`getComputedStyle`), pas recopiée : la table montre ce que `src/theme/liquid-glass.css` pose réellement.
+Chaque valeur ci-dessous est **lue dans le navigateur** sur une racine du thème (`getComputedStyle`), pas recopiée : la table montre ce que `src/theme/tokens.css` pose réellement.
 
-Le thème « Liquid glass » : surfaces translucides floutées (`--lq-surface-backdrop`), liseré clair et reflet en haut de chaque surface (ombres intérieures), grands rayons (12 / 16 / 28 px), Inter partout en casse de phrase, sur un fond de grandes nappes de couleur (`--lgk-backdrop`). Depuis la v0.4, effet « goutte d'eau » : chaque carte est teintée de l'intérieur par deux lueurs du fond, rayonne derrière elle en halo coloré et porte un ménisque (reflet vif en haut, lueur qui remonte du bas). Sombre : verre fumé sur nappes rouge, orange, sarcelle et violet, accent corail `#ff7a45`. Clair : verre laiteux sur nappes pastel, accent `#d9472b`. Sur téléphone, barres et menu deviennent des îlots de verre flottants.
+Le thème « Liquid », v1 : sobre et moderne. Fond presque noir `#08090b` (blanc cassé `#f5f5f3` en clair), surfaces à peine levées (`#111215`, blanc en clair) aux grands rayons (10 / 14 / 22 px), boutons et onglets en pilule, l'encre elle-même pour accent (blanc en sombre, noir en clair), Geist partout en casse de phrase. Un cadre arrondi décolle le contenu des bords de la fenêtre (`--lgk-frame-gap`, `--lgk-frame-radius`) ; le menu du haut tient en îlots arrondis (`--lgk-bar-top`, `--lgk-bar-height`). Trois feuilles : `tokens.css` (les variables), `shell.css` (cadre, barre de menu, menu flottant), `details.css` (pilules, champs).
 
 {TOKEN_GROUPS.map((g) => (
   <section key={g.title} style={{ marginBottom: 40 }}>

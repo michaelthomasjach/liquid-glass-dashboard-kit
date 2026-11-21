@@ -1,0 +1,351 @@
+/* Liquid, v1 — la coquille : le cadre, la barre de menu, le menu flottant.
+ *
+ * Les seules règles de forme du thème avec details.css. Elles portent sur les gabarits du kit
+ * (`HeaderLayout`, `FloatingNav`, `SidebarLayout`) et sur les surfaces qui flottent (menus, recherche),
+ * jamais sur leur comportement : si le kit change la structure d'un gabarit, revérifier ici.
+ */
+
+/* ---------------------------------------------------------------------------------------------
+ * Le cadre : le contenu ne touche pas les bords de la fenêtre.
+ *
+ * `LiquidGlassTheme frame` (défaut) pose deux éléments : `.lgk-canvas`, qui décale le contenu de
+ * l'écart du cadre, et `.lgk-bezel`, un anneau fixé à la fenêtre qui peint cet écart et arrondit les
+ * quatre coins. Le contenu défile *sous* l'anneau : les coins restent ronds pendant le défilement,
+ * comme une fenêtre posée dans la page. L'anneau est une ombre portée immense autour d'un rectangle
+ * arrondi transparent — aucune découpe, aucun conteneur qui défile à la place de la page (le
+ * défilement reste celui de la fenêtre, ce que les applications attendent).
+ * --------------------------------------------------------------------------------------------- */
+
+.lgk .lgk-canvas {
+  min-height: 100vh;
+  padding: var(--lgk-frame-gap);
+}
+
+.lgk .lgk-bezel {
+  position: fixed;
+  inset: var(--lgk-frame-gap);
+  z-index: 1980;
+  border-radius: var(--lgk-frame-radius);
+  box-shadow: 0 0 0 100vmax var(--lgk-frame);
+  pointer-events: none;
+}
+
+/* Le fond de la page, sous le cadre, est celui du cadre : rien ne clignote d'une autre couleur
+   pendant un défilement élastique. */
+.lgk.lq-root {
+  background-color: var(--lq-color-bg);
+}
+
+/* ---------------------------------------------------------------------------------------------
+ * HeaderLayout : trois îlots arrondis accrochés en haut — la marque à gauche, le menu en pilule au
+ * centre, les actions à droite. Aucun ne prend toute la largeur ; le contenu défile entre eux.
+ * --------------------------------------------------------------------------------------------- */
+
+.lgk .lq-header-layout {
+  min-height: calc(100vh - 2 * var(--lgk-frame-gap));
+  background: transparent;
+}
+
+.lgk .lq-header-layout__bar {
+  position: sticky;
+  top: calc(var(--lgk-frame-gap) + var(--lgk-bar-top));
+  z-index: var(--lq-sticky-header-z-index, 1900);
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: var(--lq-space-3);
+  height: var(--lgk-bar-height);
+  margin: var(--lgk-bar-top) clamp(12px, 2vw, 22px) 0;
+  padding: 0;
+  background: transparent;
+  border: 0;
+  pointer-events: none;
+}
+
+.lgk .lq-header-layout__bar > * {
+  pointer-events: auto;
+}
+
+/* Matière commune des îlots : un verre sombre, dense, qui laisse deviner le contenu dessous. */
+.lgk .lq-header-layout__logo,
+.lgk .lq-header-layout__nav--desktop,
+.lgk .lq-header-layout__actions,
+.lgk .lq-floating-nav:not(.lq-floating-nav--static),
+.lgk .lq-header-layout__nav--mobile {
+  background-color: var(--lgk-float);
+  border: 1px solid var(--lgk-float-border);
+  box-shadow: var(--lgk-float-shadow);
+  -webkit-backdrop-filter: blur(22px) saturate(1.5);
+  backdrop-filter: blur(22px) saturate(1.5);
+}
+
+.lgk .lq-header-layout__logo {
+  justify-self: start;
+  height: 100%;
+  padding: 0 20px;
+  border-radius: 999px;
+}
+
+.lgk .lq-header-layout__nav--desktop {
+  flex: none;
+  gap: 2px;
+  height: 100%;
+  padding: 6px;
+  border-radius: 999px;
+}
+
+.lgk .lq-header-layout__nav-item {
+  display: inline-flex;
+  align-items: center;
+  height: 100%;
+  padding: 0 18px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--lq-color-text-muted);
+  border-radius: 999px;
+  transition: color var(--lq-transition-fast), background-color var(--lq-transition-fast);
+}
+
+.lgk .lq-header-layout__nav-item:hover {
+  color: var(--lq-color-text);
+  background-color: var(--lq-color-hover);
+}
+
+/* L'entrée active : une pilule pleine, encre inversée (blanc sur noir, noir sur blanc). */
+.lgk .lq-header-layout__nav-item--active,
+.lgk .lq-header-layout__nav-item--active:hover {
+  font-weight: 600;
+  color: var(--lq-color-accent-contrast);
+  background-color: var(--lq-color-accent);
+}
+
+.lgk .lq-header-layout__nav-item:focus-visible {
+  outline: 2px solid var(--lq-color-focus-ring);
+  outline-offset: 2px;
+}
+
+.lgk .lq-header-layout__actions {
+  justify-self: end;
+  gap: 4px;
+  height: 100%;
+  margin-left: 0;
+  padding: 0 6px;
+  border-radius: 999px;
+}
+
+.lgk .lq-header-layout__menu-button {
+  width: 42px;
+  height: 42px;
+  border: 0;
+  border-radius: 999px;
+  color: var(--lq-color-accent-contrast);
+  background-color: var(--lq-color-accent);
+}
+
+.lgk .lq-header-layout__content {
+  padding: clamp(20px, 3vw, 34px) clamp(14px, 3vw, 34px) 48px;
+}
+
+/* Téléphone et tablette étroite : le menu en pilule cède la place au bouton rond ; la liste s'ouvre
+   en carte flottante sous la barre. */
+@media (max-width: 860px) {
+  .lgk .lq-header-layout__bar {
+    grid-template-columns: 1fr auto;
+    margin-left: 10px;
+    margin-right: 10px;
+  }
+
+  .lgk .lq-header-layout__logo {
+    padding: 0 16px;
+  }
+
+  .lgk .lq-header-layout__nav--mobile {
+    position: fixed;
+    top: calc(var(--lgk-frame-gap) + var(--lgk-bar-top) + var(--lgk-bar-height) + 8px);
+    left: calc(var(--lgk-frame-gap) + 10px);
+    right: calc(var(--lgk-frame-gap) + 10px);
+    z-index: 1960;
+    gap: 2px;
+    padding: 8px;
+    border-radius: 24px;
+    background-color: var(--lgk-float-solid);
+  }
+
+  .lgk .lq-header-layout__nav--mobile .lq-header-layout__nav-item {
+    height: 46px;
+    padding: 0 16px;
+  }
+
+  .lgk .lq-header-layout__content {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+}
+
+/* ---------------------------------------------------------------------------------------------
+ * FloatingNav : le menu flottant de gauche, en îlot compact ; l'entrée active marquée d'un point.
+ * --------------------------------------------------------------------------------------------- */
+
+.lgk .lq-floating-nav {
+  --lq-floating-nav-offset: calc(var(--lgk-frame-gap) + 18px);
+}
+
+.lgk .lq-floating-nav:not(.lq-floating-nav--static) {
+  padding: 14px 18px 14px 14px;
+  border-radius: 22px;
+}
+
+.lgk .lq-floating-nav__title {
+  padding: 0 0 4px 18px;
+}
+
+.lgk .lq-floating-nav__item {
+  padding: 6px 0;
+  font-size: 0.875rem;
+}
+
+.lgk .lq-floating-nav__dot {
+  width: 8px;
+  height: 8px;
+  margin: 0 1px;
+  box-shadow: 0 0 0 3px color-mix(in srgb, currentColor 18%, transparent);
+}
+
+.lgk .lq-floating-nav__badge {
+  background-color: var(--lgk-pill-bg);
+}
+
+@media (max-width: 720px) {
+  .lgk .lq-floating-nav--fixed:not(.lq-floating-nav--static) {
+    padding: 0;
+    background: none;
+    border: 0;
+    box-shadow: none;
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    bottom: calc(var(--lgk-frame-gap) + 10px + env(safe-area-inset-bottom, 0px));
+    left: calc(var(--lgk-frame-gap) + 10px);
+    right: calc(var(--lgk-frame-gap) + 10px);
+  }
+
+  .lgk .lq-floating-nav--fixed .lq-floating-nav__list {
+    padding: 5px;
+    background-color: var(--lgk-float);
+    border: 1px solid var(--lgk-float-border);
+    -webkit-backdrop-filter: blur(22px) saturate(1.5);
+    backdrop-filter: blur(22px) saturate(1.5);
+  }
+
+  .lgk .lq-floating-nav--fixed .lq-floating-nav__item {
+    padding: 8px 14px;
+  }
+}
+
+/* ---------------------------------------------------------------------------------------------
+ * SidebarLayout, pour une application qui garde le menu latéral du kit : la barre devient un îlot
+ * de la matière des surfaces, la barre haute colle sans filet.
+ * --------------------------------------------------------------------------------------------- */
+
+.lgk .lq-sidebar-layout {
+  background: transparent;
+}
+
+.lgk .lq-sidebar-layout__sidebar {
+  border-right: 0;
+  --lq-sidebar-head-border: transparent;
+}
+
+.lgk .lq-sidebar-layout__nav-item {
+  border-radius: 12px;
+}
+
+.lgk .lq-sidebar-layout__nav-item--active {
+  color: var(--lq-color-accent-contrast);
+  background-color: var(--lq-color-accent);
+}
+
+.lgk .lq-sidebar-layout--sticky-header > .lq-sidebar-layout__main > .lq-sidebar-layout__header {
+  background-color: var(--lgk-float);
+  -webkit-backdrop-filter: blur(22px) saturate(1.5);
+  backdrop-filter: blur(22px) saturate(1.5);
+  --lq-sticky-header-shadow: 0 1px 0 var(--lq-color-border-subtle);
+}
+
+/* ---------------------------------------------------------------------------------------------
+ * Ce qui flotte : menus, listes déroulantes, infobulles, recherche plein écran, modales.
+ * --------------------------------------------------------------------------------------------- */
+
+.lgk .lq-popover,
+.lgk .lq-context-menu,
+.lgk .lq-dropdown-panel,
+.lgk .lq-notification-menu__panel {
+  background-color: var(--lgk-float-solid);
+  border: 1px solid var(--lgk-float-border);
+  border-radius: 18px;
+  box-shadow: var(--lq-shadow-modal);
+}
+
+.lgk .lq-context-menu__item,
+.lgk .lq-dropdown-panel__option,
+.lgk .lq-select__option {
+  border-radius: 10px;
+}
+
+.lgk .lq-tooltip {
+  color: var(--lq-color-accent-contrast);
+  background-color: var(--lq-color-accent);
+  border: 0;
+  border-radius: 10px;
+}
+
+.lgk .lq-modal__overlay {
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+}
+
+.lgk .lq-modal {
+  border-radius: 26px;
+}
+
+.lgk .lq-search-overlay {
+  background-color: color-mix(in srgb, var(--lq-color-bg) 88%, transparent);
+  -webkit-backdrop-filter: blur(24px) saturate(1.3);
+  backdrop-filter: blur(24px) saturate(1.3);
+}
+
+.lgk .lq-search-overlay__input {
+  font-weight: 500;
+  letter-spacing: -0.03em;
+}
+
+.lgk .lq-search-overlay__result {
+  border-radius: 14px;
+}
+
+/* Sans flou d'arrière-plan, ou quand le système demande moins de transparence : matière pleine. */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .lgk .lq-header-layout__logo,
+  .lgk .lq-header-layout__nav--desktop,
+  .lgk .lq-header-layout__actions,
+  .lgk .lq-floating-nav:not(.lq-floating-nav--static),
+  .lgk .lq-floating-nav--fixed .lq-floating-nav__list {
+    background-color: var(--lgk-float-solid);
+  }
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  .lgk .lq-header-layout__logo,
+  .lgk .lq-header-layout__nav--desktop,
+  .lgk .lq-header-layout__actions,
+  .lgk .lq-floating-nav:not(.lq-floating-nav--static),
+  .lgk .lq-floating-nav--fixed .lq-floating-nav__list {
+    background-color: var(--lgk-float-solid);
+  }
+}
+
+/* Le rail : les entrées se décollent des bords de l'îlot, la pilule active ne touche ni le cadre ni
+   le contenu. */
+.lgk .lq-sidebar-layout--rail .lq-sidebar-layout__nav-item {
+  margin-left: 8px;
+  margin-right: 8px;
+}

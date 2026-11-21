@@ -1,5 +1,6 @@
 import type { ReactElement } from "react";
 import { BarChartIcon, BriefcaseIcon, FileIcon, GridIcon, HomeIcon, LayersIcon, PencilIcon, TableIcon } from "@michaelthomasjach/liseuse-dashboard-kit";
+import { Home } from "./Home";
 import { Overview } from "./Overview";
 import { Tables } from "./Tables";
 import { Forms } from "./Forms";
@@ -52,12 +53,11 @@ export interface Screen {
 }
 
 /**
- * L'icône de chaque groupe : c'est elle qui reste visible dans le rail quand la barre latérale est
- * réduite. Les écrans d'un groupe, eux, s'y affichent par leur initiale. Un groupe sans icône ici
- * prendrait l'initiale de son nom — lisible, mais seul de son espèce dans la colonne.
+ * L'icône de chaque groupe, que la recherche pose devant chaque écran trouvé.
  */
 export const GROUP_ICONS: Record<string, ReactElement> = {
-  "Tableau de bord": <HomeIcon />,
+  "Accueil": <HomeIcon />,
+  "Tableau de bord": <GridIcon />,
   "Données": <TableIcon />,
   "Applications": <BriefcaseIcon />,
   "Composants · base": <LayersIcon />,
@@ -68,7 +68,8 @@ export const GROUP_ICONS: Record<string, ReactElement> = {
 };
 
 export const SCREENS: Screen[] = [
-  { id: "overview", label: "Vue d'ensemble", path: "", group: "Tableau de bord", details: "Douze derniers mois", source: "Overview", render: () => <Overview /> },
+  { id: "home", label: "Accueil", path: "", group: "Accueil", source: "Home", render: () => <Home /> },
+  { id: "overview", label: "Vue d'ensemble", path: "tableau-de-bord", group: "Tableau de bord", details: "Douze derniers mois", source: "Overview", render: () => <Overview /> },
   { id: "tables", label: "Tableaux", path: "tableaux", group: "Données", source: "Tables", render: () => <Tables /> },
   { id: "forms", label: "Formulaires", path: "formulaires", group: "Données", source: "Forms", render: () => <Forms /> },
 
@@ -96,6 +97,25 @@ export const SCREENS: Screen[] = [
   { id: "c-maps", label: "Cartes, audio, planning", path: "composants/cartes-audio", group: "Composants · widgets", source: "MapsAudio", render: () => <MapsAudio /> },
   { id: "c-pages", label: "Pages et mises en page", path: "composants/pages", group: "Composants · pages", source: "Pages", render: () => <Pages /> },
 ];
+
+/**
+ * Les sections du menu du haut : chaque groupe y entre tel quel, sauf les cinq groupes de planches,
+ * réunis sous « Composants ». Le menu flottant de gauche liste ensuite les écrans de la section.
+ */
+export interface Section {
+  id: string;
+  label: string;
+}
+
+export function sectionOf(screen: Screen): Section {
+  if (screen.group.startsWith("Composants")) return { id: "composants", label: "Composants" };
+  return { id: screen.group, label: screen.group };
+}
+
+export const SECTIONS: Section[] = SCREENS.reduce<Section[]>((all, screen) => {
+  const section = sectionOf(screen);
+  return all.some((s) => s.id === section.id) ? all : [...all, section];
+}, []);
 
 /** Les groupes, dans l'ordre de première apparition. */
 export function screenGroups(): { group: string; screens: Screen[] }[] {

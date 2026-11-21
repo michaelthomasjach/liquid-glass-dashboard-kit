@@ -69,7 +69,7 @@ const preview: Preview = {
       // `mdkPadding: 0`.
       const fillsViewport = context.viewMode !== "docs";
       return (
-        <LiquidGlassTheme surface={context.globals.surface === "light" ? "light" : "dark"} style={{ minHeight: fillsViewport ? "100vh" : undefined }}>
+        <LiquidGlassTheme surface={context.globals.surface === "light" ? "light" : "dark"} frame={fillsViewport} style={{ minHeight: fillsViewport ? "100vh" : undefined }}>
           <div
             style={{
               minHeight: fillsViewport ? "100vh" : undefined,

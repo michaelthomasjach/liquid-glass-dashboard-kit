@@ -18,54 +18,48 @@ fond bleu (fleur, « Refer & Earn »).
 
 ## Comment la couche tient
 
-- `src/theme/liquid-glass.css` redéfinit les variables `--lq-*` sous `.lgk.lq-root[data-lq-palette][data-lq-surface="…"]`
-  (0,4,0) et `.lgk.lq-root` (0,2,0) : strictement plus spécifique que le kit, quel que soit l'ordre des imports.
-- La classe `lgk` est posée par `LiquidGlassTheme` (`src/theme/index.tsx`), seul point d'entrée.
-- Le flou vient de `--lq-surface-backdrop`, variable **ajoutée au kit pour ce thème** (v0.314.0) et lue
-  en `backdrop-filter` par Panel, Card, Modal, Popover, ContextMenu et la barre latérale. `none` par défaut.
-- Le fond que le verre floute est porté par la racine du thème (`--lgk-backdrop`, ou la prop `backdrop`).
-  `SidebarLayout` / `HeaderLayout` y sont rendus transparents (ils peignent `--lq-color-bg` dans le kit).
-- Règles hors variables, toutes commentées dans la feuille : fond de racine, gabarits transparents,
-  barre de tête collante en verre, liens, verre plus dense pour ce qui flotte (`--lgk-color-float`),
-  encre pleine pour l'infobulle (elle écrit son texte en `--lq-color-panel`), repli opaque sans
-  `backdrop-filter` ou avec `prefers-reduced-transparency`.
-- v0.2.0 (2026-11-20, demande de Michael sur une capture Dribbble de menu en verre) : la barre
-  latérale `rail` devient un **îlot flottant** (12 px des bords, rayon 28 px, flou 36 px), dont la
-  **largeur** s'anime (le kit, lui, décale la barre par `transform`, ce qui couperait un îlot arrondi) ;
-  vignettes passées à gauche des libellés par `order` ; l'épingle devient la pastille « » / « »
-  accrochée au bord. La barre haute flotte aussi. `SearchOverlay` : voile de verre épais
-  (`--lgk-veil`, flou 48 px) parce que le voile du kit (panneau à 95 %) laissait lire la page à
-  travers. Le « liseré liquide » (`--lgk-rim`, anneau de dégradé masqué) et la nappe `--lgk-sheen`
-  sont réservés à ces surfaces-marques. Ce sont des règles d'anatomie sur des classes `.lq-…` du kit,
-  écrites ici parce qu'elles ne changent que la forme (aucun comportement) : si le kit change la
-  structure de `SidebarLayout` ou de `SearchOverlay`, revérifier ces deux sections.
-- v0.3.0 (2026-11-20, « encore plus liquid glass ») : tout le kit passe au verre, pas seulement les
-  surfaces. Section « v0.3 » en fin de `liquid-glass.css` : matière par surface (`--lgk-glass-*`
-  bombé, `--lgk-well*` creusé, `--lgk-thumb*` goutte claire, `--lgk-gloss` reflet du verre teinté,
-  `--lgk-surface-sheen` nappe des surfaces) ; boutons en pilule de verre, pleins en verre teinté qui
-  rayonne ; champs en puits (erreur/succès gardent la couleur du kit) ; contrôle segmenté et bouton
-  enfoncé d'un `ButtonGroup` en goutte claire (pas en accent : le texte du groupe y serait illisible) ;
-  interrupteur/case/radio/curseur bombés ; puces givrées ; traînée de lumière sur la ligne survolée ;
-  infobulle en verre fumé ; voile flou des modales ; colonne d'outils et boutons des graphiques en
-  verre. Ombres de verre et flou des surfaces renforcés (30 px, 190 %). Base en `:where()` pour que
-  les états du kit gardent la main. Fond du tracé des graphiques laissé opaque (lisibilité).
-- v0.4.0 (2026-11-21, « effet goutte d'eau », d'après des maquettes d'apps mobiles en verre) : section
-  « v0.4 » en fin de `liquid-glass.css`. Fond en grandes nappes saturées (rouge, orange, sarcelle,
-  violet ; pastels en clair), accent corail (`#ff7a45` encre `#1c0a04` en sombre, `#d9472b` en clair).
-  Chaque carte / panneau / carte de position est teinté de l'intérieur par deux lueurs
-  (`--lgk-glow-a/b`, tirées de `--lgk-glow-1…4`, qui tournent avec `:nth-child(4n+…)`), rayonne
-  derrière elle en ombres colorées (`--lgk-halo`) et porte le ménisque `--lgk-drop-rim` (arête haute
-  vive + lueur qui remonte du bas). Une surface dans une surface ne garde que le ménisque. Tout en
-  ombres et dégradés : aucun pseudo-élément ni changement de position. Icônes seules en gouttes
-  rondes, boutons pleins qui rayonnent, puce choisie allumée à l'accent. Rayon des cartes 28 px.
-  Téléphone (≤ 900 px) : barre du menu et barre haute en îlots flottants floutés, tiroir du menu en
-  îlot par-dessus les barres (fermé en touchant le voile), flou ramené à 20 px, fond qui défile
-  (Safari iOS ignore `background-attachment: fixed`). Débordements de la carte du monde et de
-  `HoldingCard` corrigés dans le kit (0.315.1). Vitrine : barre haute resserrée et grilles en
-  `minmax(min(Npx, 100%), 1fr)` pour tenir dans 390 px. Contrôle : `scrollWidth` = 390 sur tous les
-  écrans de la vitrine.
-- Dépendance au kit en `>=0.314.0 <1.0.0` (et non `^`, qui sur 0.x verrouille la mineure) : un
-  `npm update` reprend chaque nouvelle version du kit.
+### v1 (2026-11-21) — refonte complète
+
+Michael n'aimait pas le rendu « verre » des 0.x (« c'est vraiment pas joli ») et a demandé de **tout
+refaire et de changer la manière dont c'est réalisé**, d'après quatre références : « Organized. »
+(trois panneaux photo arrondis sur fond sombre, bouton pilule blanc), « Bespoke Architecture Studio »
+(carrousel incurvé), « Space Voyage » (menu en pilule en haut à droite, liste flottante à gauche avec un
+point sur l'entrée active), « The Next Layer of Intelligence » (contenu décollé des bords de la fenêtre
+par un liseré, coins arrondis). Sobre mais moderne, boutons arrondis, police moderne, menu du haut qui ne
+prend pas toute la largeur, menu flottant à gauche, contenu décollé des bords.
+
+- **Variables d'abord.** L'ancienne feuille (`liquid-glass.css`, 1 569 lignes de verre, lueurs, ménisques)
+  est supprimée. Trois feuilles : `src/theme/tokens.css` (les variables `--lq-*`, y compris les
+  optionnelles listées en fin du `tokens.css` du kit), `shell.css` (cadre, îlots du menu du haut,
+  `FloatingNav`, rail, ce qui flotte), `details.css` (pilules des boutons / onglets / contrôle segmenté,
+  matière des champs). Règles de base en `:where(.lgk)` pour que les états du kit gardent la main.
+- Sélecteurs : `.lgk.lq-root[data-lq-palette][data-lq-surface="…"]` (0,4,0) et `.lgk.lq-root` (0,2,0),
+  strictement plus spécifiques que le kit quel que soit l'ordre des imports.
+- **Cadre** : `LiquidGlassTheme frame` (défaut true) rend `.lgk-canvas` (marge du liseré) et
+  `.lgk-bezel`, anneau `position: fixed` qui peint le liseré par une ombre portée de 100vmax autour d'un
+  rectangle arrondi transparent (z-index 1980 : sous les modales, au-dessus du contenu). Le défilement
+  reste celui de la fenêtre. Couper le cadre (`frame={false}`) pour un thème posé dans une page (pages
+  Docs du Storybook, aperçus intégrés). Ne pas réutiliser le nom de classe `lgk-frame` : la vitrine
+  l'emploie déjà pour ses cadres à hauteur fixe.
+- **Coquille prévue** : `HeaderLayout` en trois îlots (marque, sections en pilule centrées, actions),
+  collés à `--lgk-bar-top` sous le cadre ; `FloatingNav` (kit 0.316) en îlot à gauche, rangée de
+  pastilles en bas sur téléphone. `SidebarLayout` reste habillé (entrée active en pilule d'encre).
+- Composants ajoutés au kit pour cette refonte (0.316.0) : `CurvedCarousel`, `TriptychScroll`,
+  `FloatingNav`. `TriptychScroll` (0.316.1) fait basculer chaque section entière passé son seuil.
+- Police : Geist (`@fontsource-variable/geist`, fichier variable), Inter retirée. La prop `backdrop`
+  a disparu avec le verre (v1.0.0, changement cassant).
+- Vitrine : menu du haut = sections (Accueil, Tableau de bord, Données, Applications, Composants) tirées
+  du registre (`sectionOf` dans `screens/index.tsx`), menu flottant = écrans de la section. Nouvel
+  écran « Accueil » (`Home.tsx`) : carrousel incurvé, indicateurs, sections désynchronisées. Tuiles du
+  tableau de bord en photos Unsplash (`photos.ts`), `LiveTile tone="dark"` sur photo (le ton par
+  défaut, accent = encre blanche, y poserait un voile clair et un texte noir).
+- Contrôles faits le 2026-11-21 : vitrine et Storybook dans Edge headless, sombre et clair, 1440 et
+  390 px (aucun débordement horizontal).
+
+### Historique 0.x (verre)
+
+v0.1–0.4 (2026-11-20/21) : surfaces de verre dépoli (`--lq-surface-backdrop`, variable ajoutée au kit en
+0.314.0 et toujours disponible), rail en îlot flottant, effet « goutte d'eau ». Abandonné en v1.
 
 ## Règles de frontière (identiques à minimal)
 
@@ -80,12 +74,11 @@ qui a été fait pour `--lq-surface-backdrop`).
 
 ## Le langage visuel
 
-Sombre (défaut) : fond `#0b0c12` sous de grandes nappes rouge, orange, sarcelle et violet ; verre
-`rgba(255,255,255,.06)` teinté par deux lueurs, liseré `rgba(255,255,255,.15)`, ménisque
-`--lgk-drop-rim` ; texte `#f3f6fb` ; accent corail `#ff7a45` (encre `#1c0a04`). Clair : nappes
-corail, ambre, lagon et lilas sur fond nacré ; verre `rgba(255,255,255,.42)` ; texte `#0f172a` ;
-accent `#d9472b`. Rayons 12 / 16 / 28 px (24 sur téléphone), contrôles de 40 px, Inter partout en
-casse de phrase (pas de Montserrat ni de capitales espacées).
+Sombre (défaut) : fond `#08090b`, surfaces `#111215` à filet `rgba(255,255,255,.06)`, cadre `#18191d`,
+texte `#f4f4f5` / `#8e8f98`, accent = l'encre (`#f4f4f5`, contraste `#0a0a0c`). Clair : fond `#f5f5f3`,
+cartes blanches, cadre `#e3e2de`, texte et accent `#0e0e11`. Couleur réservée aux données (hausse
+`#4fd18b`, baisse `#ff6b6b`, séries ambre / ciel / violet / rose). Rayons 10 / 14 / 22 px, pilules
+partout où l'on clique, contrôles de 40 px, Geist en casse de phrase, titres serrés (-0,03 à -0,045 em).
 
 ## Publication et état
 

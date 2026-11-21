@@ -1,0 +1,183 @@
+/* Liquid, v1 — les détails que les variables ne disent pas.
+ *
+ * Peu de règles, toutes de forme : la pilule des boutons et des onglets, la matière des champs,
+ * l'état actif en encre inversée. Les règles de base passent par `:where(.lgk)` (spécificité d'une
+ * seule classe) pour que les états du kit — erreur, succès, désactivé — gardent la main.
+ */
+
+/* ---- Boutons : des pilules. Le bouton plein neutre est une pilule discrète, le ton « primary » une
+   pilule d'encre inversée (blanc en sombre, noir en clair), comme les appels à l'action des
+   références. ---- */
+
+.lgk .lq-button,
+.lgk .lq-icon-button,
+.lgk .lq-button-group__item,
+.lgk .lq-chart__icon-button,
+.lgk .lq-chart__reset-button {
+  border-radius: 999px;
+}
+
+:where(.lgk) .lq-button:where(:not(.lq-button--toned, .lq-button--outline, .lq-button--ghost, .lq-button--link, .lq-button--selected)) {
+  background-color: var(--lgk-pill-bg);
+  border-color: transparent;
+}
+
+:where(.lgk) .lq-button:hover:not(:disabled) {
+  opacity: 1;
+  filter: brightness(1.12);
+}
+
+:where(.lgk) .lq-button--outline {
+  border-color: var(--lq-color-border);
+}
+
+:where(.lgk) .lq-button--outline:hover:not(:disabled),
+:where(.lgk) .lq-button--ghost:hover:not(:disabled) {
+  background-color: var(--lq-color-hover);
+  filter: none;
+}
+
+:where(.lgk) .lq-button--selected {
+  color: var(--lq-color-accent-contrast);
+  background-color: var(--lq-color-accent);
+  border-color: var(--lq-color-accent);
+}
+
+:where(.lgk) .lq-icon-button {
+  border-color: transparent;
+  background-color: var(--lgk-pill-bg);
+}
+
+:where(.lgk) .lq-icon-button:hover:not(:disabled) {
+  background-color: var(--lq-color-hover);
+}
+
+/* ---- Contrôle segmenté et onglets : une piste en pilule, l'option choisie en pilule pleine. ---- */
+
+.lgk .lq-segmented__options {
+  gap: 2px;
+  padding: 3px;
+  background-color: var(--lgk-pill-bg);
+  border: 0;
+  border-radius: 999px;
+}
+
+.lgk .lq-segmented__option {
+  padding: 6px 14px;
+  font-weight: 500;
+  color: var(--lq-color-text-muted);
+  background: transparent;
+  border: 0;
+  border-radius: 999px;
+  transition: color var(--lq-transition-fast), background-color var(--lq-transition-fast);
+}
+
+.lgk .lq-segmented__option:hover {
+  color: var(--lq-color-text);
+}
+
+.lgk .lq-segmented__option--active,
+.lgk .lq-segmented__option--active:hover {
+  font-weight: 600;
+  color: var(--lq-color-accent-contrast);
+  background-color: var(--lq-color-accent);
+}
+
+.lgk .lq-segmented__label {
+  text-transform: none;
+}
+
+.lgk .lq-tabs--horizontal {
+  gap: 4px;
+  border-bottom: 0;
+}
+
+.lgk .lq-tabs--horizontal .lq-tabs__tab {
+  padding: 8px 16px;
+  border-radius: 999px;
+  transition: color var(--lq-transition-fast), background-color var(--lq-transition-fast);
+}
+
+.lgk .lq-tabs--horizontal .lq-tabs__tab:hover:not(:disabled) {
+  background-color: var(--lq-color-hover);
+}
+
+.lgk .lq-tabs--horizontal .lq-tabs__tab--active,
+.lgk .lq-tabs--horizontal .lq-tabs__tab--active:hover:not(:disabled) {
+  color: var(--lq-color-accent-contrast);
+  background-color: var(--lq-color-accent);
+}
+
+.lgk .lq-tabs--horizontal .lq-tabs__indicator {
+  display: none;
+}
+
+.lgk .lq-tabs--vertical .lq-tabs__tab {
+  padding: 8px 12px;
+  border-radius: 12px;
+}
+
+.lgk .lq-tabs--vertical .lq-tabs__tab--active {
+  background-color: var(--lq-color-hover);
+}
+
+/* ---- Champs : un puits à peine plus marqué que la surface, filet léger, l'accent au focus. ---- */
+
+:where(.lgk) .lq-field__control:where(:not(.lq-field__control--error, .lq-field__control--success)) {
+  background-color: var(--lgk-raise);
+  border-color: var(--lq-color-border-subtle);
+}
+
+:where(.lgk) .lq-field__control:where(:not(.lq-field__control--error, .lq-field__control--success)):hover {
+  border-color: var(--lq-color-border);
+}
+
+.lgk .lq-field__control {
+  border-radius: 12px;
+}
+
+.lgk .lq-checkbox__box {
+  border-radius: 6px;
+}
+
+/* ---- Puces, étiquettes, pastilles : rondes. ---- */
+
+.lgk .lq-badge,
+.lgk .lq-tag {
+  border-radius: 999px;
+}
+
+.lgk .lq-chip--on {
+  color: var(--lq-color-accent-contrast);
+  background-color: var(--lq-color-accent);
+  border-color: var(--lq-color-accent);
+}
+
+/* ---- Les composants de mouvement (carrousel incurvé, sections désynchronisées) : sans filet, la
+   photo va jusqu'au bord arrondi. ---- */
+
+.lgk .lq-curved-carousel__card,
+.lgk .lq-triptych__section {
+  border: 0;
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.22);
+}
+
+.lgk .lq-curved-carousel__card--content {
+  box-shadow: none;
+}
+
+.lgk .lq-curved-carousel__control {
+  border: 0;
+  background-color: var(--lgk-pill-bg);
+}
+
+.lgk .lq-triptych__section {
+  box-shadow: none;
+}
+
+/* ---- Titres : serrés, comme les grands titres des références. ---- */
+
+.lgk h1,
+.lgk h2 {
+  letter-spacing: -0.035em;
+}

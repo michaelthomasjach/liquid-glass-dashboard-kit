@@ -17,7 +17,7 @@
   padding: 1px 5px;
   border-radius: var(--lq-radius-sm);
   background: var(--lq-color-hover);
-  color: var(--lgk-color-text-strong);
+  color: var(--lq-color-text);
 }
 
 /* ── Héros ─────────────────────────────────────────────────────────────── */
@@ -38,7 +38,7 @@
   font-size: calc(var(--lq-text-h1) * 1.25);
   line-height: var(--lq-line-height-heading);
   font-weight: var(--lq-font-weight-bold);
-  color: var(--lgk-color-text-strong);
+  color: var(--lq-color-text);
   letter-spacing: -0.01em;
 }
 
@@ -106,7 +106,7 @@
 .lgk-home__figures dt {
   font-size: var(--lq-text-h2);
   font-weight: var(--lq-font-weight-bold);
-  color: var(--lgk-color-text-strong);
+  color: var(--lq-color-text);
   line-height: 1.1;
 }
 
@@ -132,7 +132,7 @@
   font-size: var(--lq-text-h2);
   line-height: var(--lq-line-height-heading);
   font-weight: var(--lq-font-weight-bold);
-  color: var(--lgk-color-text-strong);
+  color: var(--lq-color-text);
 }
 
 .lgk-home__lead {
@@ -161,7 +161,7 @@
   margin: 0 0 var(--lq-space-2);
   font-size: var(--lq-text-h5);
   font-weight: var(--lq-font-weight-semibold);
-  color: var(--lgk-color-text-strong);
+  color: var(--lq-color-text);
 }
 
 .lgk-home__pillar p,
@@ -284,7 +284,7 @@
   gap: var(--lq-space-2);
   padding: var(--lq-space-2) 0;
   border-bottom: 1px solid var(--lq-color-border-subtle);
-  color: var(--lgk-color-text-strong);
+  color: var(--lq-color-text);
 }
 
 .lgk-home__caption-sample {
@@ -363,7 +363,7 @@
   grid-template-columns: 1fr auto auto;
   align-items: center;
   gap: var(--lq-space-3);
-  color: var(--lgk-color-text-strong);
+  color: var(--lq-color-text);
   font-weight: var(--lq-font-weight-medium);
 }
 
@@ -417,7 +417,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  color: var(--lgk-color-text-strong);
+  color: var(--lq-color-text);
 }
 
 .lgk-home__count {

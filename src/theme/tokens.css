@@ -1,0 +1,293 @@
+/* Liquid, v1 — les variables.
+ *
+ * ## Comment ce thème est fait
+ *
+ * La v1 (2026-11-21) repart de zéro. Les versions 0.x empilaient du verre : flous, lueurs qui
+ * tournaient de carte en carte, ménisques, nappes de couleur — plus de 1 500 lignes de règles posées
+ * sur l'anatomie des composants. Michael n'aimait pas le résultat. Celle-ci suit l'autre chemin, celui
+ * du thème minimal : **presque tout passe par les variables** que le kit lit déjà (`--lq-*`, y compris
+ * les variables optionnelles listées en fin de son `tokens.css`). Trois feuilles seulement :
+ *
+ *   tokens.css   les variables, ici — couleurs, rayons, typographie, contrôles, graphiques ;
+ *   shell.css    le cadre arrondi décollé des bords, la barre de menu en pilule, le menu flottant ;
+ *   details.css  le peu que les variables ne disent pas : boutons en pilule, états actifs.
+ *
+ * ## Le langage visuel
+ *
+ * D'après les références de Michael (« Organized. », « Bespoke Architecture Studio », « Space
+ * Voyage », « The Next Layer of Intelligence ») : sobre et moderne. Un fond presque noir, un cadre
+ * qui laisse un liseré entre la fenêtre et le contenu, des surfaces à peine plus claires aux grands
+ * rayons (22 px), des boutons en pilule pleins de blanc (de noir en clair), une seule voix : Geist,
+ * serrée dans les titres. La couleur est réservée aux données (hausses, baisses, séries).
+ *
+ * ## Les sélecteurs
+ *
+ * Comme pour minimal : `.lgk.lq-root[data-lq-palette][data-lq-surface="…"]` (0,4,0) bat les couleurs
+ * du kit (0,3,0), `.lgk.lq-root` (0,2,0) bat son échelle (0,1,0), quel que soit l'ordre des imports.
+ */
+
+.lgk.lq-root {
+  /* Le kit pose `--lq-font-family: var(--lq-font-inter)` en ligne (prop `font`) : c'est cette pile
+     qu'on redéfinit, pour que la nôtre gagne. */
+  --lgk-font: "Geist Variable", "Geist", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --lq-font-inter: var(--lgk-font);
+  --lq-font-family: var(--lgk-font);
+  --lq-font-mono: "Geist Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+
+  /* Grands rayons : 10 px pour les petites pièces (cases, puces), 14 pour les contrôles et menus,
+     22 pour les cartes. Les boutons passent en pilule (details.css). */
+  --lq-radius-sm: 10px;
+  --lq-radius-md: 14px;
+  --lq-radius-lg: 22px;
+  --lq-radius-pill: 999px;
+
+  --lq-space-1: 4px;
+  --lq-space-2: 8px;
+  --lq-space-3: 12px;
+  --lq-space-4: 16px;
+  --lq-space-5: 22px;
+  --lq-space-6: 30px;
+
+  --lq-transition-fast: 140ms cubic-bezier(0.2, 0, 0, 1);
+  --lq-transition-base: 240ms cubic-bezier(0.2, 0, 0, 1);
+
+  /* Titres serrés et denses, corps confortable. */
+  --lq-text-h1: 3rem;
+  --lq-text-h2: 2.25rem;
+  --lq-text-h3: 1.625rem;
+  --lq-text-h4: 1.25rem;
+  --lq-text-h5: 1.0625rem;
+  --lq-text-h6: 0.875rem;
+  --lq-text-xl: 1.125rem;
+  --lq-text-lg: 1rem;
+  --lq-text-md: 0.9375rem;
+  --lq-text-sm: 0.8125rem;
+  --lq-text-xs: 0.75rem;
+  --lq-line-height-heading: 1.1;
+  --lq-line-height-body: 1.55;
+
+  --lq-font-weight-heading: 600;
+  --lq-font-weight-heavy: 700;
+  --lq-font-weight-bold: 600;
+  --lq-font-weight-semibold: 550;
+  --lq-font-weight-medium: 500;
+  --lq-heading-tracking: -0.03em;
+
+  /* Une seule voix : les petits titres restent en casse de phrase, sans capitales espacées. */
+  --lq-label-font: var(--lgk-font);
+  --lq-label-size: 0.75rem;
+  --lq-label-weight: 500;
+  --lq-label-tracking: 0;
+  --lq-caption-font: var(--lgk-font);
+  --lq-caption-size: 0.8125rem;
+  --lq-caption-weight: 500;
+  --lq-caption-tracking: 0;
+  --lq-caption-transform: none;
+
+  /* Contrôles de 40 px, filet d'un pixel, boutons aérés. */
+  --lq-control-height: 40px;
+  --lq-control-border-width: 1px;
+  --lq-control-padding-x: 14px;
+  --lq-control-font-size: 0.875rem;
+  --lq-button-padding-y: 9px;
+  --lq-button-padding-x: 18px;
+  --lq-button-font-size: 0.875rem;
+  --lq-icon-button-size: 40px;
+  --lq-field-gap: 6px;
+  --lq-field-label-size: 0.8125rem;
+  --lq-field-label-weight: 500;
+  --lq-row-font-size: 0.875rem;
+
+  /* Tableaux : cellules aérées, en-tête discret, page courante en pilule pleine. */
+  --lq-table-cell-padding-y: 12px;
+  --lq-table-cell-padding-x: 16px;
+  --lq-table-condensed-padding-y: 7px;
+  --lq-table-head-padding-y: 10px;
+  --lq-table-page-border: 0 none;
+  --lq-table-page-bg: transparent;
+  --lq-table-page-font-size: 0.8125rem;
+  --lq-table-page-current-weight: 600;
+
+  /* Le menu latéral du kit (rail), quand une application le garde : îlot arrondi, voir shell.css. */
+  --lq-sidebar-rail-width: 72px;
+  --lq-sidebar-open-width: 272px;
+  --lq-sidebar-z-index: 1950;
+  --lq-sticky-header-z-index: 1900;
+
+  /* Contrôles ronds : curseurs, radios, interrupteurs. */
+  --lq-slider-track-size: 6px;
+  --lq-slider-track-radius: 999px;
+  --lq-slider-thumb-size: 20px;
+  --lq-slider-bubble-radius: 999px;
+  --lq-radio-size: 18px;
+  --lq-radio-checked-border-width: 6px;
+  --lq-radio-dot-size: 0px;
+
+  --lq-tree-row-height: 32px;
+  --lq-timeline-marker-size: 36px;
+  --lq-tile-padding: 22px;
+  --lq-tile-title-weight: 600;
+  --lq-gallery-gap: 10px;
+  --lq-gallery-radius: 18px;
+  --lq-lightbox-radius: 22px;
+  --lq-lightbox-button-radius: 999px;
+  --lq-chat-radius: 18px;
+  --lq-mail-folder-radius: 999px;
+  --lq-calendar-event-radius: 8px;
+  --lq-fab-radius: 999px;
+  --lq-card-maximized-radius: 26px;
+  --lq-color-swatch-radius: 999px;
+  --lq-code-color-swatch-radius: 999px;
+  --lq-alloc-bar-border: none;
+
+  /* Graphiques : grille pleine et très pâle, barres arrondies, légendes en pastilles rondes. */
+  --lq-chart-line-width: 2px;
+  --lq-chart-area-opacity: 0.1;
+  --lq-chart-grid-dash: none;
+  --lq-chart-axis-size: 0.6875rem;
+  --lq-chart-bar-radius: 6px;
+  --lq-chart-legend-size: 0.75rem;
+  --lq-chart-legend-swatch-size: 8px;
+  --lq-chart-legend-swatch-radius: 999px;
+  --lq-chart-node-radius: 6px;
+  --lq-chart-calendar-cell-radius: 4px;
+  --lq-chart-title-size: 0.8125rem;
+  --lq-chart-title-weight: 600;
+  --lq-chart-value-font: var(--lgk-font);
+  --lq-chart-domain-width: 0px;
+
+  /* Le cadre (shell.css) : l'écart entre la fenêtre et le contenu, et l'arrondi de ses coins. */
+  --lgk-frame-gap: 10px;
+  --lgk-frame-radius: 26px;
+  /* La barre de menu en pilule : distance au haut du cadre, hauteur. */
+  --lgk-bar-top: 14px;
+  --lgk-bar-height: 56px;
+}
+
+/* ---- Sombre (défaut) : presque noir, surfaces à peine levées, encre blanche ---- */
+
+.lgk.lq-root[data-lq-palette][data-lq-surface="dark"] {
+  --lq-color-bg: #08090b;
+  --lq-color-panel: #111215;
+  --lq-color-surface: #111215;
+  --lq-color-text: #f4f4f5;
+  --lq-color-text-muted: #8e8f98;
+  --lq-color-border: rgba(255, 255, 255, 0.12);
+  --lq-color-border-subtle: rgba(255, 255, 255, 0.07);
+  --lq-color-panel-border: rgba(255, 255, 255, 0.06);
+  --lq-color-accent: #f4f4f5;
+  --lq-color-accent-contrast: #0a0a0c;
+  --lq-color-fill: #f4f4f5;
+  --lq-color-fill-track: #1c1d22;
+  --lq-color-hover: rgba(255, 255, 255, 0.055);
+  --lq-color-overlay: rgba(3, 3, 5, 0.62);
+  --lq-color-focus-ring: rgba(244, 244, 245, 0.55);
+  --lq-shadow-panel: 0 1px 0 rgba(255, 255, 255, 0.03) inset, 0 10px 30px rgba(0, 0, 0, 0.28);
+  --lq-shadow-modal: 0 1px 0 rgba(255, 255, 255, 0.05) inset, 0 30px 80px rgba(0, 0, 0, 0.6);
+
+  --lq-color-green: #4fd18b;
+  --lq-color-danger: #ff6b6b;
+  --lq-color-amber: #f5b14c;
+  --lq-color-sky: #6db7ff;
+  --lq-color-violet: #a593ff;
+  --lq-color-rose: #ff8db4;
+  --lq-color-up: #4fd18b;
+  --lq-color-down: #ff6b6b;
+  --lq-color-warning-contrast: #1a1206;
+
+  /* Les tuiles pleines : des teintes profondes, encre claire ; l'accent reste blanc, encre noire. */
+  --lq-tone-accent: #f4f4f5;
+  --lq-tone-accent-text: #0a0a0c;
+  --lq-tone-success: #1d6e48;
+  --lq-tone-info: #2f56a8;
+  --lq-tone-danger: #b83a3a;
+  --lq-tone-warning: #e6a43c;
+  --lq-tone-warning-text: #1a1206;
+  --lq-tone-dark: #24252b;
+  --lq-tone-text: #f7f7f8;
+
+  --lq-chart-grid-color: rgba(255, 255, 255, 0.06);
+  --lq-chart-slice-gap-color: var(--lq-color-panel);
+  --lq-chart-tile-gap-color: var(--lq-color-panel);
+  --lq-chart-calendar-empty: rgba(255, 255, 255, 0.06);
+
+  /* Le cadre et la matière des surfaces qui flottent (barre de menu, menus, infobulles). */
+  --lgk-frame: #18191d;
+  --lgk-float: rgba(22, 23, 27, 0.78);
+  --lgk-float-solid: #16171b;
+  --lgk-float-border: rgba(255, 255, 255, 0.08);
+  --lgk-pill-bg: rgba(255, 255, 255, 0.06);
+  --lgk-raise: rgba(255, 255, 255, 0.04);
+  --lgk-float-shadow: 0 14px 36px rgba(0, 0, 0, 0.35);
+
+  color-scheme: dark;
+}
+
+/* ---- Clair : blanc cassé, cartes blanches, encre noire ---- */
+
+.lgk.lq-root[data-lq-palette][data-lq-surface="light"] {
+  --lq-color-bg: #f5f5f3;
+  --lq-color-panel: #ffffff;
+  --lq-color-surface: #ffffff;
+  --lq-color-text: #0e0e11;
+  --lq-color-text-muted: #6a6b74;
+  --lq-color-border: rgba(14, 14, 17, 0.14);
+  --lq-color-border-subtle: rgba(14, 14, 17, 0.07);
+  --lq-color-panel-border: rgba(14, 14, 17, 0.06);
+  --lq-color-accent: #0e0e11;
+  --lq-color-accent-contrast: #ffffff;
+  --lq-color-fill: #0e0e11;
+  --lq-color-fill-track: #ebebe8;
+  --lq-color-hover: rgba(14, 14, 17, 0.045);
+  --lq-color-overlay: rgba(20, 20, 24, 0.32);
+  --lq-color-focus-ring: rgba(14, 14, 17, 0.45);
+  --lq-shadow-panel: 0 1px 2px rgba(14, 14, 17, 0.04), 0 10px 30px rgba(14, 14, 17, 0.05);
+  --lq-shadow-modal: 0 30px 80px rgba(14, 14, 17, 0.18);
+
+  --lq-color-green: #12955a;
+  --lq-color-danger: #e0484d;
+  --lq-color-amber: #c98208;
+  --lq-color-sky: #2a7bd4;
+  --lq-color-violet: #6b54d1;
+  --lq-color-rose: #d4407a;
+  --lq-color-up: #12955a;
+  --lq-color-down: #e0484d;
+  --lq-color-warning-contrast: #1a1206;
+
+  --lq-tone-accent: #0e0e11;
+  --lq-tone-accent-text: #ffffff;
+  --lq-tone-success: #12955a;
+  --lq-tone-info: #2a6fd0;
+  --lq-tone-danger: #d9454a;
+  --lq-tone-warning: #f2b544;
+  --lq-tone-warning-text: #1a1206;
+  --lq-tone-dark: #2a2b31;
+  --lq-tone-text: #ffffff;
+
+  --lq-chart-grid-color: rgba(14, 14, 17, 0.06);
+  --lq-chart-slice-gap-color: var(--lq-color-panel);
+  --lq-chart-tile-gap-color: var(--lq-color-panel);
+  --lq-chart-calendar-empty: rgba(14, 14, 17, 0.06);
+
+  --lgk-frame: #e3e2de;
+  --lgk-float: rgba(255, 255, 255, 0.8);
+  --lgk-float-solid: #ffffff;
+  --lgk-float-border: rgba(14, 14, 17, 0.08);
+  --lgk-pill-bg: rgba(14, 14, 17, 0.05);
+  --lgk-raise: rgba(14, 14, 17, 0.025);
+  --lgk-float-shadow: 0 8px 24px rgba(14, 14, 17, 0.07);
+
+  color-scheme: light;
+}
+
+@media (max-width: 720px) {
+  .lgk.lq-root {
+    --lgk-frame-gap: 6px;
+    --lgk-frame-radius: 20px;
+    --lgk-bar-top: 10px;
+    --lgk-bar-height: 52px;
+    --lq-radius-lg: 18px;
+    --lq-text-h1: 2.25rem;
+    --lq-text-h2: 1.75rem;
+  }
+}

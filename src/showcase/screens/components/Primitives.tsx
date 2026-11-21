@@ -59,7 +59,7 @@ import { SpecimenScreen, SpecimenGrid, Specimen } from "../../Specimen";
 /** Les teintes proposées pour étiqueter un segment client — toutes des variables du thème, pour
  *  que la pastille suive la surface claire comme la sombre. */
 const SWATCHES = [
-  { id: "accent", label: "Corail", color: "var(--lq-color-accent)" },
+  { id: "accent", label: "Encre", color: "var(--lq-color-accent)" },
   { id: "green", label: "Vert", color: "var(--lq-color-green)" },
   { id: "amber", label: "Ambre", color: "var(--lq-color-amber)" },
   { id: "rose", label: "Rose", color: "var(--lq-color-rose)" },
@@ -146,7 +146,7 @@ const FAB_ACTIONS: Omit<FloatingAction, "onSelect">[] = [
  * interrupteurs, onglets, typographie, petits indicateurs.
  *
  * Ce sont les composants que le thème touche le plus visiblement : le kit les dessine à rayon nul
- * et en encre, la couche les reprend en corail à coins adoucis. Chaque spécimen montre l'état de
+ * et en encre, la couche les reprend en pilules d'encre. Chaque spécimen montre l'état de
  * repos et les deux ou trois variantes qui changent vraiment l'allure — sélectionné, désactivé,
  * petite taille — pas toutes les combinaisons.
  */
