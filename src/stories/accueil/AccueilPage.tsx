@@ -224,7 +224,7 @@ export function AccueilPage({ kitVersion, componentCount }: AccueilPageProps) {
           <code>@michaelthomasjach/liseuse-dashboard-kit</code>. Elle ne réécrit aucun composant : elle
           redéfinit les variables <code>--lq-*</code> qu'ils lisent tous, et leur donne le langage d'un
           tableau de bord « Liquid glass » — surfaces de verre translucides et floutées, liseré de lumière,
-          grands rayons, accent citron vert. Chaque page de ce Storybook rend le composant du kit à travers <code>LiquidGlassTheme</code> :
+          grands rayons, accent corail, cartes en gouttes d'eau teintées par le fond et auréolées de sa couleur. Chaque page de ce Storybook rend le composant du kit à travers <code>LiquidGlassTheme</code> :
           c'est ce que verra une application qui l'utilise.
         </p>
         <div className="lgk-home__actions">
@@ -283,7 +283,7 @@ export function AccueilPage({ kitVersion, componentCount }: AccueilPageProps) {
           </article>
           <article className="lgk-home__pillar">
             <h3>Un seul accent</h3>
-            <p>Citron vert sur verre fumé, indigo sur verre clair : un primaire pour l'action et l'état sélectionné ; les couleurs de série restent aux graphiques.</p>
+            <p>Corail vif sur verre fumé, corail profond sur verre clair : un primaire pour l'action et l'état sélectionné ; les couleurs de série restent aux graphiques.</p>
           </article>
           <article className="lgk-home__pillar">
             <h3>Fait pour l'écran</h3>

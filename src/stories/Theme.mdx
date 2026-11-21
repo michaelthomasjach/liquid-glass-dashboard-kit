@@ -7,7 +7,7 @@ import { TOKEN_GROUPS, TokenTable } from "./_docs/TokenTable";
 
 Chaque valeur ci-dessous est **lue dans le navigateur** sur une racine du thème (`getComputedStyle`), pas recopiée : la table montre ce que `src/theme/liquid-glass.css` pose réellement.
 
-Le thème « Liquid glass » : surfaces translucides floutées (`--lq-surface-backdrop`), liseré clair et reflet en haut de chaque surface (ombres intérieures), grands rayons (12 / 16 / 24 px), Inter partout en casse de phrase, sur un fond de halos colorés (`--lgk-backdrop`). Sombre : verre fumé, accent citron vert `#c8f04a`. Clair : verre laiteux sur un ciel bleu et lilas, accent indigo `#4f46e5`.
+Le thème « Liquid glass » : surfaces translucides floutées (`--lq-surface-backdrop`), liseré clair et reflet en haut de chaque surface (ombres intérieures), grands rayons (12 / 16 / 28 px), Inter partout en casse de phrase, sur un fond de grandes nappes de couleur (`--lgk-backdrop`). Depuis la v0.4, effet « goutte d'eau » : chaque carte est teintée de l'intérieur par deux lueurs du fond, rayonne derrière elle en halo coloré et porte un ménisque (reflet vif en haut, lueur qui remonte du bas). Sombre : verre fumé sur nappes rouge, orange, sarcelle et violet, accent corail `#ff7a45`. Clair : verre laiteux sur nappes pastel, accent `#d9472b`. Sur téléphone, barres et menu deviennent des îlots de verre flottants.
 
 {TOKEN_GROUPS.map((g) => (
   <section key={g.title} style={{ marginBottom: 40 }}>

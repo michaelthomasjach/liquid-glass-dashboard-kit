@@ -49,6 +49,21 @@ fond bleu (fleur, « Refer & Earn »).
   infobulle en verre fumé ; voile flou des modales ; colonne d'outils et boutons des graphiques en
   verre. Ombres de verre et flou des surfaces renforcés (30 px, 190 %). Base en `:where()` pour que
   les états du kit gardent la main. Fond du tracé des graphiques laissé opaque (lisibilité).
+- v0.4.0 (2026-11-21, « effet goutte d'eau », d'après des maquettes d'apps mobiles en verre) : section
+  « v0.4 » en fin de `liquid-glass.css`. Fond en grandes nappes saturées (rouge, orange, sarcelle,
+  violet ; pastels en clair), accent corail (`#ff7a45` encre `#1c0a04` en sombre, `#d9472b` en clair).
+  Chaque carte / panneau / carte de position est teinté de l'intérieur par deux lueurs
+  (`--lgk-glow-a/b`, tirées de `--lgk-glow-1…4`, qui tournent avec `:nth-child(4n+…)`), rayonne
+  derrière elle en ombres colorées (`--lgk-halo`) et porte le ménisque `--lgk-drop-rim` (arête haute
+  vive + lueur qui remonte du bas). Une surface dans une surface ne garde que le ménisque. Tout en
+  ombres et dégradés : aucun pseudo-élément ni changement de position. Icônes seules en gouttes
+  rondes, boutons pleins qui rayonnent, puce choisie allumée à l'accent. Rayon des cartes 28 px.
+  Téléphone (≤ 900 px) : barre du menu et barre haute en îlots flottants floutés, tiroir du menu en
+  îlot par-dessus les barres (fermé en touchant le voile), flou ramené à 20 px, fond qui défile
+  (Safari iOS ignore `background-attachment: fixed`). Débordements de la carte du monde et de
+  `HoldingCard` corrigés dans le kit (0.315.1). Vitrine : barre haute resserrée et grilles en
+  `minmax(min(Npx, 100%), 1fr)` pour tenir dans 390 px. Contrôle : `scrollWidth` = 390 sur tous les
+  écrans de la vitrine.
 - Dépendance au kit en `>=0.314.0 <1.0.0` (et non `^`, qui sur 0.x verrouille la mineure) : un
   `npm update` reprend chaque nouvelle version du kit.
 
@@ -65,11 +80,12 @@ qui a été fait pour `--lq-surface-backdrop`).
 
 ## Le langage visuel
 
-Sombre (défaut) : fond `#090d16` sous des halos vert, violet et bleu ; verre `rgba(255,255,255,.07)`,
-liseré `rgba(255,255,255,.14)`, reflet `inset 0 1px 0 rgba(255,255,255,.16)` ; texte `#f3f6fb` ;
-accent citron vert `#c8f04a` (encre `#0b1016`). Clair : ciel bleu, lilas et lagon ; verre
-`rgba(255,255,255,.42)` ; texte `#0f172a` ; accent indigo `#4f46e5`. Rayons 12 / 16 / 24 px, contrôles
-de 40 px, Inter partout en casse de phrase (pas de Montserrat ni de capitales espacées).
+Sombre (défaut) : fond `#0b0c12` sous de grandes nappes rouge, orange, sarcelle et violet ; verre
+`rgba(255,255,255,.06)` teinté par deux lueurs, liseré `rgba(255,255,255,.15)`, ménisque
+`--lgk-drop-rim` ; texte `#f3f6fb` ; accent corail `#ff7a45` (encre `#1c0a04`). Clair : nappes
+corail, ambre, lagon et lilas sur fond nacré ; verre `rgba(255,255,255,.42)` ; texte `#0f172a` ;
+accent `#d9472b`. Rayons 12 / 16 / 28 px (24 sur téléphone), contrôles de 40 px, Inter partout en
+casse de phrase (pas de Montserrat ni de capitales espacées).
 
 ## Publication et état
 

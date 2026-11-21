@@ -82,7 +82,7 @@ function QueuedNotifications() {
  * écart, son seuil — et les widgets prêts à poser qui les assemblent.
  *
  * Les tons vert/rouge viennent des variables `--lq-color-up` / `--lq-color-down` du thème ; c'est
- * ici qu'on vérifie qu'ils restent lisibles à côté de l'unique accent indigo, sur les deux surfaces.
+ * ici qu'on vérifie qu'ils restent lisibles à côté de l'unique accent corail, sur les deux surfaces.
  */
 export function Finance() {
   const [bannerOpen, setBannerOpen] = useState(false);

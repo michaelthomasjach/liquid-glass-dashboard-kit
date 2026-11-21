@@ -21,9 +21,10 @@
  * Le « liquid glass » des tableaux de bord crypto et des cartes de verre : des panneaux translucides
  * qui floutent et saturent ce qu'il y a derrière (`--lq-surface-backdrop`, kit ≥ 0.314), un liseré
  * clair d'un pixel et un reflet en haut de chaque surface (ombre intérieure), de grands rayons, une
- * typographie unique (Inter) en casse de phrase, et un fond fait de halos de couleur — vert, violet,
- * bleu en sombre ; ciel, lilas et lagon en clair — pour que le verre ait quelque chose à réfracter.
- * Accent citron vert en sombre (lisible sur verre fumé), indigo en clair.
+ * typographie unique (Inter) en casse de phrase, et un fond fait de nappes de couleur — rouge, orange,
+ * sarcelle et violet en sombre ; corail, ambre, lagon et lilas en clair — pour que le verre ait
+ * quelque chose à réfracter.
+ * Accent corail (v0.4), plus vif en sombre, plus profond en clair pour rester lisible sous un texte blanc.
  */
 
 /* ---- l'échelle, commune aux deux surfaces ---- */
@@ -32,11 +33,11 @@
   --lq-font-inter: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   --lq-font-family: var(--lq-font-inter);
 
-  /* Le verre est arrondi : 12 px sur les petits contrôles, 16 px sur les champs et les menus, 24 px
-     sur les cartes et les modales. */
+  /* Le verre est arrondi : 12 px sur les petits contrôles, 16 px sur les champs et les menus, 28 px
+     sur les cartes et les modales (v0.4 : des gouttes plus rondes). */
   --lq-radius-sm: 12px;
   --lq-radius-md: 16px;
-  --lq-radius-lg: 24px;
+  --lq-radius-lg: 28px;
   --lq-radius-pill: 999px;
   --lq-tooltip-radius: 10px;
 
@@ -140,15 +141,19 @@
 /* ---- surface sombre : verre fumé sur halos vert, violet et bleu ---- */
 
 .lgk.lq-root[data-lq-palette][data-lq-surface="dark"] {
+  /* v0.4 : de grandes nappes de couleur saturée, floues, comme une lumière vue au travers d'une
+     goutte — rouge en haut à gauche, orange en haut à droite, sarcelle en bas à droite, violet en
+     bas à gauche, un bleu léger au centre. */
   --lgk-backdrop:
-    radial-gradient(55% 45% at 12% 8%, rgba(34, 197, 94, 0.32), transparent 62%),
-    radial-gradient(45% 40% at 88% 14%, rgba(139, 92, 246, 0.34), transparent 64%),
-    radial-gradient(55% 50% at 70% 96%, rgba(14, 165, 233, 0.26), transparent 62%),
-    radial-gradient(40% 35% at 25% 85%, rgba(190, 242, 100, 0.12), transparent 60%),
-    linear-gradient(160deg, #0c1322 0%, #070a12 55%, #0a0f1a 100%);
+    radial-gradient(52% 46% at 6% 4%, rgba(239, 68, 68, 0.5), transparent 72%),
+    radial-gradient(44% 40% at 94% 8%, rgba(249, 115, 22, 0.34), transparent 72%),
+    radial-gradient(58% 52% at 92% 94%, rgba(20, 184, 166, 0.46), transparent 72%),
+    radial-gradient(48% 46% at 10% 92%, rgba(139, 92, 246, 0.36), transparent 72%),
+    radial-gradient(42% 36% at 50% 52%, rgba(14, 165, 233, 0.14), transparent 70%),
+    linear-gradient(160deg, #15101a 0%, #0a0b10 52%, #061114 100%);
 
-  --lq-color-bg: #090d16;
-  --lq-color-panel: rgba(255, 255, 255, 0.07);
+  --lq-color-bg: #0b0c12;
+  --lq-color-panel: rgba(255, 255, 255, 0.06);
   --lgk-color-float: rgba(22, 28, 40, 0.72);
   --lgk-color-solid: #0b1016;
 
@@ -161,12 +166,12 @@
   --lq-color-border-subtle: rgba(255, 255, 255, 0.09);
   --lq-color-panel-border: rgba(255, 255, 255, 0.14);
 
-  --lq-color-accent: #c8f04a;
-  --lq-color-accent-contrast: #0b1016;
-  --lq-color-fill: #c8f04a;
+  --lq-color-accent: #ff7a45;
+  --lq-color-accent-contrast: #1c0a04;
+  --lq-color-fill: #ff7a45;
   --lq-color-fill-track: rgba(255, 255, 255, 0.12);
 
-  --lq-color-focus-ring: rgba(200, 240, 74, 0.45);
+  --lq-color-focus-ring: rgba(255, 122, 69, 0.45);
   --lq-color-hover: rgba(255, 255, 255, 0.08);
   --lq-color-overlay: rgba(4, 7, 14, 0.45);
 
@@ -186,7 +191,7 @@
   --lq-color-rose: #fb7185;
   --lq-color-violet: #a78bfa;
 
-  --lq-tone-accent: rgba(200, 240, 74, 0.82);
+  --lq-tone-accent: rgba(255, 122, 69, 0.82);
   --lq-tone-success: rgba(34, 197, 94, 0.55);
   --lq-tone-info: rgba(59, 130, 246, 0.55);
   --lq-tone-danger: rgba(244, 63, 94, 0.55);
@@ -194,7 +199,7 @@
   --lq-tone-dark: rgba(255, 255, 255, 0.12);
   /* Encre des tuiles pleines : blanche sur le verre teinté, sombre seulement sur le citron et l'ambre. */
   --lq-tone-text: #ffffff;
-  --lq-tone-accent-text: #0b1016;
+  --lq-tone-accent-text: #1c0a04;
   --lq-tone-warning-text: #0b1016;
 
   --lq-radio-border-color: rgba(255, 255, 255, 0.3);
@@ -203,28 +208,28 @@
   --lq-slider-thumb-border: 0 none;
   --lq-slider-mark-color: rgba(226, 232, 244, 0.62);
   --lq-slider-tick-color: rgba(255, 255, 255, 0.16);
-  --lq-tree-folder-color: #c8f04a;
+  --lq-tree-folder-color: #ff7a45;
   --lq-timeline-line: rgba(255, 255, 255, 0.14);
   --lq-timeline-dot-color: rgba(226, 232, 244, 0.62);
   --lq-timeline-marker-border: 2px solid rgba(255, 255, 255, 0.2);
-  --lq-chat-bubble-mine-bg: rgba(200, 240, 74, 0.2);
+  --lq-chat-bubble-mine-bg: rgba(255, 122, 69, 0.2);
   --lq-chat-bubble-mine-color: #ffffff;
-  --lq-chat-bubble-mine-border: rgba(200, 240, 74, 0.25);
+  --lq-chat-bubble-mine-border: rgba(255, 122, 69, 0.25);
   --lq-chat-bubble-theirs-bg: rgba(255, 255, 255, 0.08);
   --lq-chat-bubble-theirs-color: #ffffff;
   --lq-chat-bubble-theirs-border: rgba(255, 255, 255, 0.1);
   --lq-notes-paper: rgba(255, 255, 255, 0.06);
   --lq-mail-reader-bg: rgba(255, 255, 255, 0.04);
   --lq-mail-folder-active-bg: rgba(255, 255, 255, 0.1);
-  --lq-mail-folder-active-color: #c8f04a;
+  --lq-mail-folder-active-color: #ff7a45;
   --lq-calendar-line: rgba(255, 255, 255, 0.08);
-  --lq-calendar-today-bg: rgba(200, 240, 74, 0.08);
-  --lq-calendar-today-marker: #c8f04a;
-  --lq-calendar-today-marker-text: #0b1016;
+  --lq-calendar-today-bg: rgba(255, 122, 69, 0.08);
+  --lq-calendar-today-marker: #ff7a45;
+  --lq-calendar-today-marker-text: #1c0a04;
   --lq-button-group-selected-bg: rgba(255, 255, 255, 0.16);
   --lq-button-group-selected-color: #ffffff;
   --lq-button-group-selected-border: rgba(255, 255, 255, 0.26);
-  --lq-dot-map-marker: #c8f04a;
+  --lq-dot-map-marker: #ff7a45;
 
   /* Le verre : un liseré de lumière qui vient d'en haut à gauche (vif sur ces deux bords, faible sur
      les deux autres), une lueur intérieure, et une ombre large et douce qui le décolle du fond. */
@@ -237,14 +242,16 @@
 /* ---- surface claire : verre laiteux sur un ciel bleu, lilas et lagon ---- */
 
 .lgk.lq-root[data-lq-palette][data-lq-surface="light"] {
+  /* v0.4 : les mêmes nappes, en pastel — corail, ambre, lagon, lilas — sur un fond nacré. */
   --lgk-backdrop:
-    radial-gradient(55% 50% at 10% 10%, rgba(96, 165, 250, 0.55), transparent 62%),
-    radial-gradient(50% 45% at 90% 12%, rgba(167, 139, 250, 0.45), transparent 64%),
-    radial-gradient(60% 55% at 75% 95%, rgba(45, 212, 191, 0.32), transparent 62%),
-    radial-gradient(45% 40% at 20% 90%, rgba(59, 130, 246, 0.3), transparent 60%),
-    linear-gradient(160deg, #e6f0fd 0%, #eef2ff 50%, #e0f2fe 100%);
+    radial-gradient(52% 46% at 6% 6%, rgba(251, 113, 133, 0.5), transparent 72%),
+    radial-gradient(44% 40% at 94% 8%, rgba(251, 191, 36, 0.34), transparent 72%),
+    radial-gradient(58% 52% at 92% 94%, rgba(45, 212, 191, 0.44), transparent 72%),
+    radial-gradient(48% 46% at 10% 92%, rgba(167, 139, 250, 0.42), transparent 72%),
+    radial-gradient(42% 36% at 50% 52%, rgba(125, 211, 252, 0.2), transparent 70%),
+    linear-gradient(160deg, #fbf1f1 0%, #f4f1fa 52%, #eaf6f5 100%);
 
-  --lq-color-bg: #e9f1fc;
+  --lq-color-bg: #f5f1f5;
   --lq-color-panel: rgba(255, 255, 255, 0.42);
   --lgk-color-float: rgba(255, 255, 255, 0.78);
   --lgk-color-solid: #ffffff;
@@ -258,12 +265,12 @@
   --lq-color-border-subtle: rgba(255, 255, 255, 0.55);
   --lq-color-panel-border: rgba(255, 255, 255, 0.7);
 
-  --lq-color-accent: #4f46e5;
+  --lq-color-accent: #d9472b;
   --lq-color-accent-contrast: #ffffff;
-  --lq-color-fill: #4f46e5;
+  --lq-color-fill: #d9472b;
   --lq-color-fill-track: rgba(15, 23, 42, 0.1);
 
-  --lq-color-focus-ring: rgba(79, 70, 229, 0.35);
+  --lq-color-focus-ring: rgba(217, 71, 43, 0.35);
   --lq-color-hover: rgba(255, 255, 255, 0.45);
   --lq-color-overlay: rgba(30, 41, 59, 0.28);
 
@@ -283,7 +290,7 @@
   --lq-color-rose: #f43f5e;
   --lq-color-violet: #7c3aed;
 
-  --lq-tone-accent: rgba(79, 70, 229, 0.85);
+  --lq-tone-accent: rgba(217, 71, 43, 0.85);
   --lq-tone-success: rgba(16, 185, 129, 0.8);
   --lq-tone-info: rgba(37, 99, 235, 0.8);
   --lq-tone-danger: rgba(225, 29, 72, 0.8);
@@ -298,33 +305,33 @@
   --lq-slider-thumb-border: 0 none;
   --lq-slider-mark-color: rgba(15, 23, 42, 0.55);
   --lq-slider-tick-color: rgba(15, 23, 42, 0.12);
-  --lq-tree-folder-color: #4f46e5;
+  --lq-tree-folder-color: #d9472b;
   --lq-timeline-line: rgba(255, 255, 255, 0.7);
   --lq-timeline-dot-color: rgba(15, 23, 42, 0.4);
   --lq-timeline-marker-border: 2px solid rgba(255, 255, 255, 0.85);
-  --lq-chat-bubble-mine-bg: rgba(79, 70, 229, 0.14);
+  --lq-chat-bubble-mine-bg: rgba(217, 71, 43, 0.14);
   --lq-chat-bubble-mine-color: #0f172a;
-  --lq-chat-bubble-mine-border: rgba(79, 70, 229, 0.2);
+  --lq-chat-bubble-mine-border: rgba(217, 71, 43, 0.2);
   --lq-chat-bubble-theirs-bg: rgba(255, 255, 255, 0.6);
   --lq-chat-bubble-theirs-color: #0f172a;
   --lq-chat-bubble-theirs-border: rgba(255, 255, 255, 0.8);
   --lq-notes-paper: rgba(255, 251, 235, 0.65);
   --lq-mail-reader-bg: rgba(255, 255, 255, 0.3);
   --lq-mail-folder-active-bg: rgba(255, 255, 255, 0.6);
-  --lq-mail-folder-active-color: #4f46e5;
+  --lq-mail-folder-active-color: #d9472b;
   --lq-calendar-line: rgba(15, 23, 42, 0.08);
   --lq-calendar-today-bg: rgba(255, 255, 255, 0.5);
-  --lq-calendar-today-marker: #4f46e5;
+  --lq-calendar-today-marker: #d9472b;
   --lq-calendar-today-marker-text: #ffffff;
   --lq-button-group-selected-bg: rgba(255, 255, 255, 0.8);
   --lq-button-group-selected-color: #0f172a;
   --lq-button-group-selected-border: rgba(255, 255, 255, 0.95);
-  --lq-dot-map-marker: #4f46e5;
+  --lq-dot-map-marker: #d9472b;
 
   --lq-shadow-panel: inset 1px 1px 0 rgba(255, 255, 255, 0.95), inset -1px -1px 0 rgba(255, 255, 255, 0.45),
-    inset 0 0 28px rgba(255, 255, 255, 0.22), 0 22px 48px -18px rgba(30, 64, 175, 0.26), 0 2px 10px rgba(30, 64, 175, 0.06);
+    inset 0 0 28px rgba(255, 255, 255, 0.22), 0 22px 48px -18px rgba(110, 45, 70, 0.26), 0 2px 10px rgba(110, 45, 70, 0.06);
   --lq-shadow-modal: inset 1px 1px 0 rgba(255, 255, 255, 1), inset -1px -1px 0 rgba(255, 255, 255, 0.5),
-    inset 0 0 36px rgba(255, 255, 255, 0.3), 0 44px 100px -26px rgba(30, 64, 175, 0.34), 0 10px 28px rgba(30, 64, 175, 0.1);
+    inset 0 0 36px rgba(255, 255, 255, 0.3), 0 44px 100px -26px rgba(110, 45, 70, 0.34), 0 10px 28px rgba(110, 45, 70, 0.1);
 }
 
 /* ---- ce qui flotte : un verre plus dense ---- */
@@ -412,8 +419,8 @@
   --lq-sidebar-sub-bg: rgba(255, 255, 255, 0.3);
   --lgk-nav-hover: rgba(255, 255, 255, 0.45);
   --lgk-nav-active: rgba(255, 255, 255, 0.75);
-  --lgk-nav-active-ring: inset 0 1px 0 rgba(255, 255, 255, 1), 0 4px 14px rgba(30, 64, 175, 0.1);
-  --lgk-island-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.9), 0 30px 80px rgba(30, 64, 175, 0.18), 0 8px 24px rgba(30, 64, 175, 0.08);
+  --lgk-nav-active-ring: inset 0 1px 0 rgba(255, 255, 255, 1), 0 4px 14px rgba(110, 45, 70, 0.1);
+  --lgk-island-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.9), 0 30px 80px rgba(110, 45, 70, 0.18), 0 8px 24px rgba(110, 45, 70, 0.08);
 }
 
 /* La forme de l'îlot, en variante `rail` sur grand écran (le tiroir mobile reste celui du kit).
@@ -831,11 +838,11 @@
   --lgk-glass-fill: rgba(255, 255, 255, 0.5);
   --lgk-glass-fill-hover: rgba(255, 255, 255, 0.75);
   --lgk-glass-edge: rgba(255, 255, 255, 0.85);
-  --lgk-glass-raise: inset 0 1px 0 rgba(255, 255, 255, 1), inset 0 -1px 0 rgba(15, 23, 42, 0.04), 0 6px 18px -8px rgba(30, 64, 175, 0.3);
+  --lgk-glass-raise: inset 0 1px 0 rgba(255, 255, 255, 1), inset 0 -1px 0 rgba(15, 23, 42, 0.04), 0 6px 18px -8px rgba(110, 45, 70, 0.3);
   --lgk-well: rgba(15, 23, 42, 0.05);
   --lgk-well-shadow: inset 0 1px 3px rgba(15, 23, 42, 0.12), inset 0 -1px 0 rgba(255, 255, 255, 0.8);
   --lgk-thumb: rgba(255, 255, 255, 0.92);
-  --lgk-thumb-shadow: inset 0 1px 0 rgba(255, 255, 255, 1), 0 4px 14px -4px rgba(30, 64, 175, 0.35);
+  --lgk-thumb-shadow: inset 0 1px 0 rgba(255, 255, 255, 1), 0 4px 14px -4px rgba(110, 45, 70, 0.35);
   --lgk-gloss: linear-gradient(180deg, rgba(255, 255, 255, 0.42) 0%, rgba(255, 255, 255, 0.1) 46%, rgba(255, 255, 255, 0) 54%, rgba(255, 255, 255, 0.08) 100%);
   --lgk-surface-sheen: radial-gradient(130% 90% at 0% 0%, rgba(255, 255, 255, 0.55), rgba(255, 255, 255, 0) 48%),
     linear-gradient(180deg, rgba(255, 255, 255, 0.25), rgba(255, 255, 255, 0) 40%);
@@ -1201,5 +1208,362 @@
     --lgk-scrim: rgba(30, 41, 59, 0.35);
     --lgk-glass-fill: rgba(255, 255, 255, 0.96);
     --lgk-glass-fill-hover: rgba(255, 255, 255, 1);
+  }
+}
+
+/* ==================================================================================================
+ * v0.4 — la goutte d'eau
+ *
+ * Le verre des versions précédentes était juste : translucide, flouté, liseré. Il lui manquait ce
+ * qui fait qu'une carte se lit comme une goutte posée sur une lumière colorée :
+ *
+ *   - **la couleur au travers** : chaque surface est teintée de l'intérieur par deux lueurs, l'une
+ *     au coin haut gauche, l'autre au coin bas droit, de deux couleurs du fond ;
+ *   - **le halo derrière** : ces deux couleurs débordent autour de la carte en une ombre colorée,
+ *     large et douce, comme la lumière qu'une goutte concentre sous elle ;
+ *   - **le ménisque** : un reflet vif sur l'arête haute, un filet plus faible sur les côtés, et une
+ *     lueur claire qui remonte du bas à l'intérieur — la caustique d'une goutte.
+ *
+ * Les cartes d'un même conteneur ne prennent pas toutes les mêmes couleurs : elles tournent sur
+ * quatre lueurs (rouge, sarcelle, orange, violet), si bien qu'une rangée de cartes se lit comme
+ * une rangée de gouttes, chacune sur sa tache de lumière.
+ *
+ * Tout passe par des ombres et des fonds en dégradé : aucun pseudo-élément, aucune position
+ * changée, rien qui puisse déplacer le contenu d'un composant du kit.
+ * ================================================================================================== */
+
+.lgk.lq-root[data-lq-palette][data-lq-surface="dark"] {
+  --lgk-glow-1: #ff4d4d;
+  --lgk-glow-2: #14b8a6;
+  --lgk-glow-3: #ff8a3d;
+  --lgk-glow-4: #8b5cf6;
+  /* Force de la teinte intérieure et du halo extérieur. */
+  --lgk-tint: 26%;
+  --lgk-halo: 55%;
+  --lgk-drop-edge: rgba(255, 255, 255, 0.15);
+  /* Le ménisque : arête haute vive, côtés en filet, lueur qui remonte du bas. */
+  --lgk-drop-rim: inset 0 1px 0 rgba(255, 255, 255, 0.3), inset 1px 0 0 rgba(255, 255, 255, 0.08),
+    inset -1px 0 0 rgba(255, 255, 255, 0.05), inset 0 -1px 0 rgba(255, 255, 255, 0.1),
+    inset 0 -26px 40px -32px rgba(255, 255, 255, 0.22);
+  --lgk-drop-sheen: linear-gradient(180deg, rgba(255, 255, 255, 0.11) 0%, rgba(255, 255, 255, 0.02) 30%, rgba(255, 255, 255, 0) 55%);
+  --lgk-drop-lift: 0 2px 10px rgba(0, 0, 0, 0.22);
+}
+
+.lgk.lq-root[data-lq-palette][data-lq-surface="light"] {
+  --lgk-glow-1: #fb7185;
+  --lgk-glow-2: #2dd4bf;
+  --lgk-glow-3: #fbbf24;
+  --lgk-glow-4: #a78bfa;
+  --lgk-tint: 30%;
+  --lgk-halo: 50%;
+  --lgk-drop-edge: rgba(255, 255, 255, 0.85);
+  --lgk-drop-rim: inset 0 1px 0 rgba(255, 255, 255, 1), inset 1px 0 0 rgba(255, 255, 255, 0.6),
+    inset -1px 0 0 rgba(255, 255, 255, 0.4), inset 0 -1px 0 rgba(255, 255, 255, 0.7),
+    inset 0 -26px 40px -30px rgba(255, 255, 255, 0.9);
+  --lgk-drop-sheen: linear-gradient(180deg, rgba(255, 255, 255, 0.6) 0%, rgba(255, 255, 255, 0.12) 32%, rgba(255, 255, 255, 0) 55%);
+  --lgk-drop-lift: 0 2px 10px rgba(110, 45, 70, 0.08);
+}
+
+/* ---- les surfaces : teinte au travers, halo derrière, ménisque ---- */
+
+.lgk :where(.lq-card:not(.lq-card--bare, .lq-card--highlight), .lq-panel:not(.lq-panel--bare), .lq-holding-card) {
+  --lgk-glow-a: var(--lgk-glow-1);
+  --lgk-glow-b: var(--lgk-glow-2);
+  border-color: var(--lgk-drop-edge);
+  background-image: var(--lgk-drop-sheen),
+    radial-gradient(90% 80% at 0% 0%, color-mix(in srgb, var(--lgk-glow-a) var(--lgk-tint), transparent), transparent 72%),
+    radial-gradient(90% 80% at 100% 100%, color-mix(in srgb, var(--lgk-glow-b) var(--lgk-tint), transparent), transparent 72%);
+  box-shadow: var(--lgk-drop-rim),
+    -14px 22px 60px -34px color-mix(in srgb, var(--lgk-glow-a) var(--lgk-halo), transparent),
+    16px 26px 64px -34px color-mix(in srgb, var(--lgk-glow-b) var(--lgk-halo), transparent),
+    var(--lgk-drop-lift);
+}
+
+/* Les lueurs tournent d'une carte à l'autre dans un même conteneur. */
+.lgk :where(.lq-card, .lq-panel, .lq-holding-card):nth-child(4n + 2) {
+  --lgk-glow-a: var(--lgk-glow-2);
+  --lgk-glow-b: var(--lgk-glow-4);
+}
+
+.lgk :where(.lq-card, .lq-panel, .lq-holding-card):nth-child(4n + 3) {
+  --lgk-glow-a: var(--lgk-glow-3);
+  --lgk-glow-b: var(--lgk-glow-1);
+}
+
+.lgk :where(.lq-card, .lq-panel, .lq-holding-card):nth-child(4n + 4) {
+  --lgk-glow-a: var(--lgk-glow-4);
+  --lgk-glow-b: var(--lgk-glow-3);
+}
+
+/* Une surface posée dans une autre (panneau dans une carte) : la teinte de sa mère suffit, elle ne
+   garde que le ménisque — sinon les couleurs s'empilent et la goutte devient une flaque. */
+.lgk :where(.lq-card, .lq-panel) :where(.lq-card:not(.lq-card--bare, .lq-card--highlight), .lq-panel:not(.lq-panel--bare), .lq-holding-card) {
+  background-image: var(--lgk-drop-sheen);
+  box-shadow: var(--lgk-drop-rim);
+}
+
+/* La carte de position : une goutte arrondie, floutée comme les cartes. */
+.lgk .lq-holding-card {
+  border-radius: 22px;
+  -webkit-backdrop-filter: var(--lq-surface-backdrop);
+  backdrop-filter: var(--lq-surface-backdrop);
+}
+
+/* Ce qui flotte (modales, menus, listes) garde son verre dense, avec une lueur légère et le
+   ménisque. */
+.lgk :where(.lq-modal, .lq-popover, .lq-context-menu) {
+  background-image: var(--lgk-drop-sheen),
+    radial-gradient(80% 70% at 0% 0%, color-mix(in srgb, var(--lgk-glow-1) 14%, transparent), transparent 70%),
+    radial-gradient(80% 70% at 100% 100%, color-mix(in srgb, var(--lgk-glow-2) 14%, transparent), transparent 70%);
+}
+
+.lgk .lq-modal {
+  box-shadow: var(--lgk-drop-rim), -20px 30px 90px -40px color-mix(in srgb, var(--lgk-glow-1) 60%, transparent),
+    20px 40px 100px -40px color-mix(in srgb, var(--lgk-glow-2) 60%, transparent), 0 30px 80px -30px rgba(0, 0, 0, 0.55);
+}
+
+/* ---- les boutons : des gouttes ---- */
+
+/* Le bouton de verre : ménisque complet. Les icônes seules deviennent des gouttes rondes. */
+.lgk :where(.lq-button:not(.lq-button--toned, .lq-button--selected, .lq-button--ghost, .lq-button--link, .lq-button--outline)),
+.lgk :where(.lq-icon-button) {
+  box-shadow: var(--lgk-drop-rim), 0 8px 22px -12px rgba(0, 0, 0, 0.5);
+}
+
+.lgk :where(.lq-icon-button) {
+  border-radius: 50%;
+}
+
+/* Le bouton plein : un verre de sa couleur, plus clair en haut qu'en bas, qui rayonne largement
+   autour de lui. */
+.lgk :where(.lq-button--toned:not(.lq-button--outline, .lq-button--ghost, .lq-button--link)) {
+  background-image: var(--lgk-gloss), linear-gradient(180deg, rgba(255, 255, 255, 0.14), rgba(0, 0, 0, 0.12));
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5), inset 0 -10px 18px -12px rgba(255, 255, 255, 0.45),
+    0 0 0 1px color-mix(in srgb, var(--lq-button-fill) 45%, rgba(255, 255, 255, 0.3)),
+    0 12px 34px -10px color-mix(in srgb, var(--lq-button-fill) 85%, transparent);
+}
+
+.lgk .lq-button.lq-button--selected,
+.lgk .lq-modal__close-button {
+  background-image: var(--lgk-gloss), linear-gradient(180deg, rgba(255, 255, 255, 0.14), rgba(0, 0, 0, 0.12));
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5), inset 0 -10px 18px -12px rgba(255, 255, 255, 0.45),
+    0 0 0 1px color-mix(in srgb, var(--lq-color-fill) 45%, rgba(255, 255, 255, 0.3)),
+    0 12px 34px -10px color-mix(in srgb, var(--lq-color-fill) 85%, transparent);
+}
+
+/* ---- puces : des pastilles de verre, la choisie s'allume ---- */
+
+.lgk :where(.lq-chip, .lq-tag) {
+  border-radius: var(--lq-radius-pill);
+  box-shadow: var(--lgk-drop-rim);
+}
+
+.lgk .lq-chip.lq-chip--on {
+  color: var(--lq-color-accent-contrast);
+  background-color: color-mix(in srgb, var(--lq-color-accent) 88%, transparent);
+  background-image: var(--lgk-gloss);
+  border-color: color-mix(in srgb, var(--lq-color-accent) 60%, rgba(255, 255, 255, 0.4));
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.45), 0 8px 24px -8px color-mix(in srgb, var(--lq-color-accent) 80%, transparent);
+}
+
+/* ---- le contrôle segmenté et les onglets : la goutte choisie brille ---- */
+
+.lgk .lq-segmented__option--active,
+.lgk .lq-tabs--vertical .lq-tabs__tab--active {
+  background-image: var(--lgk-drop-sheen);
+  box-shadow: var(--lgk-drop-rim), 0 6px 18px -8px rgba(0, 0, 0, 0.5);
+}
+
+/* ---- les champs : des puits arrondis ---- */
+
+.lgk :where(.lq-field__control) {
+  border-radius: 18px;
+}
+
+/* ---- l'îlot de navigation et la barre haute : la même lueur ---- */
+
+@media (min-width: 901px) {
+  .lgk.lq-root .lq-sidebar-layout--rail:not(.lq-sidebar-layout--contained) > .lq-sidebar-layout__sidebar {
+    background-image: var(--lgk-drop-sheen),
+      radial-gradient(140% 50% at 0% 0%, color-mix(in srgb, var(--lgk-glow-1) 16%, transparent), transparent 70%),
+      radial-gradient(140% 50% at 100% 100%, color-mix(in srgb, var(--lgk-glow-2) 16%, transparent), transparent 70%);
+    box-shadow: var(--lgk-drop-rim), 0 30px 80px -30px color-mix(in srgb, var(--lgk-glow-1) 45%, transparent),
+      0 40px 90px -40px color-mix(in srgb, var(--lgk-glow-2) 45%, transparent), var(--lgk-island-shadow);
+  }
+
+  /* L'entrée active : une goutte claire dans l'îlot. */
+  .lgk.lq-root .lq-sidebar-layout--rail:not(.lq-sidebar-layout--contained) > .lq-sidebar-layout__sidebar .lq-sidebar-layout__nav-item--active {
+    background-image: var(--lgk-drop-sheen);
+    box-shadow: var(--lgk-drop-rim), 0 8px 22px -12px rgba(0, 0, 0, 0.45);
+  }
+}
+
+/* La barre haute, longue et basse : une lueur plus discrète, sinon elle vire toute à la couleur. */
+.lgk.lq-root .lq-sidebar-layout--sticky-header > .lq-sidebar-layout__main > .lq-sidebar-layout__header {
+  background-image: var(--lgk-drop-sheen),
+    radial-gradient(40% 160% at 0% 0%, color-mix(in srgb, var(--lgk-glow-1) 8%, transparent), transparent 70%),
+    radial-gradient(40% 160% at 100% 100%, color-mix(in srgb, var(--lgk-glow-2) 8%, transparent), transparent 70%);
+}
+
+/* ==================================================================================================
+ * v0.4 — sur téléphone
+ *
+ * Le kit range déjà ses gabarits pour un écran étroit (menu en tiroir, barre du menu au-dessus de la
+ * barre haute, tableaux qui défilent). Le thème y pose la même matière que sur grand écran :
+ *
+ *   - la barre du menu et la barre haute deviennent deux îlots de verre flottants, posés à 8 px des
+ *     bords, floutés — le contenu passe dessous sans qu'on puisse l'y lire ;
+ *   - le tiroir du menu devient un îlot de verre arrondi, ouvert par-dessus les deux barres, sur un
+ *     voile flou ;
+ *   - le flou est un peu plus léger (20 px) : un téléphone en calcule beaucoup en défilant ;
+ *   - le fond ne reste pas « fixé » à l'écran (Safari sur iPhone l'ignore et l'étirerait sur toute la
+ *     page), il défile avec elle ;
+ *   - les débordements de composants sur un écran étroit (carte du monde, carte de position) se
+ *     corrigent dans le kit (0.315.1), pas ici.
+ * ================================================================================================== */
+
+@media (max-width: 900px) {
+  .lgk.lq-root {
+    --lq-surface-backdrop: blur(20px) saturate(185%);
+    --lq-radius-lg: 24px;
+    background-attachment: scroll;
+  }
+
+  /* La barre du menu (bouton et logo) : un îlot de verre collé en haut. */
+  .lgk.lq-root .lq-sidebar-layout:not(.lq-sidebar-layout--contained) > .lq-sidebar-layout__main > .lq-sidebar-layout__topbar {
+    position: sticky;
+    top: 8px;
+    z-index: calc(var(--lq-sticky-header-z-index, 900) + 1);
+    min-height: 52px;
+    margin: 8px 8px 0;
+    padding: 8px 12px;
+    background-color: var(--lgk-color-float);
+    background-image: var(--lgk-drop-sheen);
+    border: 1px solid var(--lgk-drop-edge);
+    border-radius: 22px;
+    box-shadow: var(--lgk-drop-rim), 0 14px 40px -18px rgba(0, 0, 0, 0.5);
+    -webkit-backdrop-filter: blur(24px) saturate(185%);
+    backdrop-filter: blur(24px) saturate(185%);
+  }
+
+  /* La barre haute colle sous la barre du menu (8 + 52 + 6 px), en îlot elle aussi. */
+  .lgk.lq-root .lq-sidebar-layout--sticky-header:not(.lq-sidebar-layout--contained) {
+    --lq-sidebar-topbar-height: 66px;
+  }
+
+  .lgk.lq-root .lq-sidebar-layout--sticky-header:not(.lq-sidebar-layout--contained) > .lq-sidebar-layout__main > .lq-sidebar-layout__header {
+    margin: 6px 8px 0;
+    padding-left: var(--lq-space-3);
+    padding-right: var(--lq-space-3);
+    background-color: var(--lgk-color-float);
+    border-radius: 22px;
+    -webkit-backdrop-filter: blur(24px) saturate(185%);
+    backdrop-filter: blur(24px) saturate(185%);
+    --lq-sticky-header-shadow: var(--lgk-drop-rim), 0 14px 40px -18px rgba(0, 0, 0, 0.5);
+  }
+
+  /* Le bouton du menu : une goutte ronde. */
+  .lgk .lq-sidebar-layout__menu-button {
+    border-color: var(--lgk-glass-edge);
+    border-radius: 50%;
+    background-color: var(--lgk-glass-fill);
+    box-shadow: var(--lgk-drop-rim);
+  }
+
+  /* Le tiroir : un îlot de verre, par-dessus les deux barres. */
+  .lgk.lq-root .lq-sidebar-layout:not(.lq-sidebar-layout--contained) > .lq-sidebar-layout__sidebar {
+    inset: 8px auto 8px 8px;
+    z-index: 2100;
+    width: min(300px, calc(100vw - 56px));
+    height: auto;
+    background-color: var(--lgk-color-float);
+    background-image: var(--lgk-drop-sheen),
+      radial-gradient(140% 50% at 0% 0%, color-mix(in srgb, var(--lgk-glow-1) 18%, transparent), transparent 70%),
+      radial-gradient(140% 50% at 100% 100%, color-mix(in srgb, var(--lgk-glow-2) 18%, transparent), transparent 70%);
+    border: 1px solid var(--lgk-drop-edge);
+    border-radius: 28px;
+    box-shadow: var(--lgk-drop-rim), 0 30px 80px -20px rgba(0, 0, 0, 0.6);
+    -webkit-backdrop-filter: blur(30px) saturate(185%);
+    backdrop-filter: blur(30px) saturate(185%);
+    transform: translateX(calc(-100% - 16px));
+  }
+
+  .lgk.lq-root .lq-sidebar-layout:not(.lq-sidebar-layout--contained) > .lq-sidebar-layout__sidebar.lq-sidebar-layout__sidebar--open {
+    transform: translateX(0);
+  }
+
+  .lgk.lq-root .lq-sidebar-layout:not(.lq-sidebar-layout--contained) > .lq-sidebar-layout__scrim {
+    z-index: 2050;
+    background-color: var(--lgk-scrim);
+    -webkit-backdrop-filter: blur(14px) saturate(140%);
+    backdrop-filter: blur(14px) saturate(140%);
+  }
+
+  /* Dans le tiroir, comme dans l'îlot du grand écran : la vignette à gauche du libellé, des entrées
+     en pastilles. */
+  .lgk.lq-root .lq-sidebar-layout:not(.lq-sidebar-layout--contained) > .lq-sidebar-layout__sidebar .lq-sidebar-layout__thumb {
+    order: -1;
+    margin-right: 0;
+  }
+
+  .lgk.lq-root .lq-sidebar-layout:not(.lq-sidebar-layout--contained) > .lq-sidebar-layout__sidebar :is(.lq-sidebar-layout__nav-item, .lq-sidebar-layout__group-head) {
+    gap: 12px;
+    width: calc(100% - 16px);
+    margin: 0 8px;
+    border-radius: 16px;
+  }
+
+  .lgk.lq-root .lq-sidebar-layout:not(.lq-sidebar-layout--contained) > .lq-sidebar-layout__sidebar .lq-sidebar-layout__group-items {
+    margin: 2px 8px 6px;
+    border-radius: 18px;
+  }
+
+  /* Le chevron d'un groupe : vers la droite fermé, vers le bas ouvert (comme dans l'îlot). */
+  .lgk.lq-root .lq-sidebar-layout:not(.lq-sidebar-layout--contained) > .lq-sidebar-layout__sidebar .lq-sidebar-layout__group-chevron {
+    transform: rotate(-90deg);
+  }
+
+  .lgk.lq-root .lq-sidebar-layout:not(.lq-sidebar-layout--contained) > .lq-sidebar-layout__sidebar .lq-sidebar-layout__group--open .lq-sidebar-layout__group-chevron {
+    transform: none;
+  }
+
+  .lgk.lq-root .lq-sidebar-layout:not(.lq-sidebar-layout--contained) > .lq-sidebar-layout__sidebar .lq-sidebar-layout__nav-item--nested .lq-sidebar-layout__thumb {
+    border-radius: 10px;
+    background-color: var(--lgk-nav-hover);
+  }
+
+  .lgk.lq-root .lq-sidebar-layout:not(.lq-sidebar-layout--contained) > .lq-sidebar-layout__sidebar .lq-sidebar-layout__nav-item--active {
+    background-color: var(--lgk-nav-active);
+    background-image: var(--lgk-drop-sheen);
+    box-shadow: var(--lgk-drop-rim);
+  }
+
+  /* Le halo un peu plus court : l'écran est petit. */
+  .lgk :where(.lq-card:not(.lq-card--bare, .lq-card--highlight), .lq-panel:not(.lq-panel--bare), .lq-holding-card) {
+    box-shadow: var(--lgk-drop-rim),
+      -10px 16px 44px -28px color-mix(in srgb, var(--lgk-glow-a) var(--lgk-halo), transparent),
+      12px 18px 48px -28px color-mix(in srgb, var(--lgk-glow-b) var(--lgk-halo), transparent),
+      var(--lgk-drop-lift);
+  }
+
+  /* La recherche plein écran : moins de marge, la saisie garde sa pastille. */
+  .lgk .lq-search-overlay__input {
+    padding: 8px 18px;
+  }
+
+  .lgk .lq-search-overlay__hint,
+  .lgk .lq-search-overlay__empty {
+    padding-left: 18px;
+  }
+}
+
+/* ---- replis ---- */
+
+/* Transparence réduite : plus de teinte au travers, plus de halo — le verre opaque des replis
+   précédents, avec son liseré. */
+@media (prefers-reduced-transparency: reduce) {
+  .lgk.lq-root[data-lq-palette][data-lq-surface] {
+    --lgk-tint: 0%;
+    --lgk-halo: 0%;
   }
 }

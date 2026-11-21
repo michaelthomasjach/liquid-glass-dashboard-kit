@@ -9,7 +9,7 @@ import { ProfileDemo } from "../Profile";
 import { InvoiceDemo } from "../Invoice";
 
 /** L'image des pages d'accès. Une image ne lit pas les variables CSS : ses deux teintes reprennent
- *  donc à la main l'ardoise et l'indigo du thème. Locale et sans réseau, comme toute la vitrine. */
+ *  donc à la main l'ardoise et le corail du thème. Locale et sans réseau, comme toute la vitrine. */
 const ACCESS_IMAGE =
   "data:image/svg+xml;utf8," +
   encodeURIComponent(`

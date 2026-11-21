@@ -39,7 +39,7 @@ body {
   border-radius: 12px;
   background:
     radial-gradient(120% 90% at 20% 15%, rgba(255, 255, 255, 0.55), transparent 45%),
-    conic-gradient(from 210deg at 60% 65%, #c8f04a, #fbbf24, #fb7185, #a78bfa, #60a5fa, #c8f04a);
+    conic-gradient(from 210deg at 60% 65%, #ff7a45, #fbbf24, #fb7185, #a78bfa, #2dd4bf, #ff7a45);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5), inset 0 -6px 12px rgba(0, 0, 0, 0.18), 0 6px 16px rgba(0, 0, 0, 0.3);
 }
 
@@ -199,16 +199,16 @@ body {
 }
 
 .lgk-grid--stats {
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(220px, 100%), 1fr));
 }
 
 .lgk-grid--forms {
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(320px, 100%), 1fr));
   align-items: start;
 }
 
 .lgk-grid--tables {
-  grid-template-columns: repeat(auto-fit, minmax(480px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(480px, 100%), 1fr));
   align-items: start;
 }
 
@@ -216,7 +216,7 @@ body {
 
 .lgk-specimens {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(420px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(min(420px, 100%), 1fr));
   gap: var(--lq-space-5);
   align-items: start;
 }
@@ -276,6 +276,55 @@ body {
   flex-wrap: wrap;
   align-items: center;
   gap: var(--lq-space-3);
+}
+
+/* Tablette et téléphone : la barre du menu, au-dessus, porte déjà le logo ; la barre haute ne le
+   répète pas. */
+@media (max-width: 900px) {
+  .lgk-topbar__brand {
+    display: none;
+  }
+}
+
+/* Téléphone : la barre haute tient dans la largeur. La marque se resserre, seules les notifications
+   restent parmi les icônes d'action, et la recherche devient une pastille ronde à loupe seule (son
+   texte reste lu par les lecteurs d'écran). */
+@media (max-width: 640px) {
+  .lgk-topbar {
+    gap: var(--lq-space-2);
+    min-height: 52px;
+  }
+
+  .lgk-topbar__brand {
+    width: auto;
+    margin-left: 0;
+  }
+
+  .lgk-topbar__icons {
+    padding: 0 var(--lq-space-2);
+    border: 0;
+  }
+
+  .lgk-topbar__icons > :not(:first-child) {
+    display: none;
+  }
+
+  .lgk-topbar__search {
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    margin-left: 0;
+    font-size: 0;
+    opacity: 1;
+    background-color: var(--lgk-glass-fill, transparent);
+    border: 1px solid var(--lgk-glass-edge, transparent);
+    border-radius: 50%;
+    box-shadow: var(--lgk-glass-raise, none);
+  }
+
+  .lgk-topbar__end {
+    gap: var(--lq-space-3);
+  }
 }
 
 @media (max-width: 640px) {
@@ -342,12 +391,12 @@ body {
 }
 
 .lgk-grid--sliders {
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(260px, 100%), 1fr));
   gap: var(--lq-space-5);
 }
 
 .lgk-grid--alerts {
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(320px, 100%), 1fr));
   align-items: start;
 }
 
@@ -371,7 +420,7 @@ body {
 }
 
 .lgk-grid--highlights {
-  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(160px, 100%), 1fr));
   gap: var(--lq-space-5);
 }
 
@@ -383,12 +432,12 @@ body {
    de déborder — certains noms dépassent vingt-cinq caractères. */
 .lgk-icon-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(132px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(min(132px, 100%), 1fr));
   gap: var(--lq-space-2);
 }
 
 .lgk-icon-grid--compact {
-  grid-template-columns: repeat(auto-fill, minmax(96px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(min(96px, 100%), 1fr));
 }
 
 .lgk-icon-cell {
@@ -1143,6 +1192,6 @@ body {
 
 /* La frise et le fil, côte à côte tant que la largeur le permet. */
 .lgk-grid--feed {
-  grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(420px, 100%), 1fr));
   align-items: start;
 }
