@@ -195,15 +195,15 @@
   border-radius: var(--lq-radius-lg);
 }
 
-/* Le contour courbe, au-dessus des rails et du tracé. Plus marqué que les séparations intérieures
-   (`--lq-color-border` et non `-subtle`) : le fond du graphique est presque celui de la carte qui le
-   porte, et un trait à 7 % laissait lire des coins carrés. */
+/* Le contour courbe, au-dessus des rails et du tracé. Nettement plus marqué que les séparations
+   intérieures : le fond du graphique est presque celui de la carte qui le porte, et un trait à 7 puis
+   12 % se perdait dans la courbe des angles (coins lus comme carrés, sans bordure). */
 .lgk .lq-chart-workspace:not(.lq-chart-workspace--mobile)::after {
   content: "";
   position: absolute;
   inset: 0;
   z-index: 1100;
-  border: 1px solid var(--lq-color-border);
+  border: 1px solid color-mix(in srgb, var(--lq-color-text) 26%, transparent);
   border-radius: inherit;
   pointer-events: none;
 }
