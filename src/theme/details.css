@@ -189,16 +189,21 @@
 
 .lgk .lq-chart-workspace:not(.lq-chart-workspace--mobile) {
   position: relative;
+  /* `hidden` pour les navigateurs qui ignorent `clip` (Safari < 16) : sans lui, rien n'était coupé. */
+  overflow: hidden;
   overflow: clip;
   border-radius: var(--lq-radius-lg);
 }
 
+/* Le contour courbe, au-dessus des rails et du tracé. Plus marqué que les séparations intérieures
+   (`--lq-color-border` et non `-subtle`) : le fond du graphique est presque celui de la carte qui le
+   porte, et un trait à 7 % laissait lire des coins carrés. */
 .lgk .lq-chart-workspace:not(.lq-chart-workspace--mobile)::after {
   content: "";
   position: absolute;
   inset: 0;
   z-index: 1100;
-  border: 1px solid var(--lq-color-border-subtle);
+  border: 1px solid var(--lq-color-border);
   border-radius: inherit;
   pointer-events: none;
 }
