@@ -50,7 +50,7 @@ prend pas toute la largeur, menu flottant à gauche, contenu décollé des bords
   est allumée dans `shell.css` et se déplace en goutte d'eau ; l'entrée active n'a plus de fond propre
   dans `--desktop`. `TriptychScroll` suit la molette en continu par défaut (`motion="scrub"`).
 - Graphique (`details.css`) : l'espace de travail `.lq-chart-workspace` (hors `--mobile`) est arrondi
-  (`--lq-radius-lg`, `overflow: clip`, contour courbe tracé par `::after`), le rail de droite fait 40 px
+  (`--lq-radius-lg`, `overflow: hidden` puis `clip`, contour courbe tracé par `::after` en `--lq-color-border` : en `-subtle`, posé sur une carte du même fond, il ne se voyait pas et les coins se lisaient carrés), le rail de droite fait 40 px
   comme la colonne d'outils de gauche (`TOOLS_RAIL_WIDTH` du kit).
 - Police : Geist (`@fontsource-variable/geist`, fichier variable), Inter retirée. La prop `backdrop`
   a disparu avec le verre (v1.0.0, changement cassant).
