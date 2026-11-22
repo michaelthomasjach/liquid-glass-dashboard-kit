@@ -119,6 +119,20 @@
   background-color: var(--lq-color-accent);
 }
 
+/* La pastille active se déplace comme une goutte d'eau (mécanique dans HeaderLayout du kit, allumée
+   ici) : c'est elle qui porte le fond de l'entrée active du menu en pilule, l'entrée ne garde que son
+   encre inversée. */
+.lgk .lq-header-layout__indicator {
+  display: block;
+  background-color: var(--lq-color-accent);
+  border-radius: 999px;
+}
+
+.lgk .lq-header-layout__nav--desktop .lq-header-layout__nav-item--active,
+.lgk .lq-header-layout__nav--desktop .lq-header-layout__nav-item--active:hover {
+  background-color: transparent;
+}
+
 .lgk .lq-header-layout__nav-item:focus-visible {
   outline: 2px solid var(--lq-color-focus-ring);
   outline-offset: 2px;

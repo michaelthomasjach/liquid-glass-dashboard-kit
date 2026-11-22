@@ -181,3 +181,44 @@
 .lgk h2 {
   letter-spacing: -0.035em;
 }
+
+/* ---- Graphique de bourse (espace de travail) : un instrument aux grands arrondis, comme les cartes.
+   Le cadre arrondi coupe ce qui dépasse (les bordures droites des fenêtres, du rail) et trace
+   lui-même le contour courbe par-dessus. Le plein écran d'une fenêtre passe en position fixe : il
+   n'est pas coupé. ---- */
+
+.lgk .lq-chart-workspace:not(.lq-chart-workspace--mobile) {
+  position: relative;
+  overflow: clip;
+  border-radius: var(--lq-radius-lg);
+}
+
+.lgk .lq-chart-workspace:not(.lq-chart-workspace--mobile)::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1100;
+  border: 1px solid var(--lq-color-border-subtle);
+  border-radius: inherit;
+  pointer-events: none;
+}
+
+/* Le rail de droite aussi épais que la colonne d'outils de gauche (40 px, bordure comprise) : les
+   deux bords de l'instrument se répondent. */
+.lgk .lq-chart-workspace__side-rail {
+  box-sizing: border-box;
+  width: 40px;
+  flex: 0 0 40px;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+/* Les boutons des deux colonnes s'écartent des coins arrondis. */
+.lgk .lq-chart-workspace:not(.lq-chart-workspace--mobile) .lq-chart-workspace__side-rail {
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.lgk .lq-chart-workspace:not(.lq-chart-workspace--mobile) .lq-chart__tools-rail:not(.lq-chart__tools-rail--horizontal) .lq-chart__tools-rail-items {
+  padding-bottom: 10px;
+}

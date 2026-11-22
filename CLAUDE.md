@@ -46,6 +46,12 @@ prend pas toute la largeur, menu flottant à gauche, contenu décollé des bords
   pastilles en bas sur téléphone. `SidebarLayout` reste habillé (entrée active en pilule d'encre).
 - Composants ajoutés au kit pour cette refonte (0.316.0) : `CurvedCarousel`, `TriptychScroll`,
   `FloatingNav`. `TriptychScroll` (0.316.1) fait basculer chaque section entière passé son seuil.
+- Kit 0.318.0 : la pastille active du menu du haut (`.lq-header-layout__indicator`, cachée dans le kit)
+  est allumée dans `shell.css` et se déplace en goutte d'eau ; l'entrée active n'a plus de fond propre
+  dans `--desktop`. `TriptychScroll` suit la molette en continu par défaut (`motion="scrub"`).
+- Graphique (`details.css`) : l'espace de travail `.lq-chart-workspace` (hors `--mobile`) est arrondi
+  (`--lq-radius-lg`, `overflow: clip`, contour courbe tracé par `::after`), le rail de droite fait 40 px
+  comme la colonne d'outils de gauche (`TOOLS_RAIL_WIDTH` du kit).
 - Police : Geist (`@fontsource-variable/geist`, fichier variable), Inter retirée. La prop `backdrop`
   a disparu avec le verre (v1.0.0, changement cassant).
 - Vitrine : menu du haut = sections (Accueil, Tableau de bord, Données, Applications, Composants) tirées

@@ -47,7 +47,7 @@
   },
   "dependencies": {
     "@fontsource-variable/geist": "^5.3.0",
-    "@michaelthomasjach/liseuse-dashboard-kit": ">=0.316.1 <1.0.0"
+    "@michaelthomasjach/liseuse-dashboard-kit": ">=0.318.0 <1.0.0"
   },
   "devDependencies": {
     "@storybook/addon-docs": "10.5.6",

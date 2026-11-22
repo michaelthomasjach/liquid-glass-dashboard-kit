@@ -9,7 +9,7 @@ Pensé pour rendre un tableau de bord dense agréable à lire, sans rien retirer
 C'est une **couche de thème**, comme [`minimal-dashboard-kit`](https://github.com/michaelthomasjach/minimal-dashboard-kit) :
 aucun composant n'est réécrit ici. Le paquet ré-exporte tout le kit et ajoute `LiquidGlassTheme`. Une
 modification du kit (correctif, nouveau composant, nouvelle prop) arrive donc ici sans rien toucher :
-la dépendance suit toutes les versions 0.x du kit (`>=0.316.0 <1.0.0`).
+la dépendance suit toutes les versions 0.x du kit à partir de 0.318.0 (`>=0.318.0 <1.0.0`).
 
 **En ligne :** [Storybook](https://michaelthomasjach.github.io/liquid-glass-dashboard-kit/) ·
 [vitrine](https://michaelthomasjach.github.io/liquid-glass-dashboard-kit/vitrine/)
