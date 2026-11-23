@@ -229,6 +229,26 @@
   background-color: var(--lgk-pill-bg);
 }
 
+/* La bulle de survol (mécanique dans FloatingNav du kit, allumée ici) : une goutte de verre qui glisse
+   d'une entrée à l'autre sous le pointeur, avec un reflet en haut. Elle déborde un peu des libellés,
+   sans toucher le bord de l'îlot. */
+.lgk .lq-floating-nav__bubble {
+  display: block;
+  --lq-floating-nav-bubble-left: -8px;
+  --lq-floating-nav-bubble-right: -10px;
+  --lq-floating-nav-bubble-bg: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--lq-color-text) 11%, transparent),
+    color-mix(in srgb, var(--lq-color-text) 6%, transparent)
+  );
+  --lq-floating-nav-bubble-shadow:
+    inset 0 1px 0 color-mix(in srgb, #fff 22%, transparent),
+    inset 0 0 0 1px var(--lgk-float-border),
+    0 4px 14px rgba(0, 0, 0, 0.12);
+  -webkit-backdrop-filter: blur(6px) saturate(1.6);
+  backdrop-filter: blur(6px) saturate(1.6);
+}
+
 @media (max-width: 720px) {
   .lgk .lq-floating-nav--fixed:not(.lq-floating-nav--static) {
     padding: 0;
