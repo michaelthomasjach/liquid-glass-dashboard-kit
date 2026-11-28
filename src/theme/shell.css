@@ -338,7 +338,8 @@
 }
 
 .lgk .lq-modal {
-  border-radius: 26px;
+  /* Arrondi plus discret : celui des cartes (16 px). */
+  border-radius: var(--lq-radius-lg, 16px);
 }
 
 .lgk .lq-search-overlay {
