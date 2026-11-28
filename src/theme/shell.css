@@ -384,3 +384,10 @@
   margin-left: 8px;
   margin-right: 8px;
 }
+
+/* Barres de défilement invisibles par défaut : elles n'apparaissent qu'au survol du contenu qui défile (cartes,
+   listes, menus, fenêtres). La place reste réservée, le contenu ne bouge pas à l'apparition de la barre. */
+.lgk, .lgk * { scrollbar-width: thin; scrollbar-color: transparent transparent; }
+.lgk:hover, .lgk *:hover, .lgk *:focus-within { scrollbar-color: color-mix(in srgb, var(--lq-color-text, #111) 28%, transparent) transparent; }
+.lgk ::-webkit-scrollbar-thumb { background: transparent; border-radius: 999px; }
+.lgk :hover::-webkit-scrollbar-thumb { background: color-mix(in srgb, var(--lq-color-text, #111) 28%, transparent); }
